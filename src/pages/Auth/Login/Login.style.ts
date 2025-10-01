@@ -32,7 +32,7 @@ export const Title = styled.h1`
     text-align: center;
 `;
 
-export const Form = styled.div`
+export const Form = styled.form`
     display: flex;
     flex-direction: column;
     gap: 36px;
@@ -72,7 +72,7 @@ export const InputBox = styled.div`
     border: 1.5px solid #F2F2F2;
 `;
 
-export const Input = styled.input.attrs(props => ({type: props.type || "text", placeholder: props.placeholder}))`
+export const Input = styled.input.attrs(props => ({type: props.type || "text"}))`
     font-size: 16px;
     letter-spacing: -2%;
     color: #000000;
