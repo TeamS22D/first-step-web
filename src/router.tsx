@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router';
 import App from './App';
-import Login from './pages/Auth/Login/Login';
-import Register from './pages/Auth/Register/Register';
+import Login from './pages/Auth/pages/Login/Login';
+import Register from './pages/Auth/pages/Register/Register';
 import AuthLayout from './components/AuthLayout/AuthLayout';
 import NotFound from './pages/NotFound/NotFound';
 
