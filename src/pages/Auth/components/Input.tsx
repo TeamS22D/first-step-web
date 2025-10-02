@@ -23,6 +23,13 @@ const InputBox = styled.div`
     border: 1.5px solid #F2F2F2;
 `;
 
+const VerifyBox = styled.div`
+    width: 440px;
+    height: 48px;
+    display: flex;
+    gap: 4px;
+`
+
 const InputTag = styled.input.attrs(props => ({type: props.type || "text"}))`
     font-size: 16px;
     letter-spacing: -2%;
@@ -35,11 +42,23 @@ const InputTag = styled.input.attrs(props => ({type: props.type || "text"}))`
     }
 `;
 
+const VerifyButton = styled.button`
+    width: 99px;
+    height: 100%;
+    background-color: ${(props) => props.theme.textGray};
+    border: 1.5px solid #f2f2f2;
+    font-size: 15px;
+    letter-spacing: -2%;
+    color: #fff;
+    border-radius: 10px;
+`;
+
 interface InputProps {
     label: string;
     type: string;
     placeholder: string;
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+    onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
 function Input(props: InputProps) {
@@ -53,4 +72,18 @@ function Input(props: InputProps) {
     )
 };
 
-export default Input;
+function EmailInput(props: InputProps) {
+    return (
+        <InputContainer>
+            <Label>{props.label}</Label>
+            <VerifyBox>
+                <InputBox>
+                    <InputTag type={props.type} onChange={props.onChange} placeholder={props.placeholder}/>
+                </InputBox>
+                <VerifyButton onClick={props.onClick} type="button">중복확인</VerifyButton>
+            </VerifyBox>
+        </InputContainer>
+    )
+}
+
+export default {Input, EmailInput};

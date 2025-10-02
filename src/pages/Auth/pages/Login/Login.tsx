@@ -6,6 +6,7 @@ import SubmitButton from "../../components/SubmitButton";
 import Social from "../../components/Social";
 import Contour from "../../components/Contour";
 import Input from "../../components/Input";
+import * as Form from "../../components/Form.style";
 
 const LoginForm = () => {
     const [email, setEmail] = useState("");
@@ -33,19 +34,19 @@ const LoginForm = () => {
     }
 
     return (
-        <S.Form onSubmit={handleLogin}>
-            <S.ElementContainer>
-                <S.FormContainer>
-                    <Input label="이메일" type="email" placeholder="이메일을 입력하세요" onChange={handleEmailChange}/>
-                    <Input label="비밀번호" type="password" placeholder="비밀번호를 입력하세요" onChange={handlePWChange}/>
-                </S.FormContainer>
+        <Form.Form onSubmit={handleLogin}>
+            <Form.ElementContainer>
+                <Form.FormContainer>
+                    <Input.Input label="이메일" type="email" placeholder="이메일을 입력하세요" onChange={handleEmailChange}/>
+                    <Input.Input label="비밀번호" type="password" placeholder="비밀번호를 입력하세요" onChange={handlePWChange}/>
+                </Form.FormContainer>
                 <S.Helper>
                     <a>회원가입</a>
                     <a>비밀번호를 잃어버렸어요.</a>
                 </S.Helper>
-            </S.ElementContainer>
+            </Form.ElementContainer>
             <SubmitButton text="로그인"/>
-        </S.Form>
+        </Form.Form>
     )
 }
 
