@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import NaverIcon from "/assets/Auth/Login/Social/Naver.png"; 
 import KakaoIcon from "/assets/Auth/Login/Social/Kakao.png"; 
-import GoogleIcon from "/assets/Auth/Login/Social/Google.png"
+import GoogleIcon from "/assets/Auth/Login/Social/Google.png";
 
 const SocialLogin = styled.div`
     display: flex;
