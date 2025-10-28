@@ -4,7 +4,6 @@ import Login from './pages/Auth/pages/Login/Login';
 import Register from './pages/Auth/pages/Register/Register';
 import AuthLayout from './components/AuthLayout/AuthLayout';
 import NotFound from './pages/NotFound/NotFound';
-import Layout from './components/Layout/Layout';
 
 const router = createBrowserRouter([
   {
@@ -13,7 +12,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: 'dict',
-        element: <p>딕셔너리 페이지</p>
+        element: null
       },
     ],
   },
