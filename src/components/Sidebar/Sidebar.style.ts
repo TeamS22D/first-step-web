@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import styled from "styled-components";
 
 export const SidebarConatiner = styled.div`
@@ -25,4 +26,22 @@ export const MenuContainer = styled.div`
     flex-direction: column;
     width: 44px;
     gap: 48px;
+`
+
+export const StyledLink = styled(Link)`
+    p {
+        visibility: hidden;
+        opacity: 0;
+        text-align: center;
+        color: #fff;
+        transition: 0.13s;
+        word-break: keep-all;
+        overflow-wrap: break-word;
+    }
+    &:hover {
+        p {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
 `

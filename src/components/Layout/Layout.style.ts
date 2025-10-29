@@ -6,3 +6,9 @@ export const Container = styled.div`
     height: 100vh;
     padding: 4px;
 `
+
+export const Contents = styled.div`
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto;
+`

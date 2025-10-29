@@ -6,7 +6,9 @@ function Layout() {
     return (
         <S.Container>
             <Sidebar />
-            <Outlet />
+            <S.Contents>
+                <Outlet />
+            </S.Contents>
         </S.Container>
     )
 }
