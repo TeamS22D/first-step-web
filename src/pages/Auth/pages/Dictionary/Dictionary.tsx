@@ -2,6 +2,8 @@ import * as Text from "@/components/Text/Text.style"
 import * as S from "./Dictionary.style"
 import Searchbar from "@/components/Searchbar/Searchbar"
 import Star from "@assets/Dictionary/Star.svg?react"
+import { useEffect, useState } from "react";
+import Data from "./data.json";
 
 interface ISearchResultProps {
     word: string;
@@ -139,15 +141,26 @@ const Sidebar = () => {
     )
 }
 
+interface IWord {
+  word: string;
+  desc: string[];
+  example: string;
+}
+
 function Dictionary() {
+    const [words, setWords] = useState<IWord[]>([]);
+
+    //TODO: API 호출
+    useEffect(() => {setWords(Data)}, [])
+
     return (
         <S.Container>
             <S.DictionaryContainer>
                 <Searchbar />
                 <RelatedKeywords keyword={['abcde', 'abcde', 'ghj', 'sadfsadf']}/>
-                <SearchResult word="CDC솔루션" desc={['마지막으로 추출한 이후 변경된 데이터만 골라내는 기술','마지막으로 추출한 이후 변경된 데이터만 골라내는 기술']} example="X-LOG for CDC: DB의 변경된 트랜잭션만 Redo Log에서 추출하여 복제하는 실시간 DB 복제 솔루션입니다."/>
-                <SearchResult word="CDC솔루션" desc={['마지막으로 추출한 이후 변경된 데이터만 골라내는 기술','마지막으로 추출한 이후 변경된 데이터만 골라내는 기술']} example="X-LOG for CDC: DB의 변경된 트랜잭션만 Redo Log에서 추출하여 복제하는 실시간 DB 복제 솔루션입니다."/>
-                <SearchResult word="CDC솔루션" desc={['마지막으로 추출한 이후 변경된 데이터만 골라내는 기술','마지막으로 추출한 이후 변경된 데이터만 골라내는 기술']} example="X-LOG for CDC: DB의 변경된 트랜잭션만 Redo Log에서 추출하여 복제하는 실시간 DB 복제 솔루션입니다."/>
+                {words.map((elem) => {
+                    return <SearchResult word={elem.word} desc={elem.desc} example={elem.example} />
+                })}
             </S.DictionaryContainer>
             <Sidebar />
         </S.Container>
