@@ -11,21 +11,21 @@ interface ISearchResultProps {
     example: string;
 }
 
-const SearchResult = ({word, desc, example}:ISearchResultProps) => {
+const Word = ({word, desc, example}:ISearchResultProps) => {
     return (
-        <S.SearchResult>
-            <S.ResultTextContainer>
+        <S.WordContainer>
+            <S.WordInfo>
                 <S.Word>{word}</S.Word>
-                <S.ResultDescContainer>
+                <S.WordDescContainer>
                     {desc.map((elem, i) => {
                         return <S.WordDesc key={i}>{i + 1}. {elem}</S.WordDesc>
                     })}
-                </S.ResultDescContainer>
-            </S.ResultTextContainer>
-            <S.ResultExampleContainer>
+                </S.WordDescContainer>
+            </S.WordInfo>
+            <S.ExampleContainer>
                 <Text.Label>{example}</Text.Label>
-            </S.ResultExampleContainer>
-        </S.SearchResult>
+            </S.ExampleContainer>
+        </S.WordContainer>
     )
 }
 
@@ -149,17 +149,22 @@ interface IWord {
 
 function Dictionary() {
     const [words, setWords] = useState<IWord[]>([]);
+    const [keyWord, setKeyWord] = useState("");
 
     //TODO: API 호출
     useEffect(() => {setWords(Data)}, [])
 
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setKeyWord(e.target.value);
+    }
+
     return (
         <S.Container>
             <S.DictionaryContainer>
-                <Searchbar />
+                <Searchbar onChange={onChange}/>
                 <RelatedKeywords keyword={['abcde', 'abcde', 'ghj', 'sadfsadf']}/>
                 {words.map((elem) => {
-                    return <SearchResult word={elem.word} desc={elem.desc} example={elem.example} />
+                    return <Word word={elem.word} desc={elem.desc} example={elem.example} />
                 })}
             </S.DictionaryContainer>
             <Sidebar />

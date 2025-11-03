@@ -39,14 +39,9 @@ export const RelatedKeywords = styled.div`
     gap: 24px;
 `
 
-export const SearchResultsContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-`
-
-export const SearchResult = styled.div`
+export const WordContainer = styled.div`
     width: 100%;
-    padding: 30px 24px;
+    padding: 24px 24px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -59,7 +54,7 @@ export const ResultTextContainer = styled.div`
     gap: 12px;
 `
 
-export const ResultDescContainer = styled.div`
+export const WordDescContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -75,7 +70,7 @@ export const WordDesc = styled(Text.Caption)`
     color: #777777;
 `
 
-export const ResultExampleContainer = styled.div`
+export const ExampleContainer = styled.div`
     width: 100%;
     height: auto;
     background-color: #F7F7F7;
@@ -202,11 +197,10 @@ export const Tab = styled.div`
     }
 `
 
-export const WordContainer = styled.div`
+export const WordInfo = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    overflow-y: scroll;
+    gap: 8px;
 `
 
 export const FavoriteWord = styled.div`
