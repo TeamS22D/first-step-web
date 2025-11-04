@@ -2,9 +2,9 @@ import * as Text from "@/components/Text/Text.style"
 import * as S from "./Dictionary.style"
 import Star from "@assets/Dictionary/Star.svg?react"
 import { useEffect, useState } from "react"
-import Words from "./favoriteWord.json"
-import WrongWords from "./wrongWord.json"
-import questions from "./quiz.json"
+import Words from "./TestJSON/favoriteWord.json"
+import WrongWords from "./TestJSON/wrongWord.json"
+import questions from "./TestJSON/quiz.json"
 
 interface IQuiz {
     question: string;

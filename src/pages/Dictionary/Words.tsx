@@ -2,7 +2,7 @@ import * as Text from "@/components/Text/Text.style"
 import * as S from "./Dictionary.style"
 import Searchbar from "@/components/Searchbar/Searchbar"
 import { useCallback, useEffect, useState } from "react";
-import Data from "./data.json";
+import Data from "./TestJSON/data.json";
 import React from "react";
 
 interface ISearchResultProps {
