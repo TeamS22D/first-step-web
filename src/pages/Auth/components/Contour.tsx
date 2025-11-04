@@ -8,12 +8,12 @@ const ContourContainer = styled.div`
     gap: 10px;
     & > span {
         width: 100%;
-        color: ${(props) => props.theme.textGray}
+        color: ${(props) => props.theme.textSecondary}
     }
     & > div {
         width: 100%;
         height: 1px;
-        background-color: ${(props) => props.theme.textGray};
+        background-color: ${(props) => props.theme.textSecondary};
     }
 `;
 

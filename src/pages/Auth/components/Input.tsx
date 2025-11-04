@@ -38,14 +38,14 @@ const InputTag = styled.input.attrs(props => ({type: props.type || "text"}))`
     width: 100%;
     border: 0;
     &::placeholder {
-        color: ${(props) => props.theme.textGray};
+        color: ${(props) => props.theme.textSecondary};
     }
 `;
 
 const VerifyButton = styled.button`
     width: 99px;
     height: 100%;
-    background-color: ${(props) => props.theme.textGray};
+    background-color: ${(props) => props.theme.textSecondary};
     border: 1.5px solid #f2f2f2;
     font-size: 15px;
     letter-spacing: -2%;

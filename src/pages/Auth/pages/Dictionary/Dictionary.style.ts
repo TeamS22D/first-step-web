@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import * as Text from "@/components/Text/Text.style"
+import { Link } from "react-router";
 
 export const Container = styled.div`
     width: 100%;
@@ -195,7 +196,7 @@ export const TabIndicator = styled(Indicator)`
     background-color: ${(props) => props.active ? '#3FB98A' : '#00000000'};
 `
 
-export const Tab = styled.div`
+export const Tab = styled.button`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -203,6 +204,8 @@ export const Tab = styled.div`
     div {
         width: 80%;
     }
+    background: none;
+    border: 0;
 `
 
 export const WordInfo = styled.div`

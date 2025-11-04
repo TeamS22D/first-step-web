@@ -33,8 +33,8 @@ const FavoriteWord = () => {
     return (
         <S.FavoriteWordContainer>
             <S.Tabs>
-                <S.Tab><Text.Caption>즐겨찾기</Text.Caption><S.TabIndicator active/></S.Tab>
-                <S.Tab><Text.Caption>오답</Text.Caption><S.TabIndicator/></S.Tab>
+                <S.Tab onClick={() => console.log("즐겨찾기")}><Text.Caption>즐겨찾기</Text.Caption><S.TabIndicator active/></S.Tab>
+                <S.Tab onClick={() => console.log("오답")}><Text.Caption>오답</Text.Caption><S.TabIndicator/></S.Tab>
             </S.Tabs>
             
             <S.FavoriteWords>

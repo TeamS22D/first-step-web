@@ -14,7 +14,7 @@ export const Helper = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
-    color: ${(props) => props.theme.textGray};
+    color: ${(props) => props.theme.textSecondary};
     & > a {
         font-size: 15px;
         letter-spacing: -2%;

@@ -77,13 +77,15 @@ function Words() {
                     return true;
                 }
             }
-            
             return false;
         });
-            setWords(filteredWord);
+        setWords(filteredWord);
         } else {
             setWords(rawWords);
         }
+    }, [keyword, rawWords]);
+
+    useEffect(() => {
         if (words.length >= 1) {
             if (words.length >= 10) {
                 setRelatedWord(words.slice(5, 9))
@@ -91,7 +93,7 @@ function Words() {
                 setRelatedWord(words.slice(0, 4))
             }
         }
-    }, [keyword, rawWords, words]);
+    },[words])
 
     const handleRelatedWord = (value: string) => {
         setKeyWord(value)
