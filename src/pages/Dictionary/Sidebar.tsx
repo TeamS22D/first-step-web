@@ -1,8 +1,9 @@
 import * as Text from "@/components/Text/Text.style"
 import * as S from "./Dictionary.style"
 import Star from "@assets/Dictionary/Star.svg?react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Words from "./favoriteWord.json"
+import WrongWords from "./wrongWord.json"
 
 const Quiz = () => {
     return (
@@ -35,10 +36,11 @@ const FavoriteWord = () => {
     const [tab, setTab] = useState(0)
     const [words, setWords] = useState<string[]>([])
 
-    const handleGetWord = () => {
+    useEffect(() => {
         //TODO: API 호출
-        setWords(Words)
-    }
+        if(tab===0) {setWords(Words)}
+        else {setWords(WrongWords)}
+    }, [tab])
 
     return (
         <S.FavoriteWordContainer>
@@ -48,7 +50,12 @@ const FavoriteWord = () => {
             </S.Tabs>
             
             <S.FavoriteWords>
-                {words.map((elem) => {return (<FavoriteWord></FavoriteWord>)})}
+                {words.map((elem) => {return (
+                    <S.FavoriteWord>
+                        <Text.Label>{elem}</Text.Label>
+                        <Star />
+                    </S.FavoriteWord>
+                )})}
             </S.FavoriteWords>
         </S.FavoriteWordContainer>
     )
