@@ -69,7 +69,16 @@ function Words() {
     useEffect(() => {if(keyword!=="") {
         const filteredWord = rawWords.filter((elem) => {
             const newKeyword = keyword.toLowerCase().replace(/ /g,"");
-            return elem.word.replace(/ /g,"").toLowerCase().includes(newKeyword)
+            if (elem.word.replace(/ /g,"").toLowerCase().includes(newKeyword)) {
+                return true;
+            }
+            for (let i = 0; i < elem.desc.length; i++) {
+                if (elem.desc[i].replace(/ /g,"").toLowerCase().includes(newKeyword)) {
+                    return true;
+                }
+            }
+            
+            return false;
         });
             setWords(filteredWord);
         } else {
