@@ -76,7 +76,11 @@ function Words() {
             setWords(rawWords);
         }
         if (words.length >= 1) {
-            setRelatedWord(words)
+            if (words.length >= 10) {
+                setRelatedWord(words.slice(5, 9))
+            } else {
+                setRelatedWord(words.slice(0, 4))
+            }
         }
     }, [keyword, rawWords, words]);
 
