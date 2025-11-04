@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import Data from "./TestJSON/data.json";
 import React from "react";
 import * as I from "./types/Words.type"
+import axios from "axios";
 
 const Word = ({word, desc, example}:I.ISearchResultProps) => {
     return (
@@ -44,7 +45,15 @@ function Words() {
     const [relatedWord, setRelatedWord] = useState<I.IWord[]>([]);
 
     //TODO: API 호출
-    useEffect(() => {setRawWords(Data); setWords(Data);}, [])
+    useEffect(() => {
+        axios.get("http://10.80.161.41:3000/bizwords")
+            .then(function (response) {
+                setRawWords(response.data); setWords(response.data);
+            }).catch(function (error) {
+                alert("단어를 불러오지 못하였습니다 : " + error.message);
+        })
+        
+    }, [])
 
     const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setKeyWord(e.target.value);
