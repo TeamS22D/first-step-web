@@ -4,29 +4,73 @@ import Star from "@assets/Dictionary/Star.svg?react"
 import { useEffect, useState } from "react"
 import Words from "./favoriteWord.json"
 import WrongWords from "./wrongWord.json"
+import questions from "./quiz.json"
+
+interface IQuiz {
+    question: string;
+    view: string;
+    answer: string[];
+    correct: string;
+}
 
 const Quiz = () => {
+    const [tab, setTab] = useState(0);
+    const [question, setQuestion] = useState<IQuiz[]>([]);
+    const qaCount = question.length;
+    const [selected, setSelected] = useState<string|null>(null);
+
+    useEffect(() => {
+        setQuestion(questions);
+    }, [])
+    
+    const handleAnswer = (ans: string) => {
+        if (selected) {return null}
+        setSelected(ans);
+        const correct = question[tab].correct
+        if (ans !== correct) {
+            //TODO: 오답단어 추가 API
+            console.log(correct);
+        }
+    }
+    
+    const handleNext = () => {
+        setTab((prev) => (prev + 1) % qaCount);
+        setSelected(null);
+    }
+
+    const renderIndicator = () => {
+        const result = [];
+        for (let i = 0; i < qaCount; i++) {
+            result.push(<S.Indicator key={i} $active={tab===i? true : false}/>)
+        }
+        return result;
+    }
+
+    if (question.length === 0) {
+        return (<div>Loading...</div>)
+    }
+
     return (
         <S.QuizContainer>
             <S.IndicatorContainer>
-                <S.Indicator active/>
-                <S.Indicator />
-                <S.Indicator />
+                {renderIndicator()}
             </S.IndicatorContainer>
             <S.Quiz>
                 <S.QuestionContainer>
                     <S.TextContainer>
-                        <Text.Label>Q.아래 뜻의 단어는?</Text.Label>
-                        <S.BoldQuestion>뛰어나다, 탁월하다</S.BoldQuestion>
+                        <Text.Label>Q.{question[tab].question}</Text.Label>
+                        <S.BoldQuestion>{question[tab].view}</S.BoldQuestion>
                     </S.TextContainer>
                     <S.AnswerContainer>
-                        <S.Answer><Text.Caption>abc</Text.Caption></S.Answer>
-                        <S.Answer><Text.Caption>abc</Text.Caption></S.Answer>
-                        <S.Answer><Text.Caption>abc</Text.Caption></S.Answer>
-                        <S.Answer><Text.Caption>abc</Text.Caption></S.Answer>
+                        {question[tab].answer.map((elem) => {
+                            const isCorrect = (elem === question[tab].correct) && selected === elem ? "correct" : selected === elem ? "wrong" : null;
+                            return (
+                                <S.Answer onClick={() => handleAnswer(elem)} $isCorrect={isCorrect}><Text.Caption>{elem}</Text.Caption></S.Answer>
+                            )
+                        })}
                     </S.AnswerContainer>
                 </S.QuestionContainer>
-                <S.SubmitButton><Text.Caption>다음</Text.Caption></S.SubmitButton>
+                <S.SubmitButton onClick={handleNext}><Text.Caption>다음</Text.Caption></S.SubmitButton>
             </S.Quiz>
         </S.QuizContainer>
     )
@@ -45,8 +89,8 @@ const FavoriteWord = () => {
     return (
         <S.FavoriteWordContainer>
             <S.Tabs>
-                <S.Tab onClick={() => setTab(0)}><Text.Caption>즐겨찾기</Text.Caption><S.TabIndicator active={tab===0? true : false}/></S.Tab>
-                <S.Tab onClick={() => setTab(1)}><Text.Caption>오답</Text.Caption><S.TabIndicator active={tab===1? true : false}/></S.Tab>
+                <S.Tab onClick={() => setTab(0)}><Text.Caption>즐겨찾기</Text.Caption><S.TabIndicator $active={tab===0? true : false}/></S.Tab>
+                <S.Tab onClick={() => setTab(1)}><Text.Caption>오답</Text.Caption><S.TabIndicator $active={tab===1? true : false}/></S.Tab>
             </S.Tabs>
             
             <S.FavoriteWords>

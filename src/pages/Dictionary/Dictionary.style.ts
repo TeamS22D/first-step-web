@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import * as Text from "@/components/Text/Text.style"
-import { Link } from "react-router";
 
 export const Container = styled.div`
     width: 100%;
@@ -112,12 +111,12 @@ export const IndicatorContainer = styled.div`
     justify-content: space-between;
 `
 
-export const Indicator = styled.div<{active?: boolean}>`
+export const Indicator = styled.div<{$active?: boolean}>`
     width: 100%;
     height: 5px;
     border-radius: 2.5px;
     margin: 0px 2px;
-    background-color: ${(props) => props.active? '#3FB98A' : '#ADADAD'};
+    background-color: ${(props) => props.$active? '#3FB98A' : '#ADADAD'};
 `
 
 export const Quiz = styled.div`
@@ -149,13 +148,14 @@ export const AnswerContainer = styled.div`
     gap: 12px;
 `
 
-export const Answer = styled.button`
+export const Answer = styled.button<{$isCorrect?: string | null}>`
     width: 100%;
     padding: 12px 0px;
-    border: 0;
     border-radius: 10px;
-    background-color: #fff;
+    background-color: ${(props) => props.$isCorrect === "correct" ? props.theme.mainColor : props.$isCorrect === "wrong" ? "#CF0A31" : "#fff"};
+    color: ${(props) => props.$isCorrect ? "#fff" : props.theme.textPrimary};
     box-shadow: 0px 1.5px 2px 0px rgba(0, 0, 0, 0.07);
+    border: 0;
 `
 
 export const SubmitButton = styled.button`
@@ -193,7 +193,7 @@ export const Tabs = styled.div`
 `
 
 export const TabIndicator = styled(Indicator)`
-    background-color: ${(props) => props.active ? '#3FB98A' : '#00000000'};
+    background-color: ${(props) => props.$active ? '#3FB98A' : '#00000000'};
 `
 
 export const Tab = styled.button`
