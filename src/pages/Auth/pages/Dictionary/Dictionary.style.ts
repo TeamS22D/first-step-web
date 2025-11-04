@@ -31,8 +31,10 @@ export const RelatedKeywordsContainer = styled.div`
     border-top: 1px solid #F2F2F2;
 `
 
-export const RelatedKeyword = styled(Text.Label)`
+export const RelatedKeyword = styled(Text.Label).attrs({ as: "button" })`
     color: #2EA91D;
+    background: none;
+    border: 0;
 `
 
 export const RelatedKeywords = styled.div`

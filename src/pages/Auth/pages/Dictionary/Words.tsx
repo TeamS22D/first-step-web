@@ -31,15 +31,16 @@ const Word = ({word, desc, example}:ISearchResultProps) => {
 
 interface IRelatedKeywordsProps {
     keyword: string[];
+    handleRelatedWord: (value: string) => void
 }
 
-const RelatedKeywords = ({keyword}:IRelatedKeywordsProps) => {
+const RelatedKeywords = ({keyword, handleRelatedWord}:IRelatedKeywordsProps) => {
     return (
         <S.RelatedKeywordsContainer>
             <Text.Caption>연관 검색어</Text.Caption>
             <S.RelatedKeywords>
-                {keyword.map((elem) => {
-                    return <S.RelatedKeyword key={elem}>{elem}</S.RelatedKeyword>
+                {keyword.map((elem, i) => {
+                    return i < 4 ? <S.RelatedKeyword key={i} onClick={() => handleRelatedWord(elem)}>{elem}</S.RelatedKeyword> : null
                 })}
             </S.RelatedKeywords>
         </S.RelatedKeywordsContainer>
@@ -74,10 +75,14 @@ function Words() {
         setWords(rawWords);
     }}, [keyword, rawWords]);
 
+    const handleRelatedWord = (value: string) => {
+        setKeyWord(value)
+    }
+
     return (
         <S.DictionaryContainer>
-            <Searchbar onChange={onChange}/>
-            <RelatedKeywords keyword={['abcde', 'ghj', 'sadfsadf']}/>
+            <Searchbar onChange={onChange} value={keyword}/>
+            <RelatedKeywords handleRelatedWord={handleRelatedWord} keyword={words.map((elem) => {return elem.word})}/>
             {words.map((elem) => {
                 return <Word key={elem.word} word={elem.word} desc={elem.desc} example={elem.example} />
             })}
