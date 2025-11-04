@@ -1,0 +1,88 @@
+import * as Text from "@/components/Text/Text.style"
+import * as S from "./Dictionary.style"
+import Searchbar from "@/components/Searchbar/Searchbar"
+import { useCallback, useEffect, useState } from "react";
+import Data from "./data.json";
+import React from "react";
+
+interface ISearchResultProps {
+    word: string;
+    desc: string[];
+    example: string;
+}
+
+const Word = ({word, desc, example}:ISearchResultProps) => {
+    return (
+        <S.WordContainer>
+            <S.WordInfo>
+                <S.Word>{word}</S.Word>
+                <S.WordDescContainer>
+                    {desc.map((elem, i) => {
+                        return <S.WordDesc key={i}>{i + 1}. {elem}</S.WordDesc>
+                    })}
+                </S.WordDescContainer>
+            </S.WordInfo>
+            <S.ExampleContainer>
+                <Text.Label>{example}</Text.Label>
+            </S.ExampleContainer>
+        </S.WordContainer>
+    )
+}
+
+interface IRelatedKeywordsProps {
+    keyword: string[];
+}
+
+const RelatedKeywords = ({keyword}:IRelatedKeywordsProps) => {
+    return (
+        <S.RelatedKeywordsContainer>
+            <Text.Caption>연관 검색어</Text.Caption>
+            <S.RelatedKeywords>
+                {keyword.map((elem) => {
+                    return <S.RelatedKeyword key={elem}>{elem}</S.RelatedKeyword>
+                })}
+            </S.RelatedKeywords>
+        </S.RelatedKeywordsContainer>
+    )
+}
+
+interface IWord {
+  word: string;
+  desc: string[];
+  example: string;
+}
+
+function Words() {
+    const [rawWords, setRawWords] = useState<IWord[]>([]);
+    const [words, setWords] = useState<IWord[]>([]);
+    const [keyword, setKeyWord] = useState("");
+
+    //TODO: API 호출
+    useEffect(() => {setRawWords(Data); setWords(Data);}, [])
+
+    const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setKeyWord(e.target.value);
+    }, [])
+
+    useEffect(() => {if(keyword!=="") {
+        const filteredWord = rawWords.filter((elem) => {
+            const newKeyword = keyword.toLowerCase().replace(/ /g,"");
+            return elem.word.toLowerCase().includes(newKeyword)
+        });
+        setWords(filteredWord);
+    } else {
+        setWords(rawWords);
+    }}, [keyword, rawWords]);
+
+    return (
+        <S.DictionaryContainer>
+            <Searchbar onChange={onChange}/>
+            <RelatedKeywords keyword={['abcde', 'ghj', 'sadfsadf']}/>
+            {words.map((elem) => {
+                return <Word key={elem.word} word={elem.word} desc={elem.desc} example={elem.example} />
+            })}
+        </S.DictionaryContainer>
+    )
+}
+
+export default React.memo(Words)

@@ -3,6 +3,7 @@ import * as Text from "@/components/Text/Text.style"
 
 export const Container = styled.div`
     width: 100%;
+    min-height: 100%;
     display: flex;
     justify-content: center;
     gap: 24px;
@@ -80,7 +81,7 @@ export const ExampleContainer = styled.div`
 
 export const Sidebar = styled.div`
     position: sticky;
-    top: 200px;
+    top: 150px;
     display: flex;
     height: 730px;
     width: 300px;
@@ -176,6 +177,11 @@ export const FavoriteWordContainer = styled.div`
     border: 1px solid #F2F2F2;
     border-radius: 10px;
     max-height: 235px;
+`
+
+export const FavoriteWords = styled.div`
+    width: 100%;
+    overflow-y: scroll;
 `
 
 export const Tabs = styled.div`

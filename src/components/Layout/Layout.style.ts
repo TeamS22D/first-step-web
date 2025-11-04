@@ -11,4 +11,5 @@ export const Contents = styled.div`
     flex: 1;
     height: 100vh;
     overflow-y: auto;
+    padding: 3rem;
 `
