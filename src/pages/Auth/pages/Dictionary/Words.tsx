@@ -57,6 +57,7 @@ function Words() {
     const [rawWords, setRawWords] = useState<IWord[]>([]);
     const [words, setWords] = useState<IWord[]>([]);
     const [keyword, setKeyWord] = useState("");
+    const [relatedWord, setRelatedWord] = useState<IWord[]>([]);
 
     //TODO: API 호출
     useEffect(() => {setRawWords(Data); setWords(Data);}, [])
@@ -70,10 +71,14 @@ function Words() {
             const newKeyword = keyword.toLowerCase().replace(/ /g,"");
             return elem.word.toLowerCase().includes(newKeyword)
         });
-        setWords(filteredWord);
-    } else {
-        setWords(rawWords);
-    }}, [keyword, rawWords]);
+            setWords(filteredWord);
+        } else {
+            setWords(rawWords);
+        }
+        if (words.length >= 1) {
+            setRelatedWord(words)
+        }
+    }, [keyword, rawWords, words]);
 
     const handleRelatedWord = (value: string) => {
         setKeyWord(value)
@@ -82,7 +87,7 @@ function Words() {
     return (
         <S.DictionaryContainer>
             <Searchbar onChange={onChange} value={keyword}/>
-            <RelatedKeywords handleRelatedWord={handleRelatedWord} keyword={words.map((elem) => {return elem.word})}/>
+            <RelatedKeywords handleRelatedWord={handleRelatedWord} keyword={relatedWord.map((elem) => {return elem.word})}/>
             {words.map((elem) => {
                 return <Word key={elem.word} word={elem.word} desc={elem.desc} example={elem.example} />
             })}
