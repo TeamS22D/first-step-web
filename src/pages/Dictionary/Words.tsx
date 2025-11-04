@@ -1,17 +1,12 @@
 import * as Text from "@/components/Text/Text.style"
-import * as S from "./Dictionary.style"
+import * as S from "./styles/Words.style"
 import Searchbar from "@/components/Searchbar/Searchbar"
 import { useCallback, useEffect, useState } from "react";
 import Data from "./TestJSON/data.json";
 import React from "react";
+import * as I from "./types/Words.type"
 
-interface ISearchResultProps {
-    word: string;
-    desc: string[];
-    example: string;
-}
-
-const Word = ({word, desc, example}:ISearchResultProps) => {
+const Word = ({word, desc, example}:I.ISearchResultProps) => {
     return (
         <S.WordContainer>
             <S.WordInfo>
@@ -29,12 +24,7 @@ const Word = ({word, desc, example}:ISearchResultProps) => {
     )
 }
 
-interface IRelatedKeywordsProps {
-    keyword: string[];
-    handleRelatedWord: (value: string) => void
-}
-
-const RelatedKeywords = ({keyword, handleRelatedWord}:IRelatedKeywordsProps) => {
+const RelatedKeywords = ({keyword, handleRelatedWord}:I.IRelatedKeywordsProps) => {
     return (
         <S.RelatedKeywordsContainer>
             <Text.Caption>연관 검색어</Text.Caption>
@@ -47,17 +37,11 @@ const RelatedKeywords = ({keyword, handleRelatedWord}:IRelatedKeywordsProps) => 
     )
 }
 
-interface IWord {
-  word: string;
-  desc: string[];
-  example: string;
-}
-
 function Words() {
-    const [rawWords, setRawWords] = useState<IWord[]>([]);
-    const [words, setWords] = useState<IWord[]>([]);
+    const [rawWords, setRawWords] = useState<I.IWord[]>([]);
+    const [words, setWords] = useState<I.IWord[]>([]);
     const [keyword, setKeyWord] = useState("");
-    const [relatedWord, setRelatedWord] = useState<IWord[]>([]);
+    const [relatedWord, setRelatedWord] = useState<I.IWord[]>([]);
 
     //TODO: API 호출
     useEffect(() => {setRawWords(Data); setWords(Data);}, [])

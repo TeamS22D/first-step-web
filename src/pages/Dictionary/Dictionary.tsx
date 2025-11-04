@@ -1,4 +1,4 @@
-import * as S from "./Dictionary.style"
+import * as S from "./styles/Dictionary.style"
 import React from "react";
 import Words from "./Words";
 import Sidebar from "./Sidebar";

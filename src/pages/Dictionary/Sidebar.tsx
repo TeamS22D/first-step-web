@@ -1,21 +1,15 @@
 import * as Text from "@/components/Text/Text.style"
-import * as S from "./Dictionary.style"
+import * as S from "./styles/Sidebar.style"
 import Star from "@assets/Dictionary/Star.svg?react"
 import { useEffect, useState } from "react"
 import Words from "./TestJSON/favoriteWord.json"
 import WrongWords from "./TestJSON/wrongWord.json"
 import questions from "./TestJSON/quiz.json"
-
-interface IQuiz {
-    question: string;
-    view: string;
-    answer: string[];
-    correct: string;
-}
+import * as I from "./types/Sidebar.type"
 
 const Quiz = () => {
     const [tab, setTab] = useState(0);
-    const [question, setQuestion] = useState<IQuiz[]>([]);
+    const [question, setQuestion] = useState<I.IQuiz[]>([]);
     const qaCount = question.length;
     const [selected, setSelected] = useState<string|null>(null);
 
