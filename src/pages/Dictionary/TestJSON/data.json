@@ -1,0 +1,1130 @@
+[
+  {
+    "word": "CDC솔루션",
+    "desc": [
+      "마지막 추출 이후 변경된 데이터만 전송하는 기술",
+      "데이터 복제 효율을 높이기 위한 실시간 변경 감지 방식"
+    ],
+    "example": "CDC 솔루션은 Redo Log를 활용해 DB 변경 이력을 실시간으로 추출하고 반영합니다."
+  },
+  {
+    "word": "REST API",
+    "desc": [
+      "HTTP 프로토콜을 기반으로 한 클라이언트-서버 간 통신 방식",
+      "JSON 형식의 데이터를 주고받는 구조로, 다양한 플랫폼 간 호환성이 뛰어남"
+    ],
+    "example": "React 클라이언트는 Express 서버의 REST API를 호출해 데이터를 가져옵니다."
+  },
+  {
+    "word": "JWT",
+    "desc": [
+      "서버와 클라이언트 간의 인증 정보를 안전하게 주고받기 위한 토큰 기반 인증 방식",
+      "Header, Payload, Signature 세 부분으로 구성됨"
+    ],
+    "example": "로그인 성공 시 서버는 JWT를 발급하여 클라이언트가 이후 요청 시 인증에 사용합니다."
+  },
+  {
+    "word": "WebSocket",
+    "desc": [
+      "클라이언트와 서버 간에 실시간 양방향 통신을 가능하게 하는 프로토콜",
+      "채팅, 알림 등 실시간 데이터가 필요한 서비스에 자주 사용됨"
+    ],
+    "example": "WebSocket 연결을 통해 채팅 메시지를 지연 없이 주고받을 수 있습니다."
+  },
+  {
+    "word": "Docker",
+    "desc": [
+      "애플리케이션을 컨테이너 단위로 패키징하여 어디서나 실행할 수 있게 하는 기술",
+      "환경 차이에 영향을 받지 않고 일관된 배포가 가능함"
+    ],
+    "example": "프로젝트를 Docker 컨테이너로 빌드해 로컬 환경과 서버 환경의 차이를 줄였습니다."
+  },
+  {
+    "word": "CI/CD",
+    "desc": [
+      "Continuous Integration / Continuous Deployment의 약자",
+      "코드 변경 시 자동 빌드, 테스트, 배포 과정을 수행하는 개발 방식"
+    ],
+    "example": "GitHub Actions를 이용해 CI/CD 파이프라인을 구성하여 코드 변경 시 자동 배포가 이루어졌습니다."
+  },
+  {
+    "word": "GraphQL",
+    "desc": [
+      "클라이언트가 필요한 데이터만 요청할 수 있게 해주는 API 쿼리 언어",
+      "REST보다 효율적인 데이터 요청이 가능함"
+    ],
+    "example": "GraphQL을 통해 단일 요청으로 사용자 정보와 게시글 데이터를 동시에 가져올 수 있습니다."
+  },
+  {
+    "word": "Redis",
+    "desc": [
+      "인메모리 기반의 고성능 키-값 데이터베이스",
+      "캐싱, 세션 관리, 큐 등 다양한 용도로 활용됨"
+    ],
+    "example": "로그인 세션 정보를 Redis에 저장하여 응답 속도를 향상시켰습니다."
+  },
+  {
+    "word": "OAuth 2.0",
+    "desc": [
+      "사용자의 비밀번호를 공유하지 않고 제3자 앱이 인증을 수행할 수 있게 하는 프로토콜",
+      "Google, Kakao, GitHub 로그인 등에 활용됨"
+    ],
+    "example": "OAuth 2.0을 이용해 구글 계정으로 간편하게 로그인할 수 있습니다."
+  },
+  {
+    "word": "SSR",
+    "desc": [
+      "Server Side Rendering의 약자로, 브라우저가 아닌 서버에서 HTML을 렌더링하는 기술",
+      "SEO 개선과 초기 로딩 속도 향상에 유리함"
+    ],
+    "example": "Next.js를 사용해 SSR 기반으로 페이지를 렌더링했습니다."
+  },
+  {
+    "word": "CSR",
+    "desc": [
+      "Client Side Rendering의 약자로, 브라우저에서 자바스크립트로 HTML을 렌더링하는 방식",
+      "SPA(단일 페이지 애플리케이션)에 주로 사용됨"
+    ],
+    "example": "React는 기본적으로 CSR 기반으로 동작하며 빠른 화면 전환이 가능합니다."
+  },
+  {
+    "word": "SPA",
+    "desc": [
+      "Single Page Application의 약자로, 하나의 HTML 문서 안에서 동적으로 콘텐츠를 바꾸는 웹 앱",
+      "페이지 새로고침 없이 부드러운 사용자 경험 제공"
+    ],
+    "example": "React와 Vue는 대표적인 SPA 프레임워크입니다."
+  },
+  {
+    "word": "Babel",
+    "desc": [
+      "최신 자바스크립트 문법을 구버전 브라우저에서도 동작하도록 변환하는 트랜스파일러",
+      "ES6 이상 문법을 ES5로 변환함"
+    ],
+    "example": "Babel을 사용하면 최신 문법의 React 코드를 모든 브라우저에서 실행할 수 있습니다."
+  },
+  {
+    "word": "Webpack",
+    "desc": [
+      "자바스크립트, CSS, 이미지 등 여러 리소스를 하나로 번들링해주는 도구",
+      "코드 스플리팅과 트리 셰이킹 기능을 지원함"
+    ],
+    "example": "Webpack을 이용해 프로젝트 빌드 속도를 최적화했습니다."
+  },
+  {
+    "word": "Vite",
+    "desc": [
+      "빠른 개발 환경을 위한 차세대 프론트엔드 빌드 도구",
+      "ES Module 기반으로 빠른 HMR(핫 리로딩)을 지원함"
+    ],
+    "example": "Vite를 사용하니 React 개발 환경의 빌드 속도가 크게 향상되었습니다."
+  },
+  {
+    "word": "Tailwind CSS",
+    "desc": [
+      "유틸리티 클래스 기반의 CSS 프레임워크",
+      "별도의 CSS 파일 작성 없이 빠른 스타일링 가능"
+    ],
+    "example": "Tailwind를 사용해 반응형 디자인을 빠르게 구현했습니다."
+  },
+  {
+    "word": "Styled-Components",
+    "desc": [
+      "CSS-in-JS 방식으로 컴포넌트 단위 스타일을 관리하는 라이브러리",
+      "JSX 내에서 직접 스타일을 작성할 수 있음"
+    ],
+    "example": "styled-components를 사용해 props 기반의 동적 스타일링을 구현했습니다."
+  },
+  {
+    "word": "React Hook",
+    "desc": [
+      "함수형 컴포넌트에서 상태 관리와 생명주기 로직을 다룰 수 있도록 도와주는 기능",
+      "대표적으로 useState, useEffect, useContext 등이 있음"
+    ],
+    "example": "useEffect 훅을 사용해 컴포넌트 마운트 시 데이터를 불러왔습니다."
+  },
+  {
+    "word": "useState",
+    "desc": [
+      "React의 상태 관리를 위한 Hook",
+      "컴포넌트 내부에서 동적인 데이터를 다룰 수 있음"
+    ],
+    "example": "useState로 입력값 상태를 관리합니다."
+  },
+  {
+    "word": "useEffect",
+    "desc": [
+      "React에서 부수효과(데이터 호출, DOM 조작 등)를 처리하는 Hook",
+      "컴포넌트 생명주기와 유사한 기능 제공"
+    ],
+    "example": "useEffect를 사용해 컴포넌트가 처음 렌더링될 때 API를 호출했습니다."
+  },
+  {
+    "word": "TypeScript",
+    "desc": [
+      "자바스크립트에 정적 타입을 추가한 언어",
+      "컴파일 타임에 타입 오류를 잡아 안정성을 높임"
+    ],
+    "example": "TypeScript를 도입해 런타임 오류를 크게 줄였습니다."
+  },
+  {
+    "word": "Node.js",
+    "desc": [
+      "크롬 V8 엔진 위에서 동작하는 서버 사이드 자바스크립트 런타임",
+      "비동기 I/O 처리에 강점이 있음"
+    ],
+    "example": "Node.js를 이용해 빠르고 확장성 높은 서버를 구축했습니다."
+  },
+  {
+    "word": "Express",
+    "desc": [
+      "Node.js 기반의 대표적인 웹 프레임워크",
+      "라우팅, 미들웨어 기능을 통해 간단히 서버 구현 가능"
+    ],
+    "example": "Express를 사용해 REST API 서버를 구축했습니다."
+  },
+  {
+    "word": "MongoDB",
+    "desc": [
+      "비정형 데이터를 저장할 수 있는 NoSQL 데이터베이스",
+      "유연한 스키마 구조를 지원함"
+    ],
+    "example": "MongoDB를 이용해 JSON 형태의 데이터를 효율적으로 관리했습니다."
+  },
+  {
+    "word": "MySQL",
+    "desc": [
+      "관계형 데이터베이스 관리 시스템(RDBMS)",
+      "SQL을 사용해 데이터를 구조적으로 관리함"
+    ],
+    "example": "MySQL을 사용해 사용자 정보를 안전하게 저장했습니다."
+  },
+  {
+    "word": "PostgreSQL",
+    "desc": [
+      "객체 관계형 데이터베이스로, 안정성과 확장성이 뛰어남",
+      "JSON, 배열 등 다양한 자료형을 지원함"
+    ],
+    "example": "PostgreSQL을 이용해 대규모 데이터를 처리했습니다."
+  },
+  {
+    "word": "Firebase",
+    "desc": [
+      "Google에서 제공하는 백엔드 서비스 플랫폼",
+      "인증, 실시간 DB, 호스팅 등을 통합 제공"
+    ],
+    "example": "Firebase Authentication을 이용해 간편한 로그인 기능을 구현했습니다."
+  },
+  {
+    "word": "AWS",
+    "desc": [
+      "Amazon Web Services의 약자로, 클라우드 컴퓨팅 서비스 제공 플랫폼",
+      "EC2, S3, Lambda 등 다양한 인프라 서비스 제공"
+    ],
+    "example": "AWS EC2에 서버를 배포하고 S3에 이미지를 저장했습니다."
+  },
+  {
+    "word": "Azure",
+    "desc": [
+      "Microsoft의 클라우드 서비스 플랫폼",
+      "AI, 분석, 가상머신 등 다양한 기능 제공"
+    ],
+    "example": "Azure Functions를 이용해 서버리스 백엔드를 구축했습니다."
+  },
+  {
+    "word": "Kubernetes",
+    "desc": [
+      "컨테이너화된 애플리케이션을 자동으로 배포, 확장, 관리하는 오케스트레이션 도구",
+      "Google에서 개발하고 CNCF에서 관리함"
+    ],
+    "example": "Kubernetes 클러스터를 이용해 Docker 컨테이너를 관리했습니다."
+  },
+  {
+    "word": "Nginx",
+    "desc": [
+      "고성능 웹 서버 및 리버스 프록시 서버",
+      "로드 밸런싱과 정적 파일 서빙에 강점이 있음"
+    ],
+    "example": "Nginx를 통해 React 정적 파일을 효율적으로 제공했습니다."
+  },
+  {
+    "word": "API Gateway",
+    "desc": [
+      "여러 마이크로서비스를 통합 관리하고 인증·로깅 등을 담당하는 관문 역할",
+      "요청을 각 서비스로 라우팅함"
+    ],
+    "example": "API Gateway를 이용해 인증된 요청만 서비스에 전달했습니다."
+  },
+  {
+    "word": "Load Balancer",
+    "desc": [
+      "서버 간 트래픽을 분산시켜 성능과 안정성을 높이는 장치",
+      "AWS, Nginx, HAProxy 등에서 지원함"
+    ],
+    "example": "로드밸런서를 통해 서버 부하를 고르게 분산했습니다."
+  },
+  {
+    "word": "CORS",
+    "desc": [
+      "Cross-Origin Resource Sharing의 약자",
+      "다른 도메인 간 리소스 접근을 제어하는 보안 메커니즘"
+    ],
+    "example": "서버에서 CORS를 허용해 클라이언트의 요청이 차단되지 않게 설정했습니다."
+  },
+  {
+    "word": "Promise",
+    "desc": [
+      "비동기 작업의 완료 또는 실패를 나타내는 자바스크립트 객체",
+      "then과 catch로 결과를 처리함"
+    ],
+    "example": "Promise를 이용해 API 응답을 처리했습니다."
+  },
+  {
+    "word": "async/await",
+    "desc": [
+      "Promise 기반 비동기 코드를 동기적으로 작성할 수 있게 하는 문법",
+      "try-catch와 함께 오류 처리가 간단함"
+    ],
+    "example": "async/await을 사용해 API 호출 코드를 깔끔하게 작성했습니다."
+  },
+  {
+    "word": "JSON",
+    "desc": [
+      "JavaScript Object Notation의 약자",
+      "데이터 교환을 위한 경량 텍스트 형식"
+    ],
+    "example": "서버와 클라이언트는 JSON 형식으로 데이터를 주고받습니다."
+  },
+  {
+    "word": "YAML",
+    "desc": [
+      "사람이 읽기 쉬운 데이터 직렬화 형식",
+      "Kubernetes나 CI 설정 파일에서 자주 사용됨"
+    ],
+    "example": "GitHub Actions 설정을 YAML로 작성했습니다."
+  },
+  {
+    "word": "Git",
+    "desc": [
+      "분산 버전 관리 시스템",
+      "여러 개발자가 동시에 협업할 수 있게 함"
+    ],
+    "example": "Git을 이용해 코드 버전과 이력을 관리했습니다."
+  },
+  {
+    "word": "GitHub",
+    "desc": [
+      "Git 저장소를 온라인으로 호스팅하는 서비스",
+      "이슈 트래킹, Pull Request 등 협업 기능 제공"
+    ],
+    "example": "GitHub에서 팀 프로젝트를 협업했습니다."
+  },
+  {
+    "word": "HTTP",
+    "desc": [
+      "HyperText Transfer Protocol의 약자",
+      "웹 브라우저와 서버 간 통신에 사용되는 프로토콜"
+    ],
+    "example": "HTTP 요청을 통해 서버로 데이터를 전송했습니다."
+  },
+  {
+    "word": "HTTPS",
+    "desc": [
+      "HTTP에 SSL/TLS 암호화를 적용한 보안 프로토콜",
+      "데이터 전송 중 도청과 변조를 방지함"
+    ],
+    "example": "HTTPS 인증서를 적용해 사이트의 보안을 강화했습니다."
+  },
+  {
+    "word": "MVC",
+    "desc": [
+      "Model-View-Controller의 약자",
+      "애플리케이션을 세 가지 역할로 구분해 구조를 명확히 함"
+    ],
+    "example": "웹 애플리케이션은 MVC 패턴을 적용해 유지보수를 쉽게 했습니다."
+  },
+  {
+    "word": "MVVM",
+    "desc": [
+      "Model-View-ViewModel의 약자",
+      "데이터 바인딩을 통해 UI와 모델을 연결함"
+    ],
+    "example": "뷰모델을 사용해 MVVM 패턴으로 앱 구조를 개선했습니다."
+  },
+  {
+    "word": "SOLID",
+    "desc": [
+      "소프트웨어 설계 원칙 다섯 가지의 약자 (Single responsibility, Open-closed…)",
+      "클린코드와 유지보수성 향상에 도움이 됨"
+    ],
+    "example": "SOLID 원칙을 적용해 코드 기반을 리팩터링했습니다."
+  },
+  {
+    "word": "DRY",
+    "desc": [
+      "Don’t Repeat Yourself의 약자",
+      "코드 중복을 줄여 유지보수를 쉽게 함"
+    ],
+    "example": "중복 로직을 함수로 분리해 DRY 원칙을 실천했습니다."
+  },
+  {
+    "word": "KISS",
+    "desc": [
+      "Keep It Simple, Stupid의 약자",
+      "단순한 설계가 복잡한 설계보다 좋다는 원칙"
+    ],
+    "example": "복잡한 코드를 간결하게 바꿔 KISS 원칙을 적용했습니다."
+  },
+  {
+    "word": "UML",
+    "desc": [
+      "Unified Modeling Language의 약자",
+      "소프트웨어 설계를 시각화하는 표준 언어"
+    ],
+    "example": "UML로 시스템 구조를 시퀀스 다이어그램으로 표현했습니다."
+  },
+  {
+    "word": "Agile",
+    "desc": [
+      "애자일 개발 방식의 약자",
+      "변화에 빠르게 대응하며 반복적인 개발 및 피드백을 강조함"
+    ],
+    "example": "Agile 방식으로 스프린트를 운영해 빠르게 기능을 개선했습니다."
+  },
+  {
+    "word": "Scrum",
+    "desc": [
+      "애자일 방법론 중 하나로, 정해진 주기로 반복 개발함",
+      "Daily Stand-up, Sprint Review 등을 포함함"
+    ],
+    "example": "팀은 Scrum 회의를 매일 진행해 진행 상황을 공유했습니다."
+  },
+  {
+    "word": "Kanban",
+    "desc": [
+      "시각화된 작업 보드를 사용해 업무 흐름을 관리하는 방식",
+      "일정한 작업 수 제한(WIP)을 통해 병목을 줄임"
+    ],
+    "example": "Kanban 보드를 사용해 팀의 작업 흐름을 효율적으로 관리했습니다."
+  },
+  {
+    "word": "Pair Programming",
+    "desc": [
+      "두 명이 한 대의 컴퓨터로 함께 코딩하는 방식",
+      "코드 품질과 지식 공유에 효과적임"
+    ],
+    "example": "코드 복잡도를 줄이기 위해 Pair Programming을 도입했습니다."
+  },
+  {
+    "word": "Code Review",
+    "desc": [
+      "작성된 코드를 팀원 또는 자동화 도구로 검토하는 프로세스",
+      "버그를 미리 발견하고 코드 품질을 높임"
+    ],
+    "example": "Pull Request 전에 Code Review를 거쳐 버그를 잡았습니다."
+  },
+  {
+    "word": "Unit Test",
+    "desc": [
+      "작은 코드 단위(함수 또는 클래스)를 검증하는 테스트 방식",
+      "코드 리팩터링 시 안정성을 보장함"
+    ],
+    "example": "Jest를 이용해 Unit Test를 작성해 함수 로직을 검증했습니다."
+  },
+  {
+    "word": "Integration Test",
+    "desc": [
+      "여러 모듈이 함께 동작하는지 검증하는 테스트 방식",
+      "시스템 전체 흐름을 점검할 수 있음"
+    ],
+    "example": "API 엔드포인트 전체를 대상으로 Integration Test를 수행했습니다."
+  },
+  {
+    "word": "E2E Test",
+    "desc": [
+      "End-to-End Test의 약자로, 실제 사용자가 보는 화면부터 서버까지 전체 흐름을 테스트함",
+      "Cypress 등이 사용됨"
+    ],
+    "example": "Cypress로 로그인부터 게시글 작성까지 E2E Test를 진행했습니다."
+  },
+  {
+    "word": "TDD",
+    "desc": [
+      "Test-Driven Development의 약자로, 테스트를 먼저 작성하고 코드를 구현하는 방식",
+      "버그를 사전에 방지하고 설계 품질을 높임"
+    ],
+    "example": "TDD 방식으로 개발하여 코드 변경 시 버그가 줄었습니다."
+  },
+  {
+    "word": "BDD",
+    "desc": [
+      "Behavior-Driven Development의 약자로, 행동/시나리오 기반으로 테스트를 설계함",
+      "비전문가도 이해하기 쉬운 언어로 테스트 케이스 작성 가능함"
+    ],
+    "example": "BDD를 도입해 요구사항을 시나리오로 작성하고 테스트했습니다."
+  },
+  {
+    "word": "Microservices",
+    "desc": [
+      "하나의 애플리케이션을 여러 개의 작은 서비스로 분리해 운영하는 아키텍처",
+      "서비스 간 독립 배포 및 확장이 가능함"
+    ],
+    "example": "마이크로서비스 아키텍처로 전환해 각 기능을 독립적으로 배포했습니다."
+  },
+  {
+    "word": "Monolith",
+    "desc": [
+      "하나의 커다란 애플리케이션으로 모든 기능을 포함한 구조",
+      "단일 배포 단위로 관리가 쉬우나 확장성은 낮음"
+    ],
+    "example": "기존 Monolith에서 Microservices로 마이그레이션했습니다."
+  },
+  {
+    "word": "Event Driven Architecture",
+    "desc": [
+      "이벤트 발생 → 처리 흐름을 중심으로 설계된 아키텍처",
+      "비동기 처리와 확장에 유리함"
+    ],
+    "example": "Event-Driven Architecture를 도입해 주문 처리 시스템을 개선했습니다."
+  },
+  {
+    "word": "Domain-Driven Design",
+    "desc": [
+      "DDD라고도 하며, 도메인 지식을 중심으로 설계하는 방법론",
+      "비즈니스 개념을 코드 구조에 맞추어 반영함"
+    ],
+    "example": "DDD 패턴을 적용해 복잡한 비즈니스 로직을 명확히 분리했습니다."
+  },
+  {
+    "word": "CQRS",
+    "desc": [
+      "Command Query Responsibility Segregation의 약자",
+      "읽기 작업과 쓰기 작업을 분리해 확장성과 성능을 개선함"
+    ],
+    "example": "CQRS 패턴을 적용해 조회 성능을 향상시켰습니다."
+  },
+  {
+    "word": "CAP Theorem",
+    "desc": [
+      "Consistency, Availability, Partition Tolerance의 약자",
+      "분산 시스템에서 동시에 세 가지를 모두 얻을 수 없음을 설명함"
+    ],
+    "example": "CAP Theorem을 고려해 분산 캐시 아키텍처를 설계했습니다."
+  },
+  {
+    "word": "ACID",
+    "desc": [
+      "Atomicity, Consistency, Isolation, Durability의 약자",
+      "데이터베이스 트랜잭션의 신뢰성을 보장하는 특성"
+    ],
+    "example": "트랜잭션을 ACID 특성을 만족하도록 설계했습니다."
+  },
+  {
+    "word": "BASE",
+    "desc": [
+      "Basically Available, Soft state, Eventual consistency의 약자",
+      "NoSQL 시스템에서 자주 거론되는 개념"
+    ],
+    "example": "BASE 모델을 적용해 분산 DB에서 느슨한 일관성을 허용했습니다."
+  },
+  {
+    "word": "Sharding",
+    "desc": [
+      "데이터베이스를 여러 서버에 나누어 저장하는 방법",
+      "수평 확장을 통해 대규모 데이터를 효율적으로 처리함"
+    ],
+    "example": "데이터베이스를 Sharding하여 처리량을 크게 늘렸습니다."
+  },
+  {
+    "word": "Replication",
+    "desc": [
+      "데이터를 여러 복제본으로 유지하여 고가용성과 내결함성을 갖추는 방식",
+      "읽기 성능 향상에도 도움이 됨"
+    ],
+    "example": "Replication 설정으로 읽기 요청을 여러 복제본에서 처리했습니다."
+  },
+  {
+    "word": "Partitioning",
+    "desc": [
+      "데이터베이스 테이블을 물리적으로 나누어 저장하는 기법",
+      "쿼리 성능과 관리 효율이 향상됨"
+    ],
+    "example": "큰 테이블을 Partitioning하여 쿼리 응답 속도를 개선했습니다."
+  },
+  {
+    "word": "Indexing",
+    "desc": [
+      "검색 성능 향상을 위해 데이터베이스에 색인을 추가하는 기술",
+      "적절한 인덱스 선택이 쿼리 성능을 좌우함"
+    ],
+    "example": "자주 사용되는 칼럼에 Indexing을 적용해 조회 속도를 높였습니다."
+  },
+  {
+    "word": "ORM",
+    "desc": [
+      "Object-Relational Mapping의 약자",
+      "객체 지향 언어로 RDBMS를 다루기 위한 매핑 기술"
+    ],
+    "example": "TypeORM으로 ORM을 구성해 데이터를 관리했습니다."
+  },
+  {
+    "word": "MVP",
+    "desc": [
+      "Minimum Viable Product의 약자",
+      "최소 기능 제품을 빠르게 제작해 시장의 반응을 검증함"
+    ],
+    "example": "MVP를 통해 아이디어를 빠르게 시장에 내놓고 피드백을 받았습니다."
+  },
+  {
+    "word": "API Versioning",
+    "desc": [
+      "API의 변경이 기존 클라이언트에 영향을 주지 않도록 버전을 관리하는 방식",
+      "v1, v2 등 URI 혹은 헤더로 버전 식별 가능"
+    ],
+    "example": "API Versioning을 도입해 기존 클라이언트와 호환성을 유지했습니다."
+  },
+  {
+    "word": "Rate Limiting",
+    "desc": [
+      "클라이언트의 요청 수를 제한해 서비스의 안정성을 확보하는 기술",
+      "DDoS 공격 방어에도 활용됨"
+    ],
+    "example": "Rate Limiting을 적용해 API 남용을 방지했습니다."
+  },
+  {
+    "word": "Caching",
+    "desc": [
+      "자주 사용되는 데이터를 임시 저장해 응답 속도를 높이는 기술",
+      "메모리, 디스크, 분산 캐시 등 다양한 형태가 있음"
+    ],
+    "example": "Redis를 이용해 사용자 정보를 캐싱해 응답을 빠르게 했습니다."
+  },
+  {
+    "word": "Load Testing",
+    "desc": [
+      "시스템에 가해지는 부하를 테스트해 안정성을 검증하는 방식",
+      "최대 동시 접속자 수나 처리량을 확인함"
+    ],
+    "example": "JMeter를 사용해 Load Testing을 진행했습니다."
+  },
+  {
+    "word": "Stress Testing",
+    "desc": [
+      "시스템이 감당할 수 있는 한계를 넘어서는 부하를 가해 테스트하는 방식",
+      "오류 발생 시 복구 속도와 내결함성을 확인함"
+    ],
+    "example": "Stress Testing으로 시스템 한계치를 확인했습니다."
+  },
+  {
+    "word": "Continuous Monitoring",
+    "desc": [
+      "시스템을 지속적으로 감시하고 이상 징후를 감지하는 활동",
+      "로깅, 매트릭스, 알림 등을 포함함"
+    ],
+    "example": "Continuous Monitoring을 통해 장애를 빠르게 인지했습니다."
+  },
+  {
+    "word": "Observability",
+    "desc": [
+      "시스템 내부 상태를 외부 상태(메트릭, 로그 등)로 추론할 수 있는 능력",
+      "모니터링보다 한 단계 진보된 개념"
+    ],
+    "example": "Observability를 확보해 장애 원인을 신속하게 파악했습니다."
+  },
+  {
+    "word": "Telemetry",
+    "desc": [
+      "시스템에서 발생하는 데이터를 수집, 전송, 분석하는 기술",
+      "모니터링 및 분석의 기초가 됨"
+    ],
+    "example": "Telemetry 데이터를 활용해 사용자 행동을 분석했습니다."
+  },
+  {
+    "word": "Service Mesh",
+    "desc": [
+      "마이크로서비스 간 통신을 관리하는 인프라 계층",
+      "트래픽 관찰, 보안, 재시도 등을 제공함"
+    ],
+    "example": "Service Mesh를 도입해 서비스 간 통신을 통제했습니다."
+  },
+  {
+    "word": "Serverless",
+    "desc": [
+      "서버를 직접 관리하지 않고 코드 실행만 신경쓰는 컴퓨팅 모델",
+      "자동 확장, 이벤트 기반 실행 등이 특징임"
+    ],
+    "example": "AWS Lambda를 이용해 Serverless 아키텍처를 구현했습니다."
+  },
+  {
+    "word": "Function as a Service",
+    "desc": [
+      "FaaS의 약자로, 개별 함수 단위로 클라우드에서 실행되는 서비스 모델",
+      "Serverless 아키텍처의 한 형태"
+    ],
+    "example": "FaaS로 이벤트 기반 처리를 구현했습니다."
+  },
+  {
+    "word": "Infrastructure as a Service",
+    "desc": [
+      "IaaS의 약자로, 가상화된 인프라 자원을 서비스로 제공하는 모델",
+      "사용자가 서버, 스토리지, 네트워크를 관리함"
+    ],
+    "example": "IaaS를 이용해 VM 자원을 임대했습니다."
+  },
+  {
+    "word": "Platform as a Service",
+    "desc": [
+      "PaaS의 약자로, 애플리케이션 개발 및 실행에 필요한 플랫폼을 서비스로 제공하는 모델",
+      "개발자 입장에서 인프라 관리가 간소함"
+    ],
+    "example": "PaaS 환경에서 웹앱을 빠르게 배포했습니다."
+  },
+  {
+    "word": "Identity and Access Management",
+    "desc": [
+      "IAM의 약자로, 사용자 및 권한을 관리하는 체계",
+      "보안 및 컴플라이언스 측면에서 중요함"
+    ],
+    "example": "IAM을 활용해 권한을 세밀히 제어했습니다."
+  },
+  {
+    "word": "Zero Trust",
+    "desc": [
+      "‘신뢰하지 않고 항상 검증한다’는 보안 모델",
+      "내부자 위협에 대비해 네트워크 경계에만 의존하지 않음"
+    ],
+    "example": "Zero Trust 아키텍처로 보안 수준을 강화했습니다."
+  },
+  {
+    "word": "Encryption",
+    "desc": [
+      "데이터를 읽을 수 없도록 암호화하는 기술",
+      "데이터 유출 시에도 내용을 보호함"
+    ],
+    "example": "암호화를 적용해 민감 데이터의 보안을 확보했습니다."
+  },
+  {
+    "word": "TLS/SSL",
+    "desc": [
+      "데이터 전송 중 보안을 제공하는 프로토콜 집합",
+      "HTTPS에서 TLS가 주로 사용됨"
+    ],
+    "example": "TLS 1.3을 적용해 통신 보안을 강화했습니다."
+  },
+  {
+    "word": "Hashing",
+    "desc": [
+      "입력값을 고정 길이의 해시 값으로 변환하는 암호화 기법",
+      "비밀번호 저장 등에 자주 사용됨"
+    ],
+    "example": "사용자 비밀번호는 Hashing 후 저장했습니다."
+  },
+  {
+    "word": "Salting",
+    "desc": [
+      "해시된 비밀번호에 추가 데이터를 더해 보안을 강화하는 기법",
+      "같은 비밀번호라도 다른 해시값을 생성함"
+    ],
+    "example": "Salting을 적용해 해시 충돌 위험을 줄였습니다."
+  },
+  {
+    "word": "Public-Key Cryptography",
+    "desc": [
+      "공개키와 개인키로 이루어진 비대칭 암호화 방식",
+      "데이터 암호화와 인증에 활용됨"
+    ],
+    "example": "공개키 암호화로 안전한 키 교환을 구현했습니다."
+  },
+  {
+    "word": "Symmetric Cryptography",
+    "desc": [
+      "같은 키로 암호화와 복호화를 수행하는 방식",
+      "속도가 빠르지만 키 배포에 주의해야 함"
+    ],
+    "example": "대칭 암호화를 이용해 대용량 데이터를 빠르게 처리했습니다."
+  },
+  {
+    "word": "Blockchain",
+    "desc": [
+      "분산 원장 기술로 거래 내역을 체인 형태로 연결해 기록함",
+      "탈중앙화, 위변조 방지 등이 특징임"
+    ],
+    "example": "Blockchain 기반 시스템으로 투명한 거래 기록을 구현했습니다."
+  },
+  {
+    "word": "Smart Contract",
+    "desc": [
+      "블록체인 상에서 자동으로 실행되는 계약조건 코드",
+      "중개자 없이 신뢰성 있는 거래가 가능함"
+    ],
+    "example": "Smart Contract를 통해 자동으로 지급이 실행되는 시스템을 구축했습니다."
+  },
+  {
+    "word": "NFT",
+    "desc": [
+      "Non-Fungible Token의 약자",
+      "대체 불가능한 고유 디지털 자산을 나타냄"
+    ],
+    "example": "NFT를 통해 디지털 아트를 고유 자산으로 만들었습니다."
+  },
+  {
+    "word": "DeFi",
+    "desc": [
+      "Decentralized Finance의 약자",
+      "중앙 기관 없이 금융 서비스를 제공하는 블록체인 기반 모델"
+    ],
+    "example": "DeFi 플랫폼에서 유동성 풀에 참여했습니다."
+  },
+  {
+    "word": "Machine Learning",
+    "desc": [
+      "데이터로부터 학습해 예측이나 분류를 수행하는 기술",
+      "감독학습, 비감독학습 등이 있음"
+    ],
+    "example": "Machine Learning 모델을 이용해 수요를 예측했습니다."
+  },
+  {
+    "word": "Deep Learning",
+    "desc": [
+      "인공신경망을 여러 층으로 쌓아 복잡한 패턴을 학습하는 기술",
+      "이미지 인식, 음성 인식 등에 활용됨"
+    ],
+    "example": "Deep Learning을 적용해 이미지 분류 정확도를 높였습니다."
+  },
+  {
+    "word": "Neural Network",
+    "desc": [
+      "뇌의 뉴런을 모방한 구조로 데이터 간 관계를 학습함",
+      "입력-출력 간 복잡한 매핑을 처리할 수 있음"
+    ],
+    "example": "Neural Network를 설계해 음성 인식을 구현했습니다."
+  },
+  {
+    "word": "Computer Vision",
+    "desc": [
+      "컴퓨터가 이미지나 영상을 이해하고 처리하는 분야",
+      "객체 검출, 이미지 분류 등이 주요 과제임"
+    ],
+    "example": "Computer Vision 기술로 자율주행차의 카메라를 분석했습니다."
+  },
+  {
+    "word": "Natural Language Processing",
+    "desc": [
+      "컴퓨터가 인간 언어를 이해하고 처리하는 분야",
+      "텍스트 분석, 기계 번역 등이 해당됨"
+    ],
+    "example": "NLP 모델을 통해 고객 피드백을 자동으로 분석했습니다."
+  },
+  {
+    "word": "Big Data",
+    "desc": [
+      "일반적인 처리 방식으로는 다루기 힘든 대규모 데이터 집합",
+      "데이터 분석, 저장소 설계 등이 중요함"
+    ],
+    "example": "Big Data 환경에서 데이터 웨어하우스를 설계했습니다."
+  },
+  {
+    "word": "Data Lake",
+    "desc": [
+      "원시 데이터를 구조화하지 않고 저장하는 대형 저장소",
+      "다양한 분석 시나리오에 유연함"
+    ],
+    "example": "Data Lake에 로그 데이터를 저장해 나중에 분석용으로 활용했습니다."
+  },
+  {
+    "word": "Data Warehouse",
+    "desc": [
+      "분석 목적에 맞춰 정제된 데이터를 저장하는 시스템",
+      "BI, 리포팅 등에 사용됨"
+    ],
+    "example": "Data Warehouse를 구축해 경영 보고서를 생성했습니다."
+  },
+  {
+    "word": "ETL",
+    "desc": [
+      "Extract, Transform, Load의 약자",
+      "데이터를 추출 → 변형 → 적재하는 흐름"
+    ],
+    "example": "ETL 파이프라인을 구성해 로그데이터를 분석용 DB로 적재했습니다."
+  },
+  {
+    "word": "ELT",
+    "desc": [
+      "Extract, Load, Transform의 흐름",
+      "데이터를 먼저 적재하고 나중에 변형하는 방식"
+    ],
+    "example": "ELT 방식으로 원시 데이터를 Data Lake에 먼저 적재했습니다."
+  },
+  {
+    "word": "Schema On-Write",
+    "desc": [
+      "데이터를 적재할 때 미리 스키마를 정의하는 방식",
+      "구조화된 데이터 저장에 적합함"
+    ],
+    "example": "Schema On-Write 방식으로 데이터 웨어하우스를 설계했습니다."
+  },
+  {
+    "word": "Schema On-Read",
+    "desc": [
+      "데이터 읽을 때 스키마를 적용하는 방식",
+      "원시 데이터를 유연하게 활용 가능함"
+    ],
+    "example": "Schema On-Read 방식을 통해 다양한 로그 데이터를 분석했습니다."
+  },
+  {
+    "word": "Columnar DB",
+    "desc": [
+      "컬럼 단위로 데이터를 저장하는 데이터베이스 구조",
+      "분석 작업에 적합하며 읽기 성능이 뛰어남"
+    ],
+    "example": "Columnar DB를 채택해 대규모 조회 성능을 최적화했습니다."
+  },
+  {
+    "word": "Row-Based DB",
+    "desc": [
+      "행 단위로 데이터를 저장하는 전통적인 데이터베이스 구조",
+      "트랜잭션 처리에 적합함"
+    ],
+    "example": "Row-Based DB를 사용해 트랜잭션 처리 중심의 시스템을 설계했습니다."
+  },
+  {
+    "word": "Data Mart",
+    "desc": [
+      "특정 주제나 부서에 특화된 데이터 웨어하우스의 하위 저장소",
+      "사용 범위가 좁고 분석 부담이 적음"
+    ],
+    "example": "영업 부서 전용 Data Mart를 구축해 매출 분석에 활용했습니다."
+  },
+  {
+    "word": "OLTP",
+    "desc": [
+      "Online Transaction Processing의 약자",
+      "실시간 트랜잭션 처리에 적합함"
+    ],
+    "example": "OLTP 시스템을 통해 실시간 주문 처리를 구현했습니다."
+  },
+  {
+    "word": "OLAP",
+    "desc": [
+      "Online Analytical Processing의 약자",
+      "분석 위주 데이터 처리에 적합함"
+    ],
+    "example": "OLAP 엔진을 통해 분기별 리포트를 생성했습니다."
+  },
+  {
+    "word": "Data Mining",
+    "desc": [
+      "대규모 데이터에서 유의미한 패턴이나 지식을 추출하는 기술",
+      "통계, 머신러닝 기법이 활용됨"
+    ],
+    "example": "Data Mining으로 고객 이탈 예측 모델을 개발했습니다."
+  },
+  {
+    "word": "Extract Transform Load",
+    "desc": [
+      "ETL 방식의 풀네임",
+      "데이터 웨어하우스 환경에서 기본 흐름임"
+    ],
+    "example": "Extract Transform Load 과정을 자동화했습니다."
+  },
+  {
+    "word": "Data Governance",
+    "desc": [
+      "데이터 관리와 책임 체계를 수립하는 활동",
+      "품질, 보안, 거버넌스 규정 등을 포함함"
+    ],
+    "example": "데이터 거버넌스 정책을 수립해 데이터 품질을 개선했습니다."
+  },
+  {
+    "word": "Metadata",
+    "desc": [
+      "데이터에 대한 데이터를 뜻하며, 데이터의 구조·출처·형식을 설명함",
+      "데이터 카탈로그 등에 활용됨"
+    ],
+    "example": "Metadata를 정의해 분석 대상 데이터를 쉽게 찾을 수 있게 했습니다."
+  },
+  {
+    "word": "Master Data Management",
+    "desc": [
+      "MDM의 약자로, 조직의 핵심 데이터를 통합 관리하는 방법론",
+      "데이터 중복, 정합성 유지에 중점"
+    ],
+    "example": "MDM을 도입해 고객 정보가 시스템마다 일관되게 관리되도록 했습니다."
+  },
+  {
+    "word": "Data Quality",
+    "desc": [
+      "데이터의 정확성, 완전성, 신뢰성 등을 평가하는 개념",
+      "저품질 데이터는 분석 결과를 왜곡함"
+    ],
+    "example": "데이터 품질 분석을 통해 오류 데이터를 정제했습니다."
+  },
+  {
+    "word": "Business Intelligence",
+    "desc": [
+      "BI의 약자로, 데이터를 분석해 경영의사결정에 활용하는 활동",
+      "대시보드, 리포트 등이 포함됨"
+    ],
+    "example": "BI 대시보드를 구성해 경영진이 실시간으로 지표를 확인할 수 있게 했습니다."
+  },
+  {
+    "word": "ETL Pipeline",
+    "desc": [
+      "ETL 흐름을 자동화한 데이터 처리 파이프라인",
+      "데이터 수집부터 적재까지 이어지는 작업 흐름"
+    ],
+    "example": "ETL Pipeline을 설계해 로그 데이터 수집부터 분석까지 자동화했습니다."
+  },
+  {
+    "word": "Data Ops",
+    "desc": [
+      "데이터 분석과 운영을 통합해 민첩하게 처리하는 방법론",
+      "DevOps의 데이터 버전이라고도 함"
+    ],
+    "example": "Data Ops를 도입해 분석 프로세스의 반복 속도를 높였습니다."
+  },
+  {
+    "word": "Feature Store",
+    "desc": [
+      "머신러닝 모델에서 사용하는 피처를 재사용 가능하게 저장하는 저장소",
+      "피처 엔지니어링 효율을 높임"
+    ],
+    "example": "Feature Store를 통해 모델 개발 시간을 단축했습니다."
+  },
+  {
+    "word": "MLOps",
+    "desc": [
+      "머신러닝 모델의 개발부터 운영까지 관리하는 방법론",
+      "DevOps와 유사한 워크플로우를 가짐"
+    ],
+    "example": "MLOps 파이프라인을 통해 모델 배포와 모니터링을 자동화했습니다."
+  },
+  {
+    "word": "Data Fabric",
+    "desc": [
+      "분산된 데이터 환경에서 일관된 데이터 접근을 제공하는 아키텍처",
+      "데이터 사일로 문제를 해결함"
+    ],
+    "example": "Data Fabric을 도입해 여러 시스템의 데이터를 연결했습니다."
+  },
+  {
+    "word": "Edge Computing",
+    "desc": [
+      "데이터 처리와 분석을 사용자 가까운 엣지(말단)에서 수행하는 방식",
+      "지연 시간이 짧고 분산 처리가 유리함"
+    ],
+    "example": "Edge Computing을 활용해 IoT 센서 데이터를 실시간 분석했습니다."
+  },
+  {
+    "word": "Fog Computing",
+    "desc": [
+      "Edge Computing과 클라우드 사이의 중간 계층을 담당하는 컴퓨팅 모델",
+      "지연 시간과 대역폭 효율을 고려함"
+    ],
+    "example": "Fog Computing을 통해 센서 데이터를 엣지와 클라우드 사이에서 처리했습니다."
+  },
+  {
+    "word": "Internet of Things",
+    "desc": [
+      "IoT의 풀네임으로, 사물들이 인터넷에 연결되어 데이터를 주고받는 환경",
+      "스마트홈, 스마트시티 등에 활용됨"
+    ],
+    "example": "IoT 기기를 통해 스마트홈 환경을 구축했습니다."
+  },
+  {
+    "word": "5G",
+    "desc": [
+      "5세대 이동통신 기술",
+      "초고속·초저지연 통신을 가능하게 함"
+    ],
+    "example": "5G 네트워크를 활용해 자율주행 데이터를 실시간 전송했습니다."
+  },
+  {
+    "word": "SDN",
+    "desc": [
+      "Software-Defined Networking의 약자",
+      "네트워크 제어를 소프트웨어로 분리해 유연하게 구성함"
+    ],
+    "example": "SDN을 도입해 네트워크 구성을 자동화했습니다."
+  },
+  {
+    "word": "NFV",
+    "desc": [
+      "Network Functions Virtualization의 약자",
+      "네트워크 기능을 소프트웨어화해 가상화 환경에서 제공함"
+    ],
+    "example": "NFV를 통해 라우터 기능을 가상화했습니다."
+  },
+  {
+    "word": "Edge AI",
+    "desc": [
+      "엣지 디바이스에서 인공지능을 실행하는 기술",
+      "지연 시간이 짧고 네트워크 대역폭을 절약함"
+    ],
+    "example": "Edge AI를 활용해 드론에서 실시간 영상 분석을 수행했습니다."
+  },
+  {
+    "word": "Quantum Computing",
+    "desc": [
+      "퀀텀 비트를 활용해 기존 컴퓨터로는 어려운 계산을 해결하는 기술",
+      "암호 해독, 최적화 등에 잠재성이 큼"
+    ],
+    "example": "Quantum Computing 연구로 암호화 알고리즘의 미래를 준비했습니다."
+  },
+  {
+    "word": "Augmented Reality",
+    "desc": [
+      "AR의 풀네임으로, 현실 세계에 가상 정보를 겹쳐 보여주는 기술",
+      "교육, 게임, 산업 등에 활용됨"
+    ],
+    "example": "Augmented Reality 앱으로 박물관 설명을 실감나게 구현했습니다."
+  },
+  {
+    "word": "Virtual Reality",
+    "desc": [
+      "VR의 풀네임으로, 가상 세계에 몰입할 수 있게 하는 기술",
+      "게임, 시뮬레이션, 교육 등에 사용됨"
+    ],
+    "example": "Virtual Reality 헤드셋을 이용해 몰입형 교육 콘텐츠를 체험했습니다."
+  },
+  {
+    "word": "Metaverse",
+    "desc": [
+      "현실과 가상이 연결된 3차원 가상세계",
+      "소셜, 게임, 교육 등 다양한 분야에서 논의됨"
+    ],
+    "example": "Metaverse 플랫폼에서 아바타로 친구와 소통했습니다."
+  },
+  {
+    "word": "Digital Twin",
+    "desc": [
+      "물리적 자산이나 시스템의 디지털 복제 모델",
+      "시뮬레이션, 유지보수 등에 활용됨"
+    ],
+    "example": "Digital Twin을 이용해 공장 설비의 동작을 미리 시뮬레이션했습니다."
+  },
+  {
+    "word": "5G NR",
+    "desc": [
+      "5세대 이동통신 신기술 NR(New Radio)",
+      "더 빠른 속도와 더 넓은 대역폭을 지원함"
+    ],
+    "example": "5G NR 기술로 대용량 데이터를 초저지연으로 전송했습니다."
+  },
+  {
+    "word": "BLE",
+      "desc": [
+      "Bluetooth Low Energy의 약자",
+      "저전력 블루투스 통신 기술로 IoT 기기에 적합함"
+    ],
+    "example": "BLE를 사용해 스마트밴드와 스마트폰을 연결했습니다."
+  },
+  {
+    "word": "LPWAN",
+    "desc": [
+      "Low Power Wide Area Network의 약자",
+      "저전력, 장거리 통신을 지원해 IoT 환경에 적합함"
+    ],
+    "example": "LPWAN 네트워크를 이용해 수백 미터 떨어진 센서 데이터를 전달했습니다."
+  }
+]

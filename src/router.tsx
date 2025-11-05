@@ -4,6 +4,7 @@ import Login from './pages/Auth/pages/Login/Login';
 import Register from './pages/Auth/pages/Register/Register';
 import AuthLayout from './components/AuthLayout/AuthLayout';
 import NotFound from './pages/NotFound/NotFound';
+import Dictionary from './pages/Dictionary/Dictionary';
 
 const router = createBrowserRouter([
   {
@@ -12,7 +13,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: 'dict',
-        element: null
+        element: <Dictionary />
       },
     ],
   },
