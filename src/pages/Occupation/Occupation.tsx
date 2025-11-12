@@ -1,21 +1,27 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import * as S from "./Occupation.style";
+
+import itPng from "../../assets/Dictionary/it.png";
+import videoPng from "../../assets/Dictionary/video.png";
+import managePng from "../../assets/Dictionary/manage.png";
+import financePng from "../../assets/Dictionary/finance.png";
+import factoryPng from "../../assets/Dictionary/factory.png";
 
 type Field = {
   id: string;
   label: string;
-  image: string;
+  node: ReactNode;
 };
 
 export default function Occupation() {
   const [selected, setSelected] = useState<string | null>(null);
 
   const fields: Field[] = [
-    { id: "it", label: "IT", image: "/assets/it.png" },
-    { id: "video", label: "영상 콘텐츠", image: "/assets/video.png" },
-    { id: "manage", label: "경영", image: "/assets/manage.png" },
-    { id: "finance", label: "금융", image: "/assets/finance.png" },
-    { id: "factory", label: "제조", image: "/assets/factory.png" },
+    { id: "it", label: "IT", node: <img src={itPng} alt="it" /> },
+    { id: "video", label: "영상 콘텐츠", node: <img src={videoPng} alt="영상 콘텐츠" /> },
+    { id: "manage", label: "경영", node: <img src={managePng} alt="경영" /> },
+    { id: "finance", label: "금융", node: <img src={financePng} alt="금융" /> },
+    { id: "factory", label: "제조", node: <img src={factoryPng} alt="제조" /> },
   ];
 
   return (
@@ -35,7 +41,7 @@ export default function Occupation() {
             $selected={selected === field.id}
             onClick={() => setSelected(field.id)}
           >
-            <img src={field.image} alt={field.label} />
+            {field.node} 
             <p>{field.label}</p>
             <S.CheckCircle $selected={selected === field.id}>
               {selected === field.id && "✔"}
