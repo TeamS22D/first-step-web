@@ -1,6 +1,13 @@
+import Body from "./Body";
+import Profile from "./Profile";
+import * as S from "./styles/Home.style";
+
 function Home() {
     return (
-        <div>Home</div>
+        <S.Container>
+            <Profile />
+            <Body />
+        </S.Container>
     )
 }
 
