@@ -5,6 +5,7 @@ import Register from './pages/Auth/pages/Register/Register';
 import AuthLayout from './components/AuthLayout/AuthLayout';
 import NotFound from './pages/NotFound/NotFound';
 import Dictionary from './pages/Dictionary/Dictionary';
+import Occupation from './pages/Occupation/Occupation';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,11 @@ const router = createBrowserRouter([
     path: '/*',
     element: <NotFound />,
   },
+
+  {
+    path: '/occupation',
+    element: <Occupation />,
+  }
 ]);
 
 export default router;
