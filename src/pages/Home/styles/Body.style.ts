@@ -41,7 +41,7 @@ export const Recommend = styled.div`
     bottom: 27px;
   }
 
-  span {
+  div {
     z-index: 1;
     font-size: 16px;
     font-weight: 500;

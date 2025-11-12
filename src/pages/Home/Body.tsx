@@ -1,13 +1,14 @@
+import { useEffect, useState } from "react";
 import * as S from "./styles/Body.style";
 import WeekCalendar from "./WeekCalendar";
+import axios from "axios";
 
-const Recommend = () => {
+
+const Recommend = (props: {title: string; img: string;}) => {
     return (
             <S.Recommend>
-                <span>모르는 실무 용어를<br/>
-                쉽고 간편하게<br/>
-                용어사전 프로그램</span>
-                <img src="https://media.discordapp.net/attachments/1359774260817563670/1437725009606082702/image_34.png?ex=69144941&is=6912f7c1&hm=23ef4a24a66416ed2a1ca9b619b7238d8783cc7fe6475c6b0598951b17d5fd4c&=&format=webp&quality=lossless&width=204&height=158" alt="" />
+                <div dangerouslySetInnerHTML={{ __html: props.title }} />
+                <img src={props.img} alt="이미지" />
                 <S.RedirectBtn>
                     시작하기
                 </S.RedirectBtn>
@@ -20,16 +21,6 @@ const NewBadge = () => {
         <S.NewBadge>New</S.NewBadge>
     )
 }
-
-const Mission = () => {
-    return (
-        <S.Mission to="">
-            <S.Title>미션 제목<NewBadge /></S.Title>
-            <S.Info><img src="https://media.discordapp.net/attachments/1359774260817563670/1437807765350387764/Timer.png?ex=69149654&is=691344d4&hm=52ddbdfc4c371625494ba9a38b4a2dccc9371745ce6e605d340db26b5c2a977c&=&format=webp&quality=lossless&width=22&height=28" alt="" />2025-05-21</S.Info>
-        </S.Mission>
-    )
-}
-
 const Todo = (props: {time:string; title: string;}) => {
     const date = new Date();
     const nowTime = date.getHours();
@@ -43,83 +34,145 @@ const Todo = (props: {time:string; title: string;}) => {
     )
 }
 
-const MissionList = () => {
+interface IMissionProps {
+    title: string; 
+    to: string;
+    createdAt: string;
+}
+
+const Mission = (props: IMissionProps) => {
+    return (
+        <S.Mission to={props.to}>
+            <S.Title>{props.title}<NewBadge /></S.Title>
+            <S.Info><img src="https://media.discordapp.net/attachments/1359774260817563670/1437807765350387764/Timer.png?ex=69153f14&is=6913ed94&hm=4a432ced9982a2cfbe93c053e76ac3c1b3ed8238a4e97830187c07e3c7b3468b&=&format=webp&quality=lossless&width=22&height=28" alt="" />{props.createdAt}</S.Info>
+        </S.Mission>
+    )
+}
+
+
+const MissionList = (props: {missions: IMissionProps[]}) => {
     return (
         <S.MissionContainer>
                 <S.TileTitle>오늘의 미션</S.TileTitle>
                 <S.Line />
                 <S.MissionList>
-                    <Mission />
-                    <Mission />
-                    <Mission />
-                    <Mission />
-                    <Mission />
-                    <Mission />
-                    <Mission />
-                    <Mission />
-                    <Mission />
-                    <Mission />
-                    <Mission />
-                    <Mission />
-                    <Mission />
-                    <Mission />
+                    {props.missions.map((elem) => {
+                        return(
+                            <Mission title={elem.title} to={elem.to} createdAt={elem.createdAt}/>
+                        )
+                    })}
                 </S.MissionList>
         </S.MissionContainer>
     )
 }
 
+const Cheering = () => {
+    return (
+        <S.CheeringContainer>
+            <S.Cheering>
+                <img src="https://media.discordapp.net/attachments/1359774260817563670/1437812908896813250/mingcute_fire-fill.png?ex=69149b1e&is=6913499e&hm=134bde387bd26f6c7c992eccee96d33f54e6d4588b36b5ced18fe059246f151f&=&format=webp&quality=lossless&width=110&height=126" alt="" />
+                <S.CheeringTextContainer>
+                    <S.CheeringTitle>연속 학습일</S.CheeringTitle>
+                    <S.CheeringMessage><span>1</span>일</S.CheeringMessage>
+                </S.CheeringTextContainer>
+            </S.Cheering>
+            <S.Cheering>
+                <img src="https://media.discordapp.net/attachments/1359774260817563670/1437812908510679171/Group_86.png?ex=69149b1e&is=6913499e&hm=e84efdc94553a22081f0bc3bfe35412f48a96471a4d392afa9b6e758f8ae749e&=&format=webp&quality=lossless&width=100&height=100" alt="" />
+                <S.CheeringTextContainer>
+                    <S.CheeringTitle>상위</S.CheeringTitle>
+                    <S.CheeringMessage><span>7</span>%</S.CheeringMessage>
+                </S.CheeringTextContainer>
+            </S.Cheering>
+        </S.CheeringContainer>
+    )
+}
+
+interface ISidebarProps {
+    title: string;
+    time: string;
+}
+
+const Sidebar = () => {
+    const [todo, setTodo] = useState<ISidebarProps[]>([]);
+    useEffect(() => {
+        axios.get("/api")
+        .then((response) => {
+            setTodo(response.data)
+
+            //테스트용 데이터
+            setTodo([{title: "업무 보고서 작성", time: "20:00"}, {title: "업무 보고서 작성", time: "24:00"}])
+        })
+        .catch((error) => {
+            alert(error.response.status)
+        })
+    },[])
+
+    const date = new Date();
+    const weekToKorean: Record<string, string> = {
+        "0": "월",
+        "1": "화",
+        "2": "수",
+        "3": "목",
+        "4": "금",
+        "5": "토",
+        "6": "일"
+    }
+
+    return (
+        <S.Sidebar>
+            <Cheering />
+            <S.Calendar>
+                <S.CalendarConatiner>
+                    <S.DateContainer>
+                        <S.Date>
+                            {date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate()}
+                        </S.Date>
+                        <S.Weekday>
+                            {weekToKorean[String(date.getDay())]}
+                        </S.Weekday>
+                    </S.DateContainer>
+                    <WeekCalendar />
+                </S.CalendarConatiner>
+                <S.CrossLine />
+                <S.TodoList>
+                    {todo.map((elem) => {
+                        return (
+                            <Todo time={elem.time} title={elem.title} />
+                        )
+                    })}
+                </S.TodoList>
+            </S.Calendar>
+        </S.Sidebar>
+    )
+}
 
 function Body() {
+    const [missions, setMissions] = useState<IMissionProps[]>([])
+
+    useEffect(() => {
+        axios.get("/api")
+        .then((response) => {
+            setMissions(response.data);
+
+            //테스트용 데이터
+            setMissions([{title: "dd", to: "", createdAt: "2025-11-05"},{title: "dd", to: "", createdAt: "2025-11-05"},{title: "dd", to: "", createdAt: "2025-11-05"}]);
+        })
+        .catch((error) => {
+            alert(error.response.status)
+        })
+    })
+
     return (
         <S.Body>
             <S.Contents>
                 <S.RecommendContainer>
-                    <Recommend />
-                    <Recommend />
-                    <Recommend />
+                    <Recommend title="실제 실무능력을 <br/>ai와 함께 체계적인<br/>미션 프로그램" img="https://media.discordapp.net/attachments/1359774260817563670/1437725009606082702/image_34.png?ex=69159ac1&is=69144941&hm=fda6a23f72ac2c27bf4f9ac24e4e41b813c379ee9a7eaf71588bb06813c7d925&=&format=webp&quality=lossless&width=204&height=158"/>
+                    <Recommend title="모르는 실무 용어를<br/>쉽고 간편하게<br/>용어사전 프로그램" img="https://media.discordapp.net/attachments/1359774260817563670/1437725009606082702/image_34.png?ex=69159ac1&is=69144941&hm=fda6a23f72ac2c27bf4f9ac24e4e41b813c379ee9a7eaf71588bb06813c7d925&=&format=webp&quality=lossless&width=204&height=158"/>
+                    <Recommend title="실제 실무능력을 <br/>ai와 함께 체계적인<br/>미션 프로그램" img="https://media.discordapp.net/attachments/1359774260817563670/1437725009606082702/image_34.png?ex=69159ac1&is=69144941&hm=fda6a23f72ac2c27bf4f9ac24e4e41b813c379ee9a7eaf71588bb06813c7d925&=&format=webp&quality=lossless&width=204&height=158"/>
                 </S.RecommendContainer>
-                <MissionList />
+                <MissionList missions={missions}/>
             </S.Contents>
-            <S.Sidebar>
-                <S.CheeringContainer>
-                    <S.Cheering>
-                        <img src="https://media.discordapp.net/attachments/1359774260817563670/1437812908896813250/mingcute_fire-fill.png?ex=69149b1e&is=6913499e&hm=134bde387bd26f6c7c992eccee96d33f54e6d4588b36b5ced18fe059246f151f&=&format=webp&quality=lossless&width=110&height=126" alt="" />
-                        <S.CheeringTextContainer>
-                            <S.CheeringTitle>연속 학습일</S.CheeringTitle>
-                            <S.CheeringMessage><span>1</span>일</S.CheeringMessage>
-                        </S.CheeringTextContainer>
-                    </S.Cheering>
-                    <S.Cheering>
-                        <img src="https://media.discordapp.net/attachments/1359774260817563670/1437812908510679171/Group_86.png?ex=69149b1e&is=6913499e&hm=e84efdc94553a22081f0bc3bfe35412f48a96471a4d392afa9b6e758f8ae749e&=&format=webp&quality=lossless&width=100&height=100" alt="" />
-                        <S.CheeringTextContainer>
-                            <S.CheeringTitle>상위</S.CheeringTitle>
-                            <S.CheeringMessage><span>7</span>%</S.CheeringMessage>
-                        </S.CheeringTextContainer>
-                    </S.Cheering>
-                </S.CheeringContainer>
-                <S.Calendar>
-                    <S.CalendarConatiner>
-                        <S.DateContainer>
-                            <S.Date>
-                                2025-11-11
-                            </S.Date>
-                            <S.Weekday>
-                                수요일
-                            </S.Weekday>
-                        </S.DateContainer>
-                        <WeekCalendar />
-                    </S.CalendarConatiner>
-                    <S.CrossLine />
-                    <S.TodoList>
-                        <Todo time="15:00" title="업무 보고서 작성."/>
-                        <Todo time="15:00" title="업무 보고서 작성."/>
-                        <Todo time="15:00" title="업무 보고서 작성."/>
-                        <Todo time="15:00" title="업무 보고서 작성."/>
-                        <Todo time="15:00" title="업무 보고서 작성."/>
-                        <Todo time="24:00" title="업무 보고서 작성."/>
-                    </S.TodoList>
-                </S.Calendar>
-            </S.Sidebar>
+            <Sidebar />
         </S.Body>
     )
 }
