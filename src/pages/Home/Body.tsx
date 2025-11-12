@@ -30,6 +30,19 @@ const Mission = () => {
     )
 }
 
+const Todo = (props: {time:string; title: string;}) => {
+    const date = new Date();
+    const nowTime = date.getHours();
+    console.log(nowTime);
+    return (
+        <S.Todo>
+            {nowTime >= parseInt(props.time.slice(0, 2)) ? <S.Dot /> : <S.Dot active />}
+            <span>{props.time}</span>
+            <span>{props.title}</span>
+        </S.Todo>
+    )
+}
+
 const MissionList = () => {
     return (
         <S.MissionContainer>
@@ -98,16 +111,12 @@ function Body() {
                     </S.CalendarConatiner>
                     <S.CrossLine />
                     <S.TodoList>
-                        <S.Todo>
-                            <S.Dot />
-                            <span>15:00</span>
-                            <span>업무 보고서 작성.</span>
-                        </S.Todo>
-                        <S.Todo>
-                            <S.Dot active />
-                            <span>15:00</span>
-                            <span>업무 보고서 작성.</span>
-                        </S.Todo>
+                        <Todo time="15:00" title="업무 보고서 작성."/>
+                        <Todo time="15:00" title="업무 보고서 작성."/>
+                        <Todo time="15:00" title="업무 보고서 작성."/>
+                        <Todo time="15:00" title="업무 보고서 작성."/>
+                        <Todo time="15:00" title="업무 보고서 작성."/>
+                        <Todo time="24:00" title="업무 보고서 작성."/>
                     </S.TodoList>
                 </S.Calendar>
             </S.Sidebar>
