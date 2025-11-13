@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Container = styled.div`
   display: flex;
@@ -63,9 +63,8 @@ export const Card = styled.div<{ $selected: boolean }>`
   ${({ $selected }) =>
     $selected &&
     css`
-      border: 2px solid #4caf50;
-      background: #e8f8ec;
-      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+      background: #EAF8F2;
+      box-shadow: 0 0px 6px #3FB98A;
     `}
 `;
 

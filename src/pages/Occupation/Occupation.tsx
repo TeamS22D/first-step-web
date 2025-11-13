@@ -6,6 +6,7 @@ import videoPng from "../../assets/Dictionary/video.png";
 import managePng from "../../assets/Dictionary/manage.png";
 import financePng from "../../assets/Dictionary/finance.png";
 import factoryPng from "../../assets/Dictionary/factory.png";
+import selectPng from "../../assets/Dictionary/select.png";
 
 type Field = {
   id: string;
@@ -33,24 +34,28 @@ export default function Occupation() {
         <p>첫걸음 서비스 이용을 위해 분야를 선택해주세요. 선택 직군에 맞는 미션으로 더 나은 서비스를</p>
         <p>지원하겠습니다. 저희는 당신의 첫걸음을 응원하고 지지하겠습니다.</p>
       </S.Description>
-
       <S.CardGrid>
-        {fields.map((field) => (
+      {fields.map((field) => {
+        const isSelected = selected === field.id;
+
+        return (
           <S.Card
             key={field.id}
-            $selected={selected === field.id}
+            $selected={isSelected}
             onClick={() => setSelected(field.id)}
           >
-            {field.node} 
+            {field.node}
             <p>{field.label}</p>
-            <S.CheckCircle $selected={selected === field.id}>
-              {selected === field.id && "✔"}
+
+            <S.CheckCircle $selected={isSelected}>
+              {isSelected && <img src={selectPng} alt="selected" />}
             </S.CheckCircle>
           </S.Card>
-        ))}
-      </S.CardGrid>
+        );
+      })}
+    </S.CardGrid>
 
-      <S.SubmitButton disabled={!selected}>선택 완료</S.SubmitButton>
-    </S.Container>
+    <S.SubmitButton disabled={!selected}>선택 완료</S.SubmitButton>
+  </S.Container>
   );
 }
