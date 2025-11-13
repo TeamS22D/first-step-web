@@ -76,7 +76,7 @@ export const CheckCircle = styled.div<{ $selected: boolean }>`
   height: 22px;
   border-radius: 50%;
   border: 2px solid ${({ $selected }) => ($selected ? "#4caf50" : "#ccc")};
-  color: #4caf50;
+  color: #0ACF83;
   font-size: 14px;
   display: flex;
   align-items: center;
@@ -85,7 +85,7 @@ export const CheckCircle = styled.div<{ $selected: boolean }>`
 `;
 
 export const SubmitButton = styled.button`
-  background: ${({ disabled }) => (disabled ? "#ccc" : "#4caf50")};
+  background: ${({ disabled }) => (disabled ? "#ccc" : "#0ACF83")};
   color: white;
   border: none;
   border-radius: 10px;
@@ -94,8 +94,4 @@ export const SubmitButton = styled.button`
   font-weight: 600;
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   transition: 0.2s ease;
-
-  &:hover {
-    background: ${({ disabled }) => (disabled ? "#ccc" : "#43a047")};
-  }
 `;
