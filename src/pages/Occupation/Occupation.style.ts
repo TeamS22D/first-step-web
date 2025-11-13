@@ -29,9 +29,9 @@ export const Description = styled.p`
 export const CardGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 20px;
+  gap: 32px;
   justify-items: center;
-  max-width: 600px;
+  max-width: 790px;
   width: 100%;
   margin-bottom: 40px;
 `;
