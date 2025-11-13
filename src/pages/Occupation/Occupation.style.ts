@@ -43,7 +43,7 @@ export const Card = styled.div<{ $selected: boolean }>`
   border-radius: 16px;
   padding: 20px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0px 4px #BFBFBF;
   transition: all 0.2s ease;
   border: 2px solid transparent;
 
