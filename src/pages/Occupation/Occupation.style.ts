@@ -75,13 +75,18 @@ export const CheckCircle = styled.div<{ $selected: boolean }>`
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  border: 2px solid ${({ $selected }) => ($selected ? "#4caf50" : "#ccc")};
+  border: 2px solid ${({ $selected }) => ($selected ? "#89DCBC" : "#ccc")};
   color: #0ACF83;
   font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #fff;
+
+  img {
+    height: 30px;
+    margin-top: 10px;
+  }
 `;
 
 export const SubmitButton = styled.button`
