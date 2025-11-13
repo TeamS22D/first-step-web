@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import * as S from "./styles/Body.style";
 import WeekCalendar from "./WeekCalendar";
 import axios from "axios";
+import dayjs from "dayjs";
 
 
 const Recommend = (props: {title: string; img: string;}) => {
@@ -21,10 +22,13 @@ const NewBadge = () => {
         <S.NewBadge>New</S.NewBadge>
     )
 }
+
+
+
 const Todo = (props: {time:string; title: string;}) => {
     const date = new Date();
     const nowTime = date.getHours();
-    console.log(nowTime);
+
     return (
         <S.Todo>
             {nowTime >= parseInt(props.time.slice(0, 2)) ? <S.Dot /> : <S.Dot active />}
@@ -94,8 +98,13 @@ interface ISidebarProps {
 
 const Sidebar = () => {
     const [todo, setTodo] = useState<ISidebarProps[]>([]);
+
+    const [selDay, setSelDay] = useState(dayjs());
+
     useEffect(() => {
-        axios.get("/api")
+        axios.get("/api", {
+            params: {selDay}
+        })
         .then((response) => {
             setTodo(response.data)
 
@@ -105,7 +114,7 @@ const Sidebar = () => {
         .catch((error) => {
             alert(error.response.status)
         })
-    },[])
+    },[selDay])
 
     const date = new Date();
     const weekToKorean: Record<string, string> = {
@@ -131,7 +140,7 @@ const Sidebar = () => {
                             {weekToKorean[String(date.getDay())]}
                         </S.Weekday>
                     </S.DateContainer>
-                    <WeekCalendar />
+                    <WeekCalendar selDay={selDay} setSelDay={setSelDay}/>
                 </S.CalendarConatiner>
                 <S.CrossLine />
                 <S.TodoList>
@@ -160,7 +169,7 @@ function Body() {
         .catch((error) => {
             alert(error.response.status)
         })
-    })
+    }, [])
 
     return (
         <S.Body>

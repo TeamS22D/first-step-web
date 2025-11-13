@@ -1,5 +1,7 @@
 import { Label } from "@/components/Text/Text.style";
 import * as S from "./styles/Profile.style";
+import { useState } from "react";
+import axios from "axios";
 
 interface IProfileProps {
     name: string;
@@ -8,19 +10,29 @@ interface IProfileProps {
     age: string;
 }
 
-function Profile(props:IProfileProps) {
+function Profile() {
+    const [profile, setProfile] = useState<IProfileProps>();
+
+    axios.get("/api")
+    .then((response) => {
+        setProfile(response.data)
+    })
+    .catch((error) => {
+        alert(error.response.status)
+    })
+
     return (
         <S.ProfileContainer>
             <S.Profile>
                 <S.Image />
                 <S.Info>
-                    <S.Name>{props.name || "null"}<Label>님</Label></S.Name>
+                    <S.Name>{profile? profile.name : "null"}<Label>님</Label></S.Name>
                     <S.PersonalInfo>
-                        <Label>{props.occupation || "null"}</Label>
+                        <Label>{profile? profile.occupation : "null"}</Label>
                         <S.Line />
-                        <Label>{props.rank || "null"}</Label>
+                        <Label>{profile? profile.rank : "null"}</Label>
                         <S.Line />
-                        <Label>{props.age || "null"}</Label>
+                        <Label>{profile? profile.age : "null"}</Label>
                     </S.PersonalInfo>
                 </S.Info>
             </S.Profile>
