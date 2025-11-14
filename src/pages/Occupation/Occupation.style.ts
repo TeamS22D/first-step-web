@@ -4,22 +4,22 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px 20px;
+  padding: 50px 20px;
   text-align: center;
 `;
 
 export const Title = styled.h2`
-  font-size: 37px;
+  font-size: 35px;
   font-weight: 600;
   color: #9F9C9C;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 `;
 
 export const Description = styled.div`
-  font-size: 18px;
+  font-size: 15px;
   line-height: 1.6;
   color: #9F9C9C;
-  margin-bottom: 64px;
+  margin-bottom: 52px;
   font-weight: 500;
 
   p {
@@ -28,9 +28,9 @@ export const Description = styled.div`
 `;
 
 export const TopRow = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
   gap: 32px;
+  grid-template-columns: repeat(3, 1fr);
   max-width: 790px;
   width: 100%;
   margin: 0 auto 32px;
@@ -38,9 +38,9 @@ export const TopRow = styled.div`
 `;
 
 export const BottomRow = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
   gap: 32px;
+  grid-template-columns: repeat(2, 1fr);
   max-width: 520px;
   width: 100%;
   margin: 0 auto 40px;
@@ -49,8 +49,8 @@ export const BottomRow = styled.div`
 
 export const Card = styled.div<{ $selected: boolean }>`
   position: relative;
-  width: 200px;
-  height: 180px;
+  width: 180px;
+  height: 150px;
   background: #fff;
   border-radius: 20px;
   padding: 20px;

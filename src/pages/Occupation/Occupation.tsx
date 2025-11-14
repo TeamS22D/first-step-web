@@ -8,6 +8,8 @@ import financePng from "../../assets/Dictionary/finance.png";
 import factoryPng from "../../assets/Dictionary/factory.png";
 import selectPng from "../../assets/Dictionary/select.png";
 
+import LongButton from "../Auth/components/LongButton";
+
 type Field = {
   id: string;
   label: string;
@@ -35,6 +37,7 @@ export default function Occupation() {
         <p>지원하겠습니다. 저희는 당신의 첫걸음을 응원하고 지지하겠습니다.</p>
       </S.Description>
 
+      {/* 1줄 (3개) */}
       <S.TopRow>
         {fields.slice(0, 3).map((field) => {
           const isSelected = selected === field.id;
@@ -76,8 +79,7 @@ export default function Occupation() {
           );
         })}
       </S.BottomRow>
-
-      <S.SubmitButton disabled={!selected}>선택 완료</S.SubmitButton>
+      <LongButton>선택 완료</LongButton>
     </S.Container>
   );
 }

@@ -15,10 +15,10 @@ const Button = styled.button`
   color: #fff;
 `;
 
-const LongButton = () => {
+const LongButton = ({text}:{text: string}) => {
     return (
         <Button>
-            텍스트
+            {text}
         </Button>
     )
 }
