@@ -9,17 +9,18 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.h2`
-  font-size: 28px;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 12px;
+  font-size: 37px;
+  font-weight: 600;
+  color: #9F9C9C;
+  margin-bottom: 32px;
 `;
 
 export const Description = styled.div`
-  font-size: 15px;
+  font-size: 18px;
   line-height: 1.6;
-  color: #666;
-  margin-bottom: 40px;
+  color: #9F9C9C;
+  margin-bottom: 64px;
+  font-weight: 500;
 
   p {
     margin: 4px 0;
@@ -48,24 +49,26 @@ export const BottomRow = styled.div`
 
 export const Card = styled.div<{ $selected: boolean }>`
   position: relative;
-  width: 180px;
+  width: 200px;
+  height: 180px;
   background: #fff;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 20px;
   cursor: pointer;
   box-shadow: 0 0px 4px #bfbfbf;
   transition: all 0.2s ease;
 
   img {
-    width: 100px;
-    height: 100px;
+    width: 148px;
+    height: 130px;
     object-fit: contain;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
   p {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 600;
+    color: #404040;
     margin: 0;
   }
 
@@ -81,8 +84,8 @@ export const CheckCircle = styled.div<{ $selected: boolean }>`
   position: absolute;
   top: 12px;
   right: 12px;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   border: 2px solid ${({ $selected }) => ($selected ? "#89DCBC" : "#ccc")};
   background: #fff;
@@ -93,7 +96,7 @@ export const CheckCircle = styled.div<{ $selected: boolean }>`
 
   img {
     height: 30px;
-    margin-top: 10px;
+    margin-top: 20px;
   }
 `;
 
@@ -102,9 +105,9 @@ export const SubmitButton = styled.button`
   color: white;
   border: none;
   border-radius: 10px;
-  padding: 14px 40px;
+  padding: 20px 208px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 800;
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   transition: 0.2s ease;
 `;
