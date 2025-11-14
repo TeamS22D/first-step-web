@@ -1,6 +1,6 @@
 import { useState, type Dispatch } from "react";
 import styled from "styled-components";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import "react-day-picker/dist/style.css";
 import { Caption } from "@/components/Text/Text.style";
 
@@ -58,10 +58,10 @@ const DayButton = styled.button<{ selected: boolean }>`
   }
 `;
 
-function WeekCalendar({selDay, setSelDay}: {setSelDay: Dispatch<React.SetStateAction<dayjs>>; SelDay: () => void}) {
+function WeekCalendar({setSelDay}: {setSelDay: React.Dispatch<React.SetStateAction<string>>}) {
   //TODO: 서택된 요일 State를 받아와서 상위 컴포넌트에 전달 후 요일별 Todo 받아오기
   const [selectedDate, setSelectedDate] = useState(dayjs());
-  const startOfWeek = dayjs().startOf("week"); // Monday start
+  const startOfWeek = dayjs().startOf("week");
 
   const days = Array.from({ length: 7 }).map((_, i) => startOfWeek.add(i, "day"));
 
@@ -75,8 +75,8 @@ function WeekCalendar({selDay, setSelDay}: {setSelDay: Dispatch<React.SetStateAc
     SUN: "일"
   }
 
-  const handleDateChange = (day: string) => {
-    console.log(day);
+  const handleDateChange = (day: Dayjs) => {
+    setSelDay(day.year() + "-" + (day.month()+1) + "-" + day.date())
   }
 
   return (
@@ -91,7 +91,7 @@ function WeekCalendar({selDay, setSelDay}: {setSelDay: Dispatch<React.SetStateAc
             {Weekday === "일" ? (<Caption style={{color: "#FF1313"}}>{Weekday}</Caption>) : Weekday === "토" ? (<Caption style={{color: "#0099FF"}}>{Weekday}</Caption>) : (<Caption>{Weekday}</Caption>)}
             <DayButton 
                 selected={isSelected}
-                onClick={() => {setSelectedDate(day); handleDateChange(Weekday);}}
+                onClick={() => {setSelectedDate(day); handleDateChange(day);}}
             >
                 <strong>{day.format("D")}</strong>
             </DayButton>

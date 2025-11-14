@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import * as S from "./styles/Body.style";
 import WeekCalendar from "./WeekCalendar";
 import axios from "axios";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 
 const Recommend = (props: {title: string; img: string;}) => {
@@ -98,8 +98,7 @@ interface ISidebarProps {
 
 const Sidebar = () => {
     const [todo, setTodo] = useState<ISidebarProps[]>([]);
-
-    const [selDay, setSelDay] = useState(dayjs());
+    const [selDay, setSelDay] = useState('');
 
     useEffect(() => {
         axios.get("/api", {
@@ -134,13 +133,13 @@ const Sidebar = () => {
                 <S.CalendarConatiner>
                     <S.DateContainer>
                         <S.Date>
-                            {date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate()}
+                            {date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()}
                         </S.Date>
                         <S.Weekday>
                             {weekToKorean[String(date.getDay())]}
                         </S.Weekday>
                     </S.DateContainer>
-                    <WeekCalendar selDay={selDay} setSelDay={setSelDay}/>
+                    <WeekCalendar setSelDay={setSelDay}/>
                 </S.CalendarConatiner>
                 <S.CrossLine />
                 <S.TodoList>
