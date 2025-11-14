@@ -34,28 +34,50 @@ export default function Occupation() {
         <p>첫걸음 서비스 이용을 위해 분야를 선택해주세요. 선택 직군에 맞는 미션으로 더 나은 서비스를</p>
         <p>지원하겠습니다. 저희는 당신의 첫걸음을 응원하고 지지하겠습니다.</p>
       </S.Description>
-      <S.CardGrid>
-      {fields.map((field) => {
-        const isSelected = selected === field.id;
 
-        return (
-          <S.Card
-            key={field.id}
-            $selected={isSelected}
-            onClick={() => setSelected(field.id)}
-          >
-            {field.node}
-            <p>{field.label}</p>
+      <S.TopRow>
+        {fields.slice(0, 3).map((field) => {
+          const isSelected = selected === field.id;
 
-            <S.CheckCircle $selected={isSelected}>
-              {isSelected && <img src={selectPng} alt="selected" />}
-            </S.CheckCircle>
-          </S.Card>
-        );
-      })}
-    </S.CardGrid>
+          return (
+            <S.Card
+              key={field.id}
+              $selected={isSelected}
+              onClick={() => setSelected(field.id)}
+            >
+              {field.node}
+              <p>{field.label}</p>
 
-    <S.SubmitButton disabled={!selected}>선택 완료</S.SubmitButton>
-  </S.Container>
+              <S.CheckCircle $selected={isSelected}>
+                {isSelected && <img src={selectPng} alt="selected" />}
+              </S.CheckCircle>
+            </S.Card>
+          );
+        })}
+      </S.TopRow>
+
+      <S.BottomRow>
+        {fields.slice(3).map((field) => {
+          const isSelected = selected === field.id;
+
+          return (
+            <S.Card
+              key={field.id}
+              $selected={isSelected}
+              onClick={() => setSelected(field.id)}
+            >
+              {field.node}
+              <p>{field.label}</p>
+
+              <S.CheckCircle $selected={isSelected}>
+                {isSelected && <img src={selectPng} alt="selected" />}
+              </S.CheckCircle>
+            </S.Card>
+          );
+        })}
+      </S.BottomRow>
+
+      <S.SubmitButton disabled={!selected}>선택 완료</S.SubmitButton>
+    </S.Container>
   );
 }

@@ -15,25 +15,35 @@ export const Title = styled.h2`
   margin-bottom: 12px;
 `;
 
-export const Description = styled.p`
+export const Description = styled.div`
   font-size: 15px;
   line-height: 1.6;
   color: #666;
   margin-bottom: 40px;
 
-  strong {
-    color: #222;
+  p {
+    margin: 4px 0;
   }
 `;
 
-export const CardGrid = styled.div`
+export const TopRow = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 32px;
-  justify-items: center;
   max-width: 790px;
   width: 100%;
-  margin-bottom: 40px;
+  margin: 0 auto 32px;
+  justify-items: center;
+`;
+
+export const BottomRow = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto 40px;
+  justify-items: center;
 `;
 
 export const Card = styled.div<{ $selected: boolean }>`
@@ -43,9 +53,8 @@ export const Card = styled.div<{ $selected: boolean }>`
   border-radius: 16px;
   padding: 20px;
   cursor: pointer;
-  box-shadow: 0 0px 4px #BFBFBF;
+  box-shadow: 0 0px 4px #bfbfbf;
   transition: all 0.2s ease;
-  border: 2px solid transparent;
 
   img {
     width: 100px;
@@ -63,8 +72,8 @@ export const Card = styled.div<{ $selected: boolean }>`
   ${({ $selected }) =>
     $selected &&
     css`
-      background: #EAF8F2;
-      box-shadow: 0 0px 6px #3FB98A;
+      background: #eaf8f2;
+      box-shadow: 0 0px 6px #3fb98a;
     `}
 `;
 
@@ -76,12 +85,11 @@ export const CheckCircle = styled.div<{ $selected: boolean }>`
   height: 22px;
   border-radius: 50%;
   border: 2px solid ${({ $selected }) => ($selected ? "#89DCBC" : "#ccc")};
-  color: #0ACF83;
-  font-size: 14px;
+  background: #fff;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
 
   img {
     height: 30px;
@@ -90,7 +98,7 @@ export const CheckCircle = styled.div<{ $selected: boolean }>`
 `;
 
 export const SubmitButton = styled.button`
-  background: ${({ disabled }) => (disabled ? "#ccc" : "#0ACF83")};
+  background: ${({ disabled }) => (disabled ? "#ccc" : "#0acf83")};
   color: white;
   border: none;
   border-radius: 10px;
