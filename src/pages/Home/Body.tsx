@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import * as S from "./styles/Body.style";
 import WeekCalendar from "./WeekCalendar";
 import axios from "axios";
-import dayjs, { Dayjs } from "dayjs";
 
 
 const Recommend = (props: {title: string; img: string;}) => {
@@ -70,21 +69,38 @@ const MissionList = (props: {missions: IMissionProps[]}) => {
     )
 }
 
+interface IData {
+    studyStreak: string;
+    topPercent: string
+}
+
 const Cheering = () => {
+    const [data, setData] = useState<IData>()
+
+    useEffect(() => {
+        axios.get("api")
+        .then((response) => {
+            setData(response.data);
+        })
+        .catch((error) => {
+            alert(error);
+        })
+    }, [])
+
     return (
         <S.CheeringContainer>
             <S.Cheering>
                 <img src="https://media.discordapp.net/attachments/1359774260817563670/1437812908896813250/mingcute_fire-fill.png?ex=69149b1e&is=6913499e&hm=134bde387bd26f6c7c992eccee96d33f54e6d4588b36b5ced18fe059246f151f&=&format=webp&quality=lossless&width=110&height=126" alt="" />
                 <S.CheeringTextContainer>
                     <S.CheeringTitle>연속 학습일</S.CheeringTitle>
-                    <S.CheeringMessage><span>1</span>일</S.CheeringMessage>
+                    <S.CheeringMessage><span>{data?.studyStreak}</span>일</S.CheeringMessage>
                 </S.CheeringTextContainer>
             </S.Cheering>
             <S.Cheering>
                 <img src="https://media.discordapp.net/attachments/1359774260817563670/1437812908510679171/Group_86.png?ex=69149b1e&is=6913499e&hm=e84efdc94553a22081f0bc3bfe35412f48a96471a4d392afa9b6e758f8ae749e&=&format=webp&quality=lossless&width=100&height=100" alt="" />
                 <S.CheeringTextContainer>
                     <S.CheeringTitle>상위</S.CheeringTitle>
-                    <S.CheeringMessage><span>7</span>%</S.CheeringMessage>
+                    <S.CheeringMessage><span>{data?.topPercent}</span>%</S.CheeringMessage>
                 </S.CheeringTextContainer>
             </S.Cheering>
         </S.CheeringContainer>
