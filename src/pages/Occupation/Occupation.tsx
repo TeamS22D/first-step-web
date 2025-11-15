@@ -33,15 +33,13 @@ export default function Occupation() {
 
       <S.Description>
         <p>안녕하세요. 민선영님.</p>
-        <p>첫걸음 서비스 이용을 위해 분야를 선택해주세요. 선택 직군에 맞는 미션으로 더 나은 서비스를</p>
-        <p>지원하겠습니다. 저희는 당신의 첫걸음을 응원하고 지지하겠습니다.</p>
+        <p>첫걸음 서비스 이용을 위해 분야를 선택해주세요. 선택 직군에 맞는 미션으로 더 나은 서비스를 지원하겠습니다.</p>
+        <p>저희는 당신의 첫걸음을 응원하고 지지하겠습니다.</p>
       </S.Description>
 
-      {/* 1줄 (3개) */}
       <S.TopRow>
         {fields.slice(0, 3).map((field) => {
           const isSelected = selected === field.id;
-
           return (
             <S.Card
               key={field.id}
@@ -79,7 +77,8 @@ export default function Occupation() {
           );
         })}
       </S.BottomRow>
-      <LongButton text={"선택 완료"}/> 
+
+      <LongButton disabled={!selected}>선택 완료</LongButton>
     </S.Container>
   );
 }

@@ -1,26 +1,34 @@
 import styled from "styled-components";
 
-const Button = styled.button`
+const Button = styled.button<{ disabled?: boolean }>`
   width: 500px;
-  padding: 20px 0px;
+  padding: 20px 0;
   font-size: 20px;
+  font-weight: 600;
+  border: 0;
+  border-radius: 10px;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  border: 0;
-  border-radius: 10px;
-  background-color: ${(props) => props.theme.mainColor};
-  color: #fff;
+  background-color: ${({ disabled }) =>
+    disabled ? "#E5E5E5" : "#0ACF83"};
+  color: ${({ disabled }) =>
+    disabled ? "#9E9E9E" : "#fff"};
+  cursor: ${({ disabled }) =>
+    disabled ? "not-allowed" : "pointer"};
+  transition: all 0.2s ease;
 `;
 
-const LongButton = ({text}:{text: string}) => {
-    return (
-        <Button>
-            {text}
-        </Button>
-    )
-}
+const GreenButton = ({
+  children,
+  disabled,
+}: {
+  children: React.ReactNode;
+  disabled?: boolean;
+}) => {
+  return <Button disabled={disabled}>{children}</Button>;
+};
 
-export default LongButton
+export default GreenButton;
