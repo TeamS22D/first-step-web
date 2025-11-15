@@ -44,7 +44,7 @@ const Todo = (props: {time:string; title: string;}) => {
 
     return (
         <S.Todo>
-            {nowTime >= parseInt(props.time.slice(0, 2)) ? <S.Dot /> : <S.Dot active />}
+            {nowTime < parseInt(props.time.slice(0, 2)) ? <S.Dot active /> : <S.Dot />}
             <span>{props.time}</span>
             <span>{props.title}</span>
         </S.Todo>

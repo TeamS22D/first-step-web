@@ -76,7 +76,7 @@ function WeekCalendar({setSelDay}: {setSelDay: React.Dispatch<React.SetStateActi
   }
 
   const handleDateChange = (day: Dayjs) => {
-    setSelDay(day.year() + "-" + (day.month()+1) + "-" + day.date())
+    setSelDay(day.format('YYYY-MM-DD'))
   }
 
   return (
