@@ -29,13 +29,13 @@ function Profile() {
             <S.Profile>
                 <S.Image />
                 <S.Info>
-                    <S.Name>{profile? profile.name : "null"}<Label>님</Label></S.Name>
+                    <S.Name>{profile? profile.name : "로딩 중..."}<Label>님</Label></S.Name>
                     <S.PersonalInfo>
-                        <Label>{profile? profile.occupation : "null"}</Label>
+                        <Label>{profile? profile.occupation : "로딩 중..."}</Label>
                         <S.Line />
-                        <Label>{profile? profile.rank : "null"}</Label>
+                        <Label>{profile? profile.rank : "로딩 중..."}</Label>
                         <S.Line />
-                        <Label>{profile? profile.age : "null"}</Label>
+                        <Label>{profile? profile.age : "로딩 중..."}</Label>
                     </S.PersonalInfo>
                 </S.Info>
             </S.Profile>
