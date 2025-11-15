@@ -75,7 +75,7 @@ const MissionList = (props: {missions: IMissionProps[]}) => {
                 <S.MissionList>
                     {props.missions.map((elem) => {
                         return(
-                            <Mission title={elem.title} to={elem.to} createdAt={elem.createdAt}/>
+                            <Mission key={elem.title + elem.createdAt} title={elem.title} to={elem.to} createdAt={elem.createdAt}/>
                         )
                     })}
                 </S.MissionList>
