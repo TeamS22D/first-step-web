@@ -124,7 +124,7 @@ const Sidebar = () => {
             setTodo(response.data)
 
             //테스트용 데이터
-            setTodo([{title: "업무 보고서 작성", time: "20:00"}, {title: "업무 보고서 작성", time: "24:00"}])
+            // setTodo([{title: "업무 보고서 작성", time: "20:00"}, {title: "업무 보고서 작성", time: "24:00"}])
         })
         .catch((error) => {
             alert(error.response.status)
