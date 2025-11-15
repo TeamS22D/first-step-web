@@ -1,4 +1,4 @@
-import { Caption, Label } from "@/components/Text/Text.style"
+import { Caption } from "@/components/Text/Text.style"
 import styled from "styled-components"
 
 export const ProfileContainer = styled.div`
