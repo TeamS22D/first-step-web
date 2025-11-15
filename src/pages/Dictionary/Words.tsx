@@ -52,7 +52,7 @@ function Words() {
             }).catch(function (error) {
                 alert("단어를 불러오지 못하였습니다 : " + error.message);
         })
-        setRawWords(Data); setWords(Data);
+        // setRawWords(Data); setWords(Data);
     }, [])
 
     const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
