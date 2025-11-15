@@ -1,4 +1,4 @@
-import { useState, type Dispatch } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import dayjs, { Dayjs } from "dayjs";
 import "react-day-picker/dist/style.css";
