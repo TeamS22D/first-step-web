@@ -179,7 +179,7 @@ function Body() {
             setMissions(response.data);
 
             //테스트용 데이터
-            setMissions([{title: "dd", to: "", createdAt: "2025-11-05"},{title: "dd", to: "", createdAt: "2025-11-05"},{title: "dd", to: "", createdAt: "2025-11-05"}]);
+            // setMissions([{title: "dd", to: "", createdAt: "2025-11-05"},{title: "dd", to: "", createdAt: "2025-11-05"},{title: "dd", to: "", createdAt: "2025-11-05"}]);
         })
         .catch((error) => {
             alert(error.response.status)
