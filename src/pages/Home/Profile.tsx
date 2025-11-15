@@ -1,6 +1,6 @@
 import { Label } from "@/components/Text/Text.style";
 import * as S from "./styles/Profile.style";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 interface IProfileProps {
@@ -13,13 +13,16 @@ interface IProfileProps {
 function Profile() {
     const [profile, setProfile] = useState<IProfileProps>();
 
-    axios.get("/api")
-    .then((response) => {
-        setProfile(response.data)
-    })
-    .catch((error) => {
-        alert(error.response.status)
-    })
+    useEffect(() => {
+        axios.get("/api")
+        .then((response) => {
+            setProfile(response.data)
+        })
+        .catch((error) => {
+            alert(error.response.status)
+        })
+    }, [])
+    
 
     return (
         <S.ProfileContainer>
