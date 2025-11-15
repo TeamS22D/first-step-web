@@ -83,12 +83,12 @@ function WeekCalendar({setSelDay}: {setSelDay: React.Dispatch<React.SetStateActi
     <WeekRow>
     {days.map((day) => {
         const isSelected = selectedDate.isSame(day, "day");
-        const Weekday = weekToKorean[day.format("ddd").toUpperCase() as keyof typeof weekToKorean];
+        const weekday = weekToKorean[day.format("ddd").toUpperCase() as keyof typeof weekToKorean];
         return (
         <DayContainer
             key={day.toString()}
         >
-            {Weekday === "일" ? (<Caption style={{color: "#FF1313"}}>{Weekday}</Caption>) : Weekday === "토" ? (<Caption style={{color: "#0099FF"}}>{Weekday}</Caption>) : (<Caption>{Weekday}</Caption>)}
+            {weekday === "일" ? (<Caption style={{color: "#FF1313"}}>{weekday}</Caption>) : weekday === "토" ? (<Caption style={{color: "#0099FF"}}>{weekday}</Caption>) : (<Caption>{weekday}</Caption>)}
             <DayButton 
                 selected={isSelected}
                 onClick={() => {setSelectedDate(day); handleDateChange(day);}}
