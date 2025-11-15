@@ -4,6 +4,20 @@ import WeekCalendar from "./WeekCalendar";
 import axios from "axios";
 
 
+function daysFromToday(dateString: string): number {
+  const targetDate = new Date(dateString);
+
+  if (isNaN(targetDate.getTime())) {
+    throw new Error("Invalid date format. Expected YYYY-MM-DD.");
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const diffMs = targetDate.getTime() - today.getTime();
+  return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+}
+
 const Recommend = (props: {title: string; img: string;}) => {
     return (
             <S.Recommend>
@@ -46,7 +60,7 @@ interface IMissionProps {
 const Mission = (props: IMissionProps) => {
     return (
         <S.Mission to={props.to}>
-            <S.Title>{props.title}<NewBadge /></S.Title>
+            <S.Title>{props.title}{daysFromToday(props.createdAt) <= 3 ? <NewBadge /> : null}</S.Title>
             <S.Info><img src="https://media.discordapp.net/attachments/1359774260817563670/1437807765350387764/Timer.png?ex=69153f14&is=6913ed94&hm=4a432ced9982a2cfbe93c053e76ac3c1b3ed8238a4e97830187c07e3c7b3468b&=&format=webp&quality=lossless&width=22&height=28" alt="" />{props.createdAt}</S.Info>
         </S.Mission>
     )
