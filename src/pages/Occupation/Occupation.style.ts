@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   padding: 50px 20px;
   text-align: center;
@@ -59,10 +60,9 @@ export const Card = styled.div<{ $selected: boolean }>`
   transition: all 0.2s ease;
 
   img {
-    width: 148px;
+    width: 130px;
     height: 130px;
     object-fit: contain;
-    margin-bottom: 20px;
   }
 
   p {
@@ -84,8 +84,8 @@ export const CheckCircle = styled.div<{ $selected: boolean }>`
   position: absolute;
   top: 12px;
   right: 12px;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   border: 2px solid ${({ $selected }) => ($selected ? "#89DCBC" : "#ccc")};
   background: #fff;
@@ -95,8 +95,7 @@ export const CheckCircle = styled.div<{ $selected: boolean }>`
   justify-content: center;
 
   img {
-    height: 30px;
-    margin-top: 20px;
+    height: 32px;
   }
 `;
 

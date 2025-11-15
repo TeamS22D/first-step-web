@@ -79,7 +79,7 @@ export default function Occupation() {
           );
         })}
       </S.BottomRow>
-      <LongButton>선택 완료</LongButton>
+      <LongButton text={"선택 완료"}/> 
     </S.Container>
   );
 }
