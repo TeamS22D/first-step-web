@@ -175,7 +175,7 @@ const Sidebar = () => {
                 <S.TodoList>
                     {todo.map((elem) => {
                         return (
-                            <Todo time={elem.time} title={elem.title} />
+                            <Todo key={elem.time + elem.title} time={elem.time} title={elem.title} />
                         )
                     })}
                 </S.TodoList>
