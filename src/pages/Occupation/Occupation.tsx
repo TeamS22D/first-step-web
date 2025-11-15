@@ -7,7 +7,6 @@ import managePng from "../../assets/Dictionary/manage.png";
 import financePng from "../../assets/Dictionary/finance.png";
 import factoryPng from "../../assets/Dictionary/factory.png";
 import selectPng from "../../assets/Dictionary/select.png";
-
 import LongButton from "../Auth/components/LongButton";
 
 type Field = {
@@ -27,19 +26,25 @@ export default function Occupation() {
     { id: "factory", label: "제조", node: <img src={factoryPng} alt="제조" /> },
   ];
 
+  const handleSubmit = () => {
+    if (!selected) return;
+    localStorage.setItem("occupation", selected);
+  };
+
   return (
     <S.Container>
       <S.Title>분야를 선택해주세요!</S.Title>
 
       <S.Description>
         <p>안녕하세요. 민선영님.</p>
-        <p>첫걸음 서비스 이용을 위해 분야를 선택해주세요. 선택 직군에 맞는 미션으로 더 나은 서비스를 지원하겠습니다.</p>
-        <p>저희는 당신의 첫걸음을 응원하고 지지하겠습니다.</p>
+        <p>첫걸음 서비스 이용을 위해 분야를 선택해주세요. 선택 직군에 맞는 미션으로 더 나은 서비스를</p>
+        <p>지원하겠습니다. 저희는 당신의 첫걸음을 응원하고 지지하겠습니다.</p>
       </S.Description>
 
       <S.TopRow>
         {fields.slice(0, 3).map((field) => {
           const isSelected = selected === field.id;
+
           return (
             <S.Card
               key={field.id}
@@ -78,7 +83,9 @@ export default function Occupation() {
         })}
       </S.BottomRow>
 
-      <LongButton disabled={!selected}>선택 완료</LongButton>
+      <LongButton disabled={!selected}>
+        선택 완료
+      </LongButton>
     </S.Container>
   );
 }
