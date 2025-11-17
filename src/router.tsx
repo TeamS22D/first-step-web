@@ -5,13 +5,17 @@ import Register from './pages/Auth/pages/Register/Register';
 import AuthLayout from './components/AuthLayout/AuthLayout';
 import NotFound from './pages/NotFound/NotFound';
 import Dictionary from './pages/Dictionary/Dictionary';
-import Occupation from './pages/Occupation/Occupation';
+import Home from './pages/Home/Home';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
+      {
+        path: 'home',
+        element: <Home />
+      },
       {
         path: 'dict',
         element: <Dictionary />
@@ -36,11 +40,6 @@ const router = createBrowserRouter([
     path: '/*',
     element: <NotFound />,
   },
-
-  {
-    path: '/occupation',
-    element: <Occupation />,
-  }
 ]);
 
 export default router;
