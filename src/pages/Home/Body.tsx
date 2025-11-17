@@ -124,7 +124,7 @@ const Cheering = () => {
             setData(response.data);
         })
         .catch((error) => {
-            alert(error);
+            alert("학습 정보를 불러오는데 실패했습니다." + error.response.status);
         })
     }, [])
 
@@ -174,7 +174,7 @@ const Sidebar = () => {
             // setTodo([{title: "업무 보고서 작성", time: "20:00"}, {title: "업무 보고서 작성", time: "24:00"}])
         })
         .catch((error) => {
-            alert(error.response.status)
+            alert("일정을 불러오는데 실패했습니다." + error.response.status);
             setTodo([]);
         })
     },[selDay])
@@ -238,7 +238,7 @@ function Body() {
             // setMissions([{title: "dd", to: "", createdAt: "2025-11-05"},{title: "dd", to: "", createdAt: "2025-11-05"},{title: "dd", to: "", createdAt: "2025-11-05"}]);
         })
         .catch((error) => {
-            alert(error.response.status)
+            alert("미션 목록을 불러오는데 실패했습니다." + error.response.status)
         })
 
         axios.get("/Recommendapi")
