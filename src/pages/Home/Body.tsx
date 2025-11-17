@@ -259,7 +259,7 @@ function Body() {
                     <S.RecommendContainer>
                         {recommend.map((elem) => {
                             return(
-                                <Recommend title={elem.title} img={elem.img}/>
+                                <Recommend key={elem.title} title={elem.title} img={elem.img}/>
                             )
                         })}
                     </S.RecommendContainer>
