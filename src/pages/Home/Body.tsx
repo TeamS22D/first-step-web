@@ -207,7 +207,7 @@ const Sidebar = () => {
                 </S.CalendarConatiner>
                 <S.CrossLine />
                 <S.TodoList>
-                    {todo.length===0 ? (todo.map((elem) => {
+                    {todo.length > 0 ? (todo.map((elem) => {
                         return (
                             <Todo key={elem.time + elem.title} time={elem.time} title={elem.title} />
                         )
