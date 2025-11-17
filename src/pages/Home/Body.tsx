@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import * as S from "./styles/Body.style";
 import WeekCalendar from "./WeekCalendar";
 import axios from "axios";
+import Timer from "@assets/Home/Timer.png"
+import Circle from "@assets/Home/Circle.png"
+import Fire from "@assets/Home/FireImg.png"
 
 
 function daysFromToday(dateString: string): number {
@@ -61,27 +64,51 @@ const Mission = (props: IMissionProps) => {
     return (
         <S.Mission to={props.to}>
             <S.Title>{props.title}{daysFromToday(props.createdAt) <= 3 ? <NewBadge /> : null}</S.Title>
-            <S.Info><img src="https://media.discordapp.net/attachments/1359774260817563670/1437807765350387764/Timer.png?ex=69153f14&is=6913ed94&hm=4a432ced9982a2cfbe93c053e76ac3c1b3ed8238a4e97830187c07e3c7b3468b&=&format=webp&quality=lossless&width=22&height=28" alt="" />{props.createdAt}</S.Info>
+            <S.Info><img src={Timer} alt="모래시계 이미지" />{props.createdAt}</S.Info>
         </S.Mission>
     )
 }
 
 
 const MissionList = (props: {missions: IMissionProps[]}) => {
+    // 혹시 부모가 실수로 잘못된 값을 넘길 경우 (타입 안전성을 더 강화)
+    if (!Array.isArray(props.missions)) {
+        return (
+        <S.MissionContainer>
+            <S.TileTitle>오늘의 미션</S.TileTitle>
+            <S.Line />
+            <p>데이터 형식 오류</p>
+        </S.MissionContainer>
+        );
+    }
+
+    if (props.missions.length === 0) {
+        return (
+        <S.MissionContainer>
+            <S.TileTitle>오늘의 미션</S.TileTitle>
+            <S.Line />
+            <p>미션이 없습니다.</p>
+        </S.MissionContainer>
+        );
+    }
+
     return (
         <S.MissionContainer>
-                <S.TileTitle>오늘의 미션</S.TileTitle>
-                <S.Line />
-                <S.MissionList>
-                    {props.missions.map((elem) => {
-                        return(
-                            <Mission key={elem.title + elem.createdAt} title={elem.title} to={elem.to} createdAt={elem.createdAt}/>
-                        )
-                    })}
-                </S.MissionList>
+        <S.TileTitle>오늘의 미션</S.TileTitle>
+        <S.Line />
+        <S.MissionList>
+            {props.missions.map((m, i) => (
+            <Mission
+                key={`${m.title}-${m.createdAt}-${i}`}
+                title={m.title}
+                to={m.to}
+                createdAt={m.createdAt}
+            />
+            ))}
+        </S.MissionList>
         </S.MissionContainer>
-    )
-}
+    );
+};
 
 interface IData {
     studyStreak: string;
@@ -104,14 +131,14 @@ const Cheering = () => {
     return (
         <S.CheeringContainer>
             <S.Cheering>
-                <img src="https://media.discordapp.net/attachments/1359774260817563670/1437812908896813250/mingcute_fire-fill.png?ex=69149b1e&is=6913499e&hm=134bde387bd26f6c7c992eccee96d33f54e6d4588b36b5ced18fe059246f151f&=&format=webp&quality=lossless&width=110&height=126" alt="" />
+                <img src={Fire} alt="불 이미지" />
                 <S.CheeringTextContainer>
                     <S.CheeringTitle>연속 학습일</S.CheeringTitle>
                     <S.CheeringMessage><span>{data?.studyStreak}</span>일</S.CheeringMessage>
                 </S.CheeringTextContainer>
             </S.Cheering>
             <S.Cheering>
-                <img src="https://media.discordapp.net/attachments/1359774260817563670/1437812908510679171/Group_86.png?ex=69149b1e&is=6913499e&hm=e84efdc94553a22081f0bc3bfe35412f48a96471a4d392afa9b6e758f8ae749e&=&format=webp&quality=lossless&width=100&height=100" alt="" />
+                <img src={Circle} alt="원형 그래프 이미지" />
                 <S.CheeringTextContainer>
                     <S.CheeringTitle>상위</S.CheeringTitle>
                     <S.CheeringMessage><span>{data?.topPercent}</span>%</S.CheeringMessage>
@@ -135,13 +162,20 @@ const Sidebar = () => {
             params: {selDay}
         })
         .then((response) => {
-            setTodo(response.data)
+            const normalized: ISidebarProps[] = Array.isArray(response.data)
+            ? response.data
+            : Array.isArray(response.data?.todos)
+            ? response.data.todos
+            : [];
+
+            setTodo(normalized);
 
             //테스트용 데이터
             // setTodo([{title: "업무 보고서 작성", time: "20:00"}, {title: "업무 보고서 작성", time: "24:00"}])
         })
         .catch((error) => {
             alert(error.response.status)
+            setTodo([]);
         })
     },[selDay])
 
@@ -173,27 +207,45 @@ const Sidebar = () => {
                 </S.CalendarConatiner>
                 <S.CrossLine />
                 <S.TodoList>
-                    {todo.map((elem) => {
+                    {todo.length===0 ? (todo.map((elem) => {
                         return (
                             <Todo key={elem.time + elem.title} time={elem.time} title={elem.title} />
                         )
-                    })}
+                    })) : null}
                 </S.TodoList>
             </S.Calendar>
         </S.Sidebar>
     )
 }
 
+interface IRecommendProps {
+    title: string;
+    img: string;
+}
+
 function Body() {
     const [missions, setMissions] = useState<IMissionProps[]>([])
+    const [recommend, setRecommend] = useState<IRecommendProps[]>([])
 
     useEffect(() => {
-        axios.get("/api")
+        axios.get("/Missionsapi")
         .then((response) => {
-            setMissions(response.data);
+            if (Array.isArray(response.data)) {
+                setMissions(response.data);
+            }
 
             //테스트용 데이터
             // setMissions([{title: "dd", to: "", createdAt: "2025-11-05"},{title: "dd", to: "", createdAt: "2025-11-05"},{title: "dd", to: "", createdAt: "2025-11-05"}]);
+        })
+        .catch((error) => {
+            alert(error.response.status)
+        })
+
+        axios.get("/Recommendapi")
+        .then((response) => {
+            if (Array.isArray(response.data)) {
+                setRecommend(response.data);
+            }
         })
         .catch((error) => {
             alert(error.response.status)
@@ -203,11 +255,15 @@ function Body() {
     return (
         <S.Body>
             <S.Contents>
-                <S.RecommendContainer>
-                    <Recommend title="실제 실무능력을 <br/>ai와 함께 체계적인<br/>미션 프로그램" img="https://media.discordapp.net/attachments/1359774260817563670/1437725009606082702/image_34.png?ex=69159ac1&is=69144941&hm=fda6a23f72ac2c27bf4f9ac24e4e41b813c379ee9a7eaf71588bb06813c7d925&=&format=webp&quality=lossless&width=204&height=158"/>
-                    <Recommend title="모르는 실무 용어를<br/>쉽고 간편하게<br/>용어사전 프로그램" img="https://media.discordapp.net/attachments/1359774260817563670/1437725009606082702/image_34.png?ex=69159ac1&is=69144941&hm=fda6a23f72ac2c27bf4f9ac24e4e41b813c379ee9a7eaf71588bb06813c7d925&=&format=webp&quality=lossless&width=204&height=158"/>
-                    <Recommend title="실제 실무능력을 <br/>ai와 함께 체계적인<br/>미션 프로그램" img="https://media.discordapp.net/attachments/1359774260817563670/1437725009606082702/image_34.png?ex=69159ac1&is=69144941&hm=fda6a23f72ac2c27bf4f9ac24e4e41b813c379ee9a7eaf71588bb06813c7d925&=&format=webp&quality=lossless&width=204&height=158"/>
-                </S.RecommendContainer>
+                {recommend.length === 0 ? null : (
+                    <S.RecommendContainer>
+                        {recommend.map((elem) => {
+                            return(
+                                <Recommend title={elem.title} img={elem.img}/>
+                            )
+                        })}
+                    </S.RecommendContainer>
+                )}    
                 <MissionList missions={missions}/>
             </S.Contents>
             <Sidebar />
