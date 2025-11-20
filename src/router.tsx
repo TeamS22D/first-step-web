@@ -6,6 +6,7 @@ import AuthLayout from './components/AuthLayout/AuthLayout';
 import NotFound from './pages/NotFound/NotFound';
 import Dictionary from './pages/Dictionary/Dictionary';
 import Occupation from './pages/Occupation/Occupation';
+import Job from './pages/Job/Job';
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
         path: 'dict',
         element: <Dictionary />
       },
+      
     ],
   },
   {
@@ -33,14 +35,19 @@ const router = createBrowserRouter([
     ]
   },
   {
+    path: '/occupation',
+    element: <Occupation />,
+  },
+  {
+    path: '/job',
+    element: <Job />,
+  },
+  {
     path: '/*',
     element: <NotFound />,
   },
 
-  {
-    path: '/occupation',
-    element: <Occupation />,
-  }
+  
 ]);
 
 export default router;

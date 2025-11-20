@@ -17,9 +17,13 @@ export const Title = styled.h2`
 
 export const Description = styled.div`
   font-size: 18px;
-  line-height: 1;
-  color: #9F9C9C;
+  line-height: 1.4;
+  color: #9f9c9c;
   margin-bottom: 30px;
+
+  p {
+    margin: 2px 0;
+  }
 `;
 
 export const TopRow = styled.div`
@@ -63,6 +67,7 @@ export const Card = styled.div<{ $selected: boolean }>`
     css`
       background: #eaf8f2;
       box-shadow: 0 0px 6px #3fb98a;
+      border-color: #3fb98a;
     `}
 `;
 
@@ -73,7 +78,7 @@ export const CheckCircle = styled.div<{ $selected: boolean }>`
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  border: 2px solid ${({ $selected }) => ($selected ? "#89DCBC" : "#ccc")};
+  border: 2px solid ${({ $selected }) => ($selected ? "#89dcbc" : "#ccc")};
   background: #fff;
 
   display: flex;
