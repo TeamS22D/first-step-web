@@ -22,7 +22,7 @@ export default function Occupation() {
     {
       id: "designer",
       label: "UI/UX 디자이너",
-      node: <img src={"/assets/Dictionary/designer.png"} alt="UI/UX 디자이너" />,
+      node: <img src="/assets/Dictionary/designer.png" alt="UI/UX 디자이너" />,
     },
     {
       id: "dataAnaly",

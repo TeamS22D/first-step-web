@@ -67,7 +67,6 @@ export const Card = styled.div<{ $selected: boolean }>`
     css`
       background: #eaf8f2;
       box-shadow: 0 0px 6px #3fb98a;
-      border-color: #3fb98a;
     `}
 `;
 
