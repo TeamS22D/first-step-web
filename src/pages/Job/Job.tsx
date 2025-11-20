@@ -38,12 +38,12 @@ export default function Occupation() {
 
   return (
     <S.Container>
-      <S.Title>분야를 선택해주세요!</S.Title>
+      <S.Title>직업을 선택해주세요!</S.Title>
 
       <S.Description>
         <p>안녕하세요. 민선영님.</p>
         <p>
-          첫걸음 서비스 이용을 위해 분야를 선택해주세요. 선택 직군에 맞는
+          첫걸음 서비스 이용을 위해 직업을 선택해주세요. 선택 직군에 맞는
           미션으로 더 나은 서비스를
         </p>
         <p>지원하겠습니다. 저희는 당신의 첫걸음을 응원하고 지지하겠습니다.</p>

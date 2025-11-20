@@ -17,13 +17,9 @@ export const Title = styled.h2`
 
 export const Description = styled.div`
   font-size: 18px;
-  line-height: 1.4;
-  color: #9f9c9c;
-  margin-bottom: 30px;
-
-  p {
-    margin: 2px 0;
-  }
+  line-height: 1;
+  color: #9F9C9C;
+  margin-bottom: 126.5px;
 `;
 
 export const TopRow = styled.div`
@@ -35,7 +31,7 @@ export const TopRow = styled.div`
 export const BottomRow = styled.div`
   display: flex;
   gap: 32px;
-  margin-bottom: 40px;
+  margin-bottom: 126.5px;
 `;
 
 export const Card = styled.div<{ $selected: boolean }>`
