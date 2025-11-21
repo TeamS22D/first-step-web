@@ -1,53 +1,34 @@
-import { createBrowserRouter } from 'react-router';
-import App from './App';
-import Login from './pages/Auth/pages/Login/Login';
-import Register from './pages/Auth/pages/Register/Register';
-import AuthLayout from './components/AuthLayout/AuthLayout';
-import NotFound from './pages/NotFound/NotFound';
-import Dictionary from './pages/Dictionary/Dictionary';
-import Occupation from './pages/Occupation/Occupation';
-import Job from './pages/Job/Job';
+import { createBrowserRouter } from "react-router-dom";
+import App from "./App";
+import Login from "./pages/Auth/pages/Login/Login";
+import Register from "./pages/Auth/pages/Register/Register";
+import AuthLayout from "./components/AuthLayout/AuthLayout";
+import NotFound from "./pages/NotFound/NotFound";
+import Dictionary from "./pages/Dictionary/Dictionary";
+import Occupation from "./pages/Occupation/Occupation";
+import Job from "./pages/Job/Job";
+import Profile from "./pages/Profile/Profile";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     children: [
-      {
-        path: 'dict',
-        element: <Dictionary />
-      },
-      
+      { path: "dict", element: <Dictionary /> },
+      { path: "profile", element: <Profile /> },
     ],
   },
   {
-    path: '/auth',
+    path: "/auth",
     element: <AuthLayout />,
     children: [
-      {
-        path: 'login',
-        element: <Login />
-      },
-      {
-        path: 'register',
-        element: <Register />
-      },
-    ]
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+    ],
   },
-  {
-    path: '/occupation',
-    element: <Occupation />,
-  },
-  {
-    path: '/job',
-    element: <Job />,
-  },
-  {
-    path: '/*',
-    element: <NotFound />,
-  },
-
-  
+  { path: "/occupation", element: <Occupation /> },
+  { path: "/job", element: <Job /> },
+  { path: "/*", element: <NotFound /> },
 ]);
 
 export default router;

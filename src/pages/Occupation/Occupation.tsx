@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
 import * as S from "./Occupation.style";
+import { useNavigate } from "react-router-dom";
 
 import itPng from "../../assets/Dictionary/it.png";
 import videoPng from "../../assets/Dictionary/video.png";
@@ -15,8 +16,10 @@ type Field = {
   node: ReactNode;
 };
 
+
 export default function Occupation() {
   const [selected, setSelected] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const fields: Field[] = [
     { id: "it", label: "IT", node: <img src={itPng} alt="it" /> },
@@ -29,6 +32,7 @@ export default function Occupation() {
   const handleSubmit = () => {
     if (!selected) return;
     localStorage.setItem("occupation", selected);
+    
   };
 
   return (
