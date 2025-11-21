@@ -4,6 +4,7 @@ export interface Theme {
   textSecondary: string;
   textPrimary: string;
   sidebar: string;
+  bgPrimary: string;
 }
 
 
@@ -13,6 +14,7 @@ export const lightTheme: Theme = {
   textSecondary: '#A3A3A3',
   textPrimary: '#000000',
   sidebar: '#2B2B2B',
+  bgPrimary: '#fff',
 };
 
 export type ThemeType = Theme;

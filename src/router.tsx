@@ -6,6 +6,7 @@ import AuthLayout from './components/AuthLayout/AuthLayout';
 import NotFound from './pages/NotFound/NotFound';
 import Dictionary from './pages/Dictionary/Dictionary';
 import Home from './pages/Home/Home';
+import Missions from './pages/Missions/Missions';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: 'dict',
         element: <Dictionary />
+      },
+      {
+        path: 'mission',
+        element: <Missions />
       },
     ],
   },
