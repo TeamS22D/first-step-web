@@ -1,6 +1,9 @@
 import { useState } from "react";
 import * as S from "./Profile.style";
 
+import attendanceImg from "../../assets/Profile/attendance.png";
+import percentImg from "../../assets/Profile/percent.png";
+
 export default function Profile() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("최근 한 달간");
@@ -17,7 +20,7 @@ export default function Profile() {
     <S.Container>
       <S.Content>
 
-        {/* 상단 프로필 */}
+        {/* 상단 프로필 카드 */}
         <S.TopProfileCard>
           <S.ProfileLeft>
             <S.Avatar />
@@ -29,7 +32,7 @@ export default function Profile() {
           <S.LogoutBtn>로그아웃</S.LogoutBtn>
         </S.TopProfileCard>
 
-        {/* 드롭다운 + 탭 + 연속학습일 */}
+        {/* 드롭다운 + 탭 + 오른쪽 연속 학습일 */}
         <S.TopSection>
           <S.LeftControls>
             <S.FilterRow>
@@ -66,25 +69,30 @@ export default function Profile() {
             </S.FilterRow>
           </S.LeftControls>
 
-          <S.TopRightSingleCard>
-            <S.TopRightIcon color="#F27C6A" />
-            <S.TopRightNumber>1일</S.TopRightNumber>
-            <S.TopRightLabel>연속 학습일</S.TopRightLabel>
-          </S.TopRightSingleCard>
+          {/* 연속 학습일 카드 */}
+          <S.SmallCard>
+            <img src={attendanceImg} alt="attendance" />
+            <div>
+              <S.SmallCardTitle>연속 학습일</S.SmallCardTitle>
+              <S.SmallCardValue>1일</S.SmallCardValue>
+            </div>
+          </S.SmallCard>
+
         </S.TopSection>
 
-        {/* ⭐ 2-컬럼 전체 레이아웃 ⭐ */}
-        <S.MainTwoColumns>
+        {/* ⭐ 그래프 + 오른쪽 정보 ⭐ */}
+        <S.MainSection>
 
-          {/* LEFT : 그래프 + 통계 3개 */}
-          <S.LeftColumn>
+          {/* 그래프 영역 */}
+          <div style={{ flex: 1 }}>
             <S.GraphCard>
               <S.CardTitle>기간별 히스토리</S.CardTitle>
               <S.GraphPlaceholder />
             </S.GraphCard>
 
-            {/* 그래프 아래 통계 3개 */}
+            {/* 아래 통계 박스 3개 */}
             <S.BottomStatsRow>
+
               <S.StatCard>
                 <S.StatPercent pink>80%</S.StatPercent>
                 <S.StatValue>채팅형</S.StatValue>
@@ -99,17 +107,23 @@ export default function Profile() {
                 <S.StatPercent green>34%</S.StatPercent>
                 <S.StatValue>메일형</S.StatValue>
               </S.StatCard>
+
             </S.BottomStatsRow>
-          </S.LeftColumn>
+          </div>
 
-          {/* RIGHT : 상위 + 학습효과/개선정도 */}
-          <S.RightColumn>
-            <S.TopRightCard>
-              <S.TopRightIcon color="#38C97C" />
-              <S.TopRightNumber green>75%</S.TopRightNumber>
-              <S.TopRightLabel>상위</S.TopRightLabel>
-            </S.TopRightCard>
+          {/* 오른쪽: 상위 + 학습효과/개선정도 */}
+          <S.SideInfo>
 
+            {/* 상위 퍼센트 카드 */}
+            <S.SmallCard>
+              <img src={percentImg} alt="percent" />
+              <div>
+                <S.SmallCardTitle>상위</S.SmallCardTitle>
+                <S.SmallCardValue green>75%</SmallCardValue>
+              </div>
+            </S.SmallCard>
+
+            {/* 학습효과/개선정도 */}
             <S.LearningBox>
               <S.LearningHeader>학습 효과</S.LearningHeader>
               <S.LearningText>
@@ -129,9 +143,10 @@ export default function Profile() {
                 앞으로도 화이팅!
               </S.LearningText>
             </S.LearningBox>
-          </S.RightColumn>
 
-        </S.MainTwoColumns>
+          </S.SideInfo>
+
+        </S.MainSection>
 
       </S.Content>
     </S.Container>
