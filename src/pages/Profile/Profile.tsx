@@ -20,7 +20,7 @@ export default function Profile() {
     <S.Container>
       <S.Content>
 
-        {/* 상단 프로필 */}
+        {/* 상단 프로필 카드 */}
         <S.TopProfileCard>
           <S.ProfileLeft>
             <S.Avatar />
@@ -32,7 +32,7 @@ export default function Profile() {
           <S.LogoutBtn>로그아웃</S.LogoutBtn>
         </S.TopProfileCard>
 
-        {/* 상단 드롭다운 + 탭 + 연속 학습일 */}
+        {/* 상단 선택 섹션 */}
         <S.TopSection>
           <S.LeftControls>
             <S.FilterRow>
@@ -71,70 +71,63 @@ export default function Profile() {
             </S.FilterRow>
           </S.LeftControls>
 
-          {/* 연속 학습일 카드 */}
+          {/* 연속 학습일 */}
           <S.SmallCard>
             <img src={attendanceImg} alt="attendance" />
             <div>
               <S.SmallCardTitle>연속 학습일</S.SmallCardTitle>
-
               <S.ValueRow>
                 <S.ValueNumber>1</S.ValueNumber>
                 <S.ValueUnit>일</S.ValueUnit>
               </S.ValueRow>
             </div>
           </S.SmallCard>
-
         </S.TopSection>
 
-        {/* 메인 영역 */}
+        {/* 메인 섹션 */}
         <S.MainSection>
 
-          {/* 왼쪽 그래프 + 하단 통계 */}
+          {/* 그래프 + 통계 박스 */}
           <div style={{ flex: 1 }}>
             <S.GraphCard>
               <S.CardTitle>기간별 히스토리</S.CardTitle>
-              <S.GraphPlaceholder />
             </S.GraphCard>
 
-            {/* 그래프 아래 통계 */}
-            <S.BottomStatsRow>
-
-              <S.StatCard>
-                <S.StatPercent pink>80%</S.StatPercent>
+            {/* ▶ 통합 통계 박스 */}
+            <S.StatsBox>
+              <S.StatItem>
+                <S.StatPercent green>80%</S.StatPercent>
                 <S.StatValue>채팅형</S.StatValue>
-              </S.StatCard>
+              </S.StatItem>
 
-              <S.StatCard>
-                <S.StatPercent orange>64%</S.StatPercent>
+              <S.StatItem>
+                <S.StatPercent purple>64%</S.StatPercent>
                 <S.StatValue>문서형</S.StatValue>
-              </S.StatCard>
+              </S.StatItem>
 
-              <S.StatCard>
-                <S.StatPercent green>34%</S.StatPercent>
+              <S.StatItem>
+                <S.StatPercent blue>34%</S.StatPercent>
                 <S.StatValue>메일형</S.StatValue>
-              </S.StatCard>
-
-            </S.BottomStatsRow>
+              </S.StatItem>
+            </S.StatsBox>
           </div>
 
-          {/* 오른쪽 정보 */}
+          {/* 오른쪽 사이드 */}
           <S.SideInfo>
 
-            {/* 상위 카드 */}
+            {/* 상위 퍼센트 카드 */}
             <S.SmallCard>
               <img src={percentImg} alt="percent" />
               <div>
                 <S.SmallCardTitle>상위</S.SmallCardTitle>
-
                 <S.ValueRow>
                   <S.ValueNumber>75</S.ValueNumber>
                   <S.ValueUnit>%</S.ValueUnit>
                 </S.ValueRow>
-
               </div>
             </S.SmallCard>
 
-            {/* 학습효과 + 개선정도 */}
+            {/* 학습 효과/개선 */}
             <S.LearningBox>
               <S.LearningHeader>학습 효과</S.LearningHeader>
               <S.LearningText>
