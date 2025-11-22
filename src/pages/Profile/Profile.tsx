@@ -1,8 +1,8 @@
 import { useState } from "react";
 import * as S from "./Profile.style";
 
-import attendanceImg from "../../assets/Profile/attendance.png";
-import percentImg from "../../assets/Profile/percent.png";
+import attendanceImg from "/assets/Profile/attendance.png";
+import percentImg from "/assets/Profile/percent.png";
 
 export default function Profile() {
   const [open, setOpen] = useState(false);
@@ -20,7 +20,7 @@ export default function Profile() {
     <S.Container>
       <S.Content>
 
-        {/* 상단 프로필 카드 */}
+        {/* 상단 프로필 */}
         <S.TopProfileCard>
           <S.ProfileLeft>
             <S.Avatar />
@@ -32,11 +32,12 @@ export default function Profile() {
           <S.LogoutBtn>로그아웃</S.LogoutBtn>
         </S.TopProfileCard>
 
-        {/* 드롭다운 + 탭 + 오른쪽 연속 학습일 */}
+        {/* 상단 드롭다운 + 탭 + 연속 학습일 */}
         <S.TopSection>
           <S.LeftControls>
             <S.FilterRow>
 
+              {/* 드롭다운 */}
               <S.DropdownWrapper>
                 <S.DropdownBox onClick={() => setOpen(!open)}>
                   {selected}
@@ -54,6 +55,7 @@ export default function Profile() {
                 )}
               </S.DropdownWrapper>
 
+              {/* 탭 */}
               <S.FilterTabs>
                 {["전체", "문서", "채팅", "메일"].map((t) => (
                   <S.FilterTab
@@ -74,23 +76,27 @@ export default function Profile() {
             <img src={attendanceImg} alt="attendance" />
             <div>
               <S.SmallCardTitle>연속 학습일</S.SmallCardTitle>
-              <S.SmallCardValue>1일</S.SmallCardValue>
+
+              <S.ValueRow>
+                <S.ValueNumber>1</S.ValueNumber>
+                <S.ValueUnit>일</S.ValueUnit>
+              </S.ValueRow>
             </div>
           </S.SmallCard>
 
         </S.TopSection>
 
-        {/* ⭐ 그래프 + 오른쪽 정보 ⭐ */}
+        {/* 메인 영역 */}
         <S.MainSection>
 
-          {/* 그래프 영역 */}
+          {/* 왼쪽 그래프 + 하단 통계 */}
           <div style={{ flex: 1 }}>
             <S.GraphCard>
               <S.CardTitle>기간별 히스토리</S.CardTitle>
               <S.GraphPlaceholder />
             </S.GraphCard>
 
-            {/* 아래 통계 박스 3개 */}
+            {/* 그래프 아래 통계 */}
             <S.BottomStatsRow>
 
               <S.StatCard>
@@ -111,19 +117,24 @@ export default function Profile() {
             </S.BottomStatsRow>
           </div>
 
-          {/* 오른쪽: 상위 + 학습효과/개선정도 */}
+          {/* 오른쪽 정보 */}
           <S.SideInfo>
 
-            {/* 상위 퍼센트 카드 */}
+            {/* 상위 카드 */}
             <S.SmallCard>
               <img src={percentImg} alt="percent" />
               <div>
                 <S.SmallCardTitle>상위</S.SmallCardTitle>
-                <S.SmallCardValue green>75%</SmallCardValue>
+
+                <S.ValueRow>
+                  <S.ValueNumber>75</S.ValueNumber>
+                  <S.ValueUnit>%</S.ValueUnit>
+                </S.ValueRow>
+
               </div>
             </S.SmallCard>
 
-            {/* 학습효과/개선정도 */}
+            {/* 학습효과 + 개선정도 */}
             <S.LearningBox>
               <S.LearningHeader>학습 효과</S.LearningHeader>
               <S.LearningText>
