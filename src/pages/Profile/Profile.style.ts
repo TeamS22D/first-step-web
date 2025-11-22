@@ -1,22 +1,24 @@
 import styled from "styled-components";
 
-/* 전체 */
 export const Container = styled.div`
   display: flex;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 export const Content = styled.div`
-  flex: 1;
+  flex: none;
+  width: 100%;
+  min-height: 100%;
   padding: 20px 30px 0px 30px;
-  overflow-y: auto;
+
   display: flex;
   flex-direction: column;
-  gap: 22px
+  gap: 22px;
+  overflow-y: visible;
 `;
 
-/* 상단 프로필 */
+
 export const TopProfileCard = styled.div`
   background: #fff;
   padding: 24px 28px;
@@ -61,7 +63,6 @@ export const LogoutBtn = styled.button`
   cursor: pointer;
 `;
 
-/* 상단 선택 */
 export const TopSection = styled.div`
   display: flex;
   justify-content: space-between;
@@ -79,7 +80,6 @@ export const FilterRow = styled.div`
   gap: 22px;
 `;
 
-/* 드롭다운 */
 export const DropdownWrapper = styled.div`
   position: relative;
 `;
@@ -123,7 +123,6 @@ export const Option = styled.div`
   }
 `;
 
-/* 탭 */
 export const FilterTabs = styled.div`
   display: flex;
   gap: 14px;
@@ -139,7 +138,6 @@ export const FilterTab = styled.div<{ active?: boolean }>`
   font-weight: 500;
 `;
 
-/* 작은 카드 */
 export const SmallCard = styled.div`
   width: 260px;
   height: 80px;
@@ -184,7 +182,6 @@ export const ValueUnit = styled.div`
   line-height: 1.1;
 `;
 
-/* 메인 */
 export const MainSection = styled.div`
   display: flex;
   gap: 28px;
@@ -197,7 +194,8 @@ export const GraphCard = styled.div`
   padding: 22px 17px;
   border-radius: 18px;
   box-shadow: 0px 0px 6px #F1F1F1;
-  margin-bottom: 22px;
+
+  margin-bottom: 10px;
 `;
 
 export const CardTitle = styled.div`
@@ -207,7 +205,6 @@ export const CardTitle = styled.div`
   color: #2B2B2B;
 `;
 
-/* 오른쪽 */
 export const SideInfo = styled.div`
   width: 260px;
   display: flex;
@@ -215,7 +212,6 @@ export const SideInfo = styled.div`
   gap: 22px;
 `;
 
-/* 학습 박스 */
 export const LearningBox = styled.div`
   background: white;
   padding: 22px;
@@ -249,7 +245,6 @@ export const Divider = styled.div`
   background: #e7e7e7;
 `;
 
-/* 🟩 통합 통계 박스 */
 export const StatsBox = styled.div`
   width: 100%;
   background: #fff;
@@ -260,6 +255,8 @@ export const StatsBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  margin-bottom: 0px; 
 `;
 
 export const StatItem = styled.div`

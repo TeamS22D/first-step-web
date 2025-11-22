@@ -20,7 +20,6 @@ export default function Profile() {
     <S.Container>
       <S.Content>
 
-        {/* 상단 프로필 카드 */}
         <S.TopProfileCard>
           <S.ProfileLeft>
             <S.Avatar />
@@ -32,12 +31,10 @@ export default function Profile() {
           <S.LogoutBtn>로그아웃</S.LogoutBtn>
         </S.TopProfileCard>
 
-        {/* 상단 선택 섹션 */}
         <S.TopSection>
           <S.LeftControls>
             <S.FilterRow>
 
-              {/* 드롭다운 */}
               <S.DropdownWrapper>
                 <S.DropdownBox onClick={() => setOpen(!open)}>
                   {selected}
@@ -55,7 +52,6 @@ export default function Profile() {
                 )}
               </S.DropdownWrapper>
 
-              {/* 탭 */}
               <S.FilterTabs>
                 {["전체", "문서", "채팅", "메일"].map((t) => (
                   <S.FilterTab
@@ -71,7 +67,6 @@ export default function Profile() {
             </S.FilterRow>
           </S.LeftControls>
 
-          {/* 연속 학습일 */}
           <S.SmallCard>
             <img src={attendanceImg} alt="attendance" />
             <div>
@@ -84,16 +79,13 @@ export default function Profile() {
           </S.SmallCard>
         </S.TopSection>
 
-        {/* 메인 섹션 */}
         <S.MainSection>
 
-          {/* 그래프 + 통계 박스 */}
           <div style={{ flex: 1 }}>
             <S.GraphCard>
               <S.CardTitle>기간별 히스토리</S.CardTitle>
             </S.GraphCard>
 
-            {/* ▶ 통합 통계 박스 */}
             <S.StatsBox>
               <S.StatItem>
                 <S.StatPercent green>80%</S.StatPercent>
@@ -112,10 +104,8 @@ export default function Profile() {
             </S.StatsBox>
           </div>
 
-          {/* 오른쪽 사이드 */}
           <S.SideInfo>
 
-            {/* 상위 퍼센트 카드 */}
             <S.SmallCard>
               <img src={percentImg} alt="percent" />
               <div>
@@ -127,7 +117,6 @@ export default function Profile() {
               </div>
             </S.SmallCard>
 
-            {/* 학습 효과/개선 */}
             <S.LearningBox>
               <S.LearningHeader>학습 효과</S.LearningHeader>
               <S.LearningText>
