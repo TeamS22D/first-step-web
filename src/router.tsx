@@ -7,6 +7,7 @@ import NotFound from './pages/NotFound/NotFound';
 import Dictionary from './pages/Dictionary/Dictionary';
 import Home from './pages/Home/Home';
 import Missions from './pages/Missions/Missions';
+import MissionList from './pages/Missions/components/MissionList';
 
 const router = createBrowserRouter([
   {
@@ -23,7 +24,25 @@ const router = createBrowserRouter([
       },
       {
         path: 'mission',
-        element: <Missions />
+        element: <Missions />,
+        children: [
+          {
+            path: 'all',
+            element: <MissionList category='all'/>
+          },
+          {
+            path: 'document',
+            element: <MissionList category='document'/>
+          },
+          {
+            path: 'chat',
+            element: <MissionList category='chat'/>
+          },
+          {
+            path: 'mail',
+            element: <MissionList category='mail'/>
+          },
+        ]
       },
     ],
   },
