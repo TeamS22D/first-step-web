@@ -9,6 +9,10 @@ import Home from './pages/Home/Home';
 import Commitment from './pages/Mission/pages/Commitment/Commitment';
 import Feedback  from './pages/Mission/pages/Feedback/Feedback.tsx'
 import Complete from './pages/Mission/pages/Complete/Complete.tsx'
+import MissionLayout from './components/MissionLayout/MissionLayout.tsx';
+import Document from './pages/Mission/pages/Commitment/Document/Document.tsx';
+import Mail from './pages/Mission/pages/Commitment/Mail/Mail.tsx'
+import Chat from './pages/Mission/pages/Commitment/Chat/Chat.tsx'
 
 const router = createBrowserRouter([
   {
@@ -25,7 +29,21 @@ const router = createBrowserRouter([
       },
       {
         path: 'mission',
-        element: <Commitment />
+        element: <MissionLayout />,
+        children: [
+          {
+            path: 'document',
+            element: <Document/>
+          },
+          {
+            path: 'mail',
+            element: <Mail/>
+          },
+          {
+            path: 'chat',
+            element: <Chat/>
+          },
+        ]
       },
       {
         path: 'feedback',
