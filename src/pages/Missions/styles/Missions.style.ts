@@ -1,3 +1,4 @@
+import { Outlet } from "react-router";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -10,3 +11,6 @@ export const Container = styled.div`
   align-items: center;
 `
 
+export const NewOutlet = styled(Outlet)`
+  width: 100%;
+`

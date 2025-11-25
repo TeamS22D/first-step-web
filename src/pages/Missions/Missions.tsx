@@ -17,7 +17,7 @@ function Missions() {
       <Status />
       <Search onChange={onChange} keyword={keyword} />
       <Category />
-      <Outlet />
+      <S.NewOutlet />
     </S.Container>
   )
 }

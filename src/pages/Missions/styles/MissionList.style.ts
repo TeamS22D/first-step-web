@@ -4,13 +4,13 @@ export const Container = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px 32px;
+  gap: 20px 1vw;
 `
 
 export const MissionBox = styled.div`
   display: flex;
   align-items: end;
-  width: 300px;
+  width: 30%;
   height: 190px;
   border-radius: 20px;
   background-color: #E5E4E4;
