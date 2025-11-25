@@ -25,7 +25,7 @@ function MissionList({category}: {category: string;}) {
     .then((response) => {
       console.log(response.data);
     })
-  })
+  }, [category])
 
   return (
     <S.Container>
