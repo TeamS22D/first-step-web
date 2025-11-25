@@ -17,7 +17,7 @@ export const Image = styled.img`
 
 export const guideContainer = styled.div`
     height: 100%;
-    width: 404px;
+    width: 32%;
     border-radius: 10px;
     border: 2px solid #F2F2F2;
     display: flex;
