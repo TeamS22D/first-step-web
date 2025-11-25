@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const Button = styled.button<{ disabled?: boolean }>`
+const Button = styled(Link)<{ disabled?: boolean }>`
   width: 500px;
   padding: 20px 0;
   font-size: 20px;
@@ -24,11 +25,13 @@ const Button = styled.button<{ disabled?: boolean }>`
 const GreenButton = ({
   children,
   disabled,
+  to,
 }: {
   children: React.ReactNode;
   disabled?: boolean;
+  to: string;
 }) => {
-  return <Button disabled={disabled}>{children}</Button>;
+  return <Button to={to} disabled={disabled}>{children}</Button>;
 };
 
 export default GreenButton;

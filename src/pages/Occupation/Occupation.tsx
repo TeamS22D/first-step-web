@@ -8,7 +8,7 @@ import managePng from "../../assets/Dictionary/manage.png";
 import financePng from "../../assets/Dictionary/finance.png";
 import factoryPng from "../../assets/Dictionary/factory.png";
 import selectPng from "../../assets/Dictionary/select.png";
-import LongButton from "../Auth/components/LongButton";
+import LongButton from "../../components/Buttons/LongButton";
 
 type Field = {
   id: string;
@@ -87,7 +87,7 @@ export default function Occupation() {
         })}
       </S.BottomRow>
 
-      <LongButton disabled={!selected}>
+      <LongButton to="/job" disabled={!selected}>
         선택 완료
       </LongButton>
     </S.Container>

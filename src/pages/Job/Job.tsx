@@ -2,7 +2,7 @@ import { useState, type ReactNode } from "react";
 import * as S from "./Job.style";
 
 import selectPng from "../../assets/Dictionary/select.png";
-import LongButton from "../Auth/components/LongButton";
+import LongButton from "../../components/Buttons/LongButton";
 
 type Field = {
   id: string;
