@@ -1,19 +1,17 @@
-import Search from "../../components/Missions/components/Searchbar";
-import Status from "./components/Status";
-import * as S from "./styles/Missions.style"
+import Search from "@/components/Missions/components/Searchbar";
+import * as S from "./Feedback.style"
+import Category from "@/components/Missions/components/Category";
 import { useCallback, useState } from "react";
-import Category from "../../components/Missions/components/Category";
 
-function Missions() {
+function Feedback() {
   const [keyword, setKeyword] = useState('');
-
+  
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
       setKeyword(e.target.value);
   }, [])
 
   return (
     <S.Container>
-      <Status />
       <Search onChange={onChange} keyword={keyword} />
       <Category />
       <S.NewOutlet />
@@ -21,4 +19,4 @@ function Missions() {
   )
 }
 
-export default Missions;
+export default Feedback;
