@@ -13,13 +13,34 @@ const Button = styled(Link)<{ disabled?: boolean }>`
   justify-content: center;
   align-items: center;
 
+  text-decoration: none !important;
+
   background-color: ${({ disabled }) =>
     disabled ? "#E5E5E5" : "#0ACF83"};
-  color: ${({ disabled }) =>
-    disabled ? "#9E9E9E" : "#fff"};
+  color: ${({ disabled }) => (disabled ? "#9E9E9E" : "#fff")};
+
   cursor: ${({ disabled }) =>
     disabled ? "not-allowed" : "pointer"};
+
   transition: all 0.2s ease;
+
+  &:hover,
+  &:active,
+  &:visited,
+  &:focus {
+    text-decoration: none !important;
+  }
+`;
+
+export const LongButton = styled.a`
+  text-decoration: none !important;
+
+  &:hover,
+  &:active,
+  &:visited,
+  &:focus {
+    text-decoration: none !important;
+  }
 `;
 
 const GreenButton = ({
@@ -31,7 +52,11 @@ const GreenButton = ({
   disabled?: boolean;
   to: string;
 }) => {
-  return <Button to={to} disabled={disabled}>{children}</Button>;
+  return (
+    <Button to={to} disabled={disabled}>
+      {children}
+    </Button>
+  );
 };
 
 export default GreenButton;
