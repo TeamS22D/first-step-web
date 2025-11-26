@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, Navigate } from 'react-router';
 import App from './App';
 import Login from './pages/Auth/pages/Login/Login';
 import Register from './pages/Auth/pages/Register/Register';
@@ -6,6 +6,9 @@ import AuthLayout from './components/AuthLayout/AuthLayout';
 import NotFound from './pages/NotFound/NotFound';
 import Dictionary from './pages/Dictionary/Dictionary';
 import Home from './pages/Home/Home';
+import Missions from './pages/Missions/Missions';
+import MissionList from './components/Missions/components/MissionList';
+import Feedback from './pages/Feedback/Feedback';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +22,58 @@ const router = createBrowserRouter([
       {
         path: 'dict',
         element: <Dictionary />
+      },
+      {
+        path: 'mission',
+        element: <Missions />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="all" replace />,
+          },
+          {
+            path: 'all',
+            element: <MissionList category='all'/>
+          },
+          {
+            path: 'document',
+            element: <MissionList category='document'/>
+          },
+          {
+            path: 'chat',
+            element: <MissionList category='chat'/>
+          },
+          {
+            path: 'mail',
+            element: <MissionList category='mail'/>
+          },
+        ]
+      },
+      {
+        path: 'feedback',
+        element: <Feedback />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="all" replace />,
+          },
+          {
+            path: 'all',
+            element: <MissionList category='all'/>
+          },
+          {
+            path: 'document',
+            element: <MissionList category='document'/>
+          },
+          {
+            path: 'chat',
+            element: <MissionList category='chat'/>
+          },
+          {
+            path: 'mail',
+            element: <MissionList category='mail'/>
+          },
+        ]
       },
     ],
   },
