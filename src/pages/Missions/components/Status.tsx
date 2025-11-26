@@ -7,7 +7,7 @@ function Status() {
         <S.TextContainer>
           <S.CountOfMission>{"7"}</S.CountOfMission>
           <S.CountSuffix>개</S.CountSuffix>
-          <S.RestMission>남은개수 {"7"}개</S.RestMission>
+          <S.RestMission>남은 개수 {"7"}개</S.RestMission>
         </S.TextContainer>
         <S.BarEmpty>
           <S.BarFilled size="30" />
