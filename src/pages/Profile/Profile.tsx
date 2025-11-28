@@ -18,6 +18,7 @@ export default function Profile() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("최근 한 달간");
   const [activeTab, setActiveTab] = useState("전체");
+
   const [clickedData, setClickedData] = useState<any | null>(null);
 
   const options = ["최근 한 달간", "최근 일 년간", "최근 일주일간"];
@@ -27,8 +28,8 @@ export default function Profile() {
     setOpen(false);
   };
 
-  // 📌 최근 한 달간 데이터
   const data_month = [
+    { day: "0일", document: 3300, chat: 1800, mail: 900 },
     { day: "5일", document: 3300, chat: 1800, mail: 900 },
     { day: "10일", document: 3000, chat: 1600, mail: 1300 },
     { day: "15일", document: 2400, chat: 2000, mail: 900 },
@@ -37,7 +38,6 @@ export default function Profile() {
     { day: "30일", document: 3200, chat: 1900, mail: 1000 },
   ];
 
-  // 📌 최근 일 년간 데이터
   const data_year = [
     { day: "2월", document: 2000, chat: 1200, mail: 700 },
     { day: "4월", document: 2200, chat: 1300, mail: 800 },
@@ -47,7 +47,6 @@ export default function Profile() {
     { day: "12월", document: 3000, chat: 1900, mail: 1200 },
   ];
 
-  // 📌 최근 일주일간 데이터
   const data_week = [
     { day: "월", document: 1000, chat: 500, mail: 200 },
     { day: "화", document: 1300, chat: 600, mail: 300 },
@@ -58,10 +57,8 @@ export default function Profile() {
     { day: "일", document: 1800, chat: 1000, mail: 500 },
   ];
 
-  // 🔥 데이터를 0~100 범위로 정규화
   const normalizeData = (data: any[]) => {
     const max = Math.max(...data.flatMap(d => [d.document, d.chat, d.mail]));
-
     return data.map(d => ({
       day: d.day,
       document: Math.round((d.document / max) * 100),
@@ -70,36 +67,26 @@ export default function Profile() {
     }));
   };
 
-  // 📌 선택된 옵션에 따라 + 정규화된 데이터 반환
-  const getChartData = () => {
-    switch (selected) {
-      case "최근 일 년간":
-        return normalizeData(data_year);
-      case "최근 일주일간":
-        return normalizeData(data_week);
-      default:
-        return normalizeData(data_month);
-    }
+  const getRawData = () => {
+    if (selected === "최근 일 년간") return data_year;
+    if (selected === "최근 일주일간") return data_week;
+    return data_month;
   };
 
-  // 클릭 Tooltip
-  const CustomTooltip = () => {
-    if (!clickedData) return null;
-    return (
-      <S.TooltipBox>
-        <div className="day">{clickedData.day}</div>
-        <div className="line document">문서형 : {clickedData.document}</div>
-        <div className="line chat">채팅형 : {clickedData.chat}</div>
-        <div className="line mail">메일형 : {clickedData.mail}</div>
-      </S.TooltipBox>
-    );
+  const chartData = normalizeData(getRawData());
+
+  if (!clickedData) setClickedData(chartData[chartData.length - 1]);
+
+  const handleChartClick = (state: any) => {
+    if (state && state.activePayload && state.activePayload.length > 0) {
+      const d = state.activePayload[0].payload;
+      setClickedData(d);
+    }
   };
 
   return (
     <S.Container>
       <S.Content>
-
-        {/* 상단 프로필 카드 */}
         <S.TopProfileCard>
           <S.ProfileLeft>
             <S.Avatar />
@@ -111,11 +98,9 @@ export default function Profile() {
           <S.LogoutBtn>로그아웃</S.LogoutBtn>
         </S.TopProfileCard>
 
-        {/* 상단 필터 */}
         <S.TopSection>
           <S.LeftControls>
             <S.FilterRow>
-
               <S.DropdownWrapper>
                 <S.DropdownBox onClick={() => setOpen(!open)}>
                   {selected}
@@ -132,7 +117,6 @@ export default function Profile() {
                   </S.OptionList>
                 )}
               </S.DropdownWrapper>
-
             </S.FilterRow>
           </S.LeftControls>
 
@@ -148,7 +132,6 @@ export default function Profile() {
           </S.SmallCard>
         </S.TopSection>
 
-        {/* 메인 콘텐츠 */}
         <S.MainSection>
           <div style={{ flex: 1 }}>
             <S.GraphCard>
@@ -156,8 +139,9 @@ export default function Profile() {
 
               <ResponsiveContainer width="100%" height={280}>
                 <LineChart
-                  data={getChartData()}
+                  data={chartData}
                   margin={{ top: 10, left: 0, right: 10, bottom: 0 }}
+                  onClick={handleChartClick}
                 >
                   <CartesianGrid stroke="#eee" vertical={false} />
                   <XAxis dataKey="day" tick={{ fill: "#555", fontSize: 12 }} />
@@ -165,33 +149,32 @@ export default function Profile() {
 
                   <Tooltip wrapperStyle={{ display: "none" }} />
 
-                  <Line dataKey="document" type="monotone" stroke="#0ACF83" strokeWidth={3} dot={{ r: 4 }} />
-                  <Line dataKey="chat" type="monotone" stroke="#AF5EFF" strokeWidth={3} dot={{ r: 4 }} />
-                  <Line dataKey="mail" type="monotone" stroke="#0099FF" strokeWidth={3} dot={{ r: 4 }} />
+                  <Line dataKey="document" type="monotone" stroke="#0ACF83" strokeWidth={3} dot={{ r: 4 }} isAnimationActive={false} />
+                  <Line dataKey="chat" type="monotone" stroke="#AF5EFF" strokeWidth={3} dot={{ r: 4 }} isAnimationActive={false} />
+                  <Line dataKey="mail" type="monotone" stroke="#0099FF" strokeWidth={3} dot={{ r: 4 }} isAnimationActive={false} />
+
                 </LineChart>
               </ResponsiveContainer>
-
             </S.GraphCard>
 
             <S.StatsBox>
               <S.StatItem>
-                <S.StatPercent chat>80%</S.StatPercent>
+                <S.StatPercent chat>{clickedData?.chat}점</S.StatPercent>
                 <S.StatValue>채팅형</S.StatValue>
               </S.StatItem>
 
               <S.StatItem>
-                <S.StatPercent document>64%</S.StatPercent>
+                <S.StatPercent document>{clickedData?.document}점</S.StatPercent>
                 <S.StatValue>문서형</S.StatValue>
               </S.StatItem>
 
               <S.StatItem>
-                <S.StatPercent mail>34%</S.StatPercent>
+                <S.StatPercent mail>{clickedData?.mail}점</S.StatPercent>
                 <S.StatValue>메일형</S.StatValue>
               </S.StatItem>
             </S.StatsBox>
           </div>
 
-          {/* 오른쪽 사이드 박스 */}
           <S.SideInfo>
             <S.SmallCard>
               <img src={percentImg} alt="percent" />
@@ -221,7 +204,6 @@ export default function Profile() {
             </S.LearningBox>
           </S.SideInfo>
         </S.MainSection>
-
       </S.Content>
     </S.Container>
   );
