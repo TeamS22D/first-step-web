@@ -26,7 +26,6 @@ export default function Profile() {
   const [selected, setSelected] = useState("최근 한 달간");
   const [activeTab, setActiveTab] = useState("전체");
 
-  // ✅ 그래프에서 마지막으로 클릭한 데이터
   const [clickedData, setClickedData] = useState<HistoryPoint | null>(null);
 
   const options = ["최근 한 달간", "최근 일 년간", "최근 일주일간"];
@@ -36,7 +35,6 @@ export default function Profile() {
     setOpen(false);
   };
 
-  // ------------ 원본 데이터 ------------
 
   const data_month: HistoryPoint[] = [
     { day: "0일", document: 3300, chat: 1800, mail: 900 },
@@ -67,7 +65,6 @@ export default function Profile() {
     { day: "일", document: 1800, chat: 1000, mail: 500 },
   ];
 
-  // ------------ 유틸 ------------
 
   const normalizeData = (data: HistoryPoint[]): HistoryPoint[] => {
     const max = Math.max(...data.flatMap((d) => [d.document, d.chat, d.mail]));
@@ -87,18 +84,14 @@ export default function Profile() {
 
   const chartData = normalizeData(getRawData());
 
-  // ✅ 기간이 바뀌면 클릭값 리셋 (→ 자동으로 마지막 값이 쓰이도록)
   useEffect(() => {
     setClickedData(null);
   }, [selected]);
 
-  // ✅ 선/점을 클릭했을 때 실행되는 핸들러
   const handleLineClick = (e: any) => {
     if (!e || !e.payload) return;
 
     const p = e.payload as HistoryPoint;
-
-    // day, document, chat, mail 이 payload 안에 들어 있음
     setClickedData({
       day: p.day,
       document: p.document,
@@ -107,7 +100,6 @@ export default function Profile() {
     });
   };
 
-  // ✅ 아래 박스에 실제로 쓸 데이터
   const defaultPoint =
     chartData[chartData.length - 1] ?? (null as any as HistoryPoint | null);
   const current = clickedData ?? defaultPoint;
@@ -177,16 +169,14 @@ export default function Profile() {
                     domain={[0, 100]}
                   />
 
-                  {/* ✅ 툴팁: 한글 라벨 + "점" 붙이기 */}
                   <Tooltip
-                    cursor={false} // ← 파란 세로 강조선 숨기기
+                    cursor={false}
                     formatter={(value: any, name: any) => [
                       `${value}점`,
                       name,
                     ]}
                   />
 
-                  {/* ✅ 선/점 클릭하면 handleLineClick 으로 값 전달 */}
                   <Line
                     dataKey="document"
                     name="문서형"
@@ -224,7 +214,6 @@ export default function Profile() {
               </ResponsiveContainer>
             </S.GraphCard>
 
-            {/* ✅ 여기서 current 값으로 박스 표시 */}
             <S.StatsBox>
               <S.StatItem>
                 <S.StatPercent $chat>
