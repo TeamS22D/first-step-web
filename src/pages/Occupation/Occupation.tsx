@@ -68,7 +68,6 @@ export default function Occupation() {
         console.error("분야 선택 요청 오류", err);
       }
 
-      // ✅ API 성공/실패 상관없이 로컬 저장 + /job 이동
       localStorage.setItem("occupation", occupationCode);
       navigate("/job");
     } finally {
