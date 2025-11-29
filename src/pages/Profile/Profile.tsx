@@ -26,6 +26,7 @@ export default function Profile() {
   const [selected, setSelected] = useState("최근 한 달간");
   const [activeTab, setActiveTab] = useState("전체");
 
+  // 그래프에서 마지막으로 클릭한 데이터
   const [clickedData, setClickedData] = useState<HistoryPoint | null>(null);
 
   const options = ["최근 한 달간", "최근 일 년간", "최근 일주일간"];
@@ -35,22 +36,23 @@ export default function Profile() {
     setOpen(false);
   };
 
+  // ---------------- 0~100 점수 데이터 ----------------
 
   const data_month: HistoryPoint[] = [
-    { day: "0일",  document: 100, chat: 55, mail: 27 },
-    { day: "5일",  document: 100, chat: 55, mail: 27 },
-    { day: "10일", document: 90,  chat: 45, mail: 35 },
-    { day: "15일", document: 73,  chat: 61, mail: 27 },
-    { day: "20일", document: 85,  chat: 45, mail: 30 },
-    { day: "25일", document: 95,  chat: 52, mail: 37 },
-    { day: "30일", document: 98,  chat: 58, mail: 30 },
+    { day: "0일", document: 100, chat: 55, mail: 27 },
+    { day: "5일", document: 100, chat: 55, mail: 27 },
+    { day: "10일", document: 90, chat: 45, mail: 35 },
+    { day: "15일", document: 73, chat: 61, mail: 27 },
+    { day: "20일", document: 85, chat: 45, mail: 30 },
+    { day: "25일", document: 95, chat: 52, mail: 37 },
+    { day: "30일", document: 98, chat: 58, mail: 30 },
   ];
 
   const data_year: HistoryPoint[] = [
-    { day: "2월",  document: 65, chat: 40, mail: 30 },
-    { day: "4월",  document: 70, chat: 45, mail: 35 },
-    { day: "6월",  document: 75, chat: 50, mail: 40 },
-    { day: "8월",  document: 80, chat: 55, mail: 45 },
+    { day: "2월", document: 65, chat: 40, mail: 30 },
+    { day: "4월", document: 70, chat: 45, mail: 35 },
+    { day: "6월", document: 75, chat: 50, mail: 40 },
+    { day: "8월", document: 80, chat: 55, mail: 45 },
     { day: "10월", document: 85, chat: 60, mail: 50 },
     { day: "12월", document: 90, chat: 65, mail: 55 },
   ];
@@ -65,7 +67,7 @@ export default function Profile() {
     { day: "일", document: 90, chat: 60, mail: 50 },
   ];
 
-
+  // 선택된 기간에 맞는 데이터 반환
   const getRawData = (): HistoryPoint[] => {
     if (selected === "최근 일 년간") return data_year;
     if (selected === "최근 일주일간") return data_week;
@@ -74,10 +76,12 @@ export default function Profile() {
 
   const chartData: HistoryPoint[] = getRawData();
 
+  // 기간이 바뀌면 클릭값 리셋 → 기본값(마지막 데이터) 사용
   useEffect(() => {
     setClickedData(null);
   }, [selected]);
 
+  // 선/점 클릭 시 실행
   const handleLineClick = (e: any) => {
     if (!e || !e.payload) return;
     const p = e.payload as HistoryPoint;
@@ -90,6 +94,7 @@ export default function Profile() {
     });
   };
 
+  // 밑 StatsBox에 보여줄 값 (클릭된 값 있으면 그거, 없으면 마지막 값)
   const defaultPoint =
     chartData[chartData.length - 1] ?? (null as any as HistoryPoint | null);
   const current = clickedData ?? defaultPoint;
@@ -159,6 +164,7 @@ export default function Profile() {
                     domain={[0, 100]}
                   />
 
+                  {/* 세로 파란 띠 없애기: cursor={false} */}
                   <Tooltip
                     cursor={false}
                     formatter={(value: any, name: any) => [
@@ -167,6 +173,7 @@ export default function Profile() {
                     ]}
                   />
 
+                  {/* 선/점 클릭 시 handleLineClick 으로 값 전달 */}
                   <Line
                     dataKey="document"
                     name="문서형"
@@ -204,6 +211,7 @@ export default function Profile() {
               </ResponsiveContainer>
             </S.GraphCard>
 
+            {/* 아래 점수 박스 */}
             <S.StatsBox>
               <S.StatItem>
                 <S.StatPercent $chat>

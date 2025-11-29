@@ -171,7 +171,7 @@ export const MainSection = styled.div`
 `;
 
 export const GraphCard = styled.div`
-  background: white;
+  background: #fff;
   padding: 22px 17px;
   border-radius: 18px;
   box-shadow: 0 0 6px #f1f1f1;
@@ -238,22 +238,15 @@ export const StatItem = styled.div`
   text-align: center;
 `;
 
-export const StatPercentChat = styled.div`
+export const StatPercent = styled.div<{
+  $chat?: boolean;
+  $document?: boolean;
+  $mail?: boolean;
+}>`
   font-size: 22px;
   font-weight: 700;
-  color: #af5eff;
-`;
-
-export const StatPercentDocument = styled.div`
-  font-size: 22px;
-  font-weight: 700;
-  color: #0acf83;
-`;
-
-export const StatPercentMail = styled.div`
-  font-size: 22px;
-  font-weight: 700;
-  color: #0099ff;
+  color: ${({ $document, $chat, $mail }) =>
+    $document ? "#0ACF83" : $chat ? "#AF5EFF" : $mail ? "#0099FF" : "#333"};
 `;
 
 export const StatValue = styled.div`
@@ -285,15 +278,4 @@ export const TooltipBox = styled.div`
   .mail {
     color: #0099ff;
   }
-`;
-
-export const StatPercent = styled.div<{
-  $chat?: boolean;
-  $document?: boolean;
-  $mail?: boolean;
-}>`
-  font-size: 22px;
-  font-weight: 700;
-  color: ${({ $document, $chat, $mail }) =>
-    $document ? "#0ACF83" : $chat ? "#AF5EFF" : $mail ? "#0099FF" : "#333"};
 `;
