@@ -1,7 +1,8 @@
+import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const Button = styled(Link)<{ disabled?: boolean }>`
+const Button = styled.button<{ disabled?: boolean }>`
   width: 500px;
   padding: 20px 0;
   font-size: 20px;
@@ -13,26 +14,13 @@ const Button = styled(Link)<{ disabled?: boolean }>`
   justify-content: center;
   align-items: center;
 
-  text-decoration: none !important;
-
-  background-color: ${({ disabled }) =>
-    disabled ? "#E5E5E5" : "#0ACF83"};
+  background-color: ${({ disabled }) => (disabled ? "#E5E5E5" : "#0ACF83")};
   color: ${({ disabled }) => (disabled ? "#9E9E9E" : "#fff")};
 
-  cursor: ${({ disabled }) =>
-    disabled ? "not-allowed" : "pointer"};
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
 
   transition: all 0.2s ease;
 
-  &:hover,
-  &:active,
-  &:visited,
-  &:focus {
-    text-decoration: none !important;
-  }
-`;
-
-export const LongButton = styled.a`
   text-decoration: none !important;
 
   &:hover,
@@ -43,20 +31,29 @@ export const LongButton = styled.a`
   }
 `;
 
-const GreenButton = ({
-  children,
-  disabled,
-  to,
-}: {
-  children: React.ReactNode;
+type LongButtonProps = {
+  children: ReactNode;
   disabled?: boolean;
-  to: string;
-}) => {
-  return (
-    <Button to={to} disabled={disabled}>
+  to?: string;
+  onClick?: () => void;
+};
+
+const LongButton = ({ children, disabled, to, onClick }: LongButtonProps) => {
+  const button = (
+    <Button type="button" disabled={disabled} onClick={onClick}>
       {children}
     </Button>
   );
+
+  if (to && !disabled) {
+    return (
+      <Link to={to} style={{ textDecoration: "none" }}>
+        {button}
+      </Link>
+    );
+  }
+
+  return button;
 };
 
-export default GreenButton;
+export default LongButton;
