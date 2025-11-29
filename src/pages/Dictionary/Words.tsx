@@ -2,7 +2,6 @@ import * as Text from "@/components/Text/Text.style"
 import * as S from "./styles/Words.style"
 import Searchbar from "@/components/Searchbar/Searchbar"
 import { useCallback, useEffect, useState } from "react";
-import Data from "./TestJSON/data.json";
 import React from "react";
 import * as I from "./types/Words.type"
 import axios from "axios";
@@ -52,7 +51,7 @@ function Words() {
             }).catch(function (error) {
                 alert("단어를 불러오지 못하였습니다 : " + error.message);
         })
-        
+        // setRawWords(Data); setWords(Data);
     }, [])
 
     const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

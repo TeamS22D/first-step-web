@@ -22,7 +22,7 @@ export const Indicator = styled.div<{$active?: boolean}>`
     height: 5px;
     border-radius: 2.5px;
     margin: 0px 2px;
-    background-color: ${(props) => props.$active? '#3FB98A' : '#ADADAD'};
+    background-color: ${(props) => props.$active? props.theme.mainColor2 : '#ADADAD'};
 `
 
 export const Quiz = styled.div`
@@ -70,7 +70,7 @@ export const SubmitButton = styled.button`
     align-items: center;
     width: 100%;
     padding: 12px 0px;
-    background-color: #3FB98A;
+    background-color: ${(props) => props.theme.mainColor2};
     color: #fff;
     border: 0;
     border-radius: 10px;
@@ -119,7 +119,7 @@ export const Tabs = styled.div`
 `
 
 export const TabIndicator = styled(Indicator)`
-    background-color: ${(props) => props.$active ? '#3FB98A' : '#00000000'};
+    background-color: ${(props) => props.$active ? props.theme.mainColor2 : '#00000000'};
 `
 
 export const Tab = styled.button`

@@ -66,7 +66,7 @@ export default function Occupation() {
       } catch (err) {
         console.error("분야 선택 요청 오류", err);
       }
-      
+
       localStorage.setItem("occupation", occupationCode);
       navigate("/job");
     } finally {
