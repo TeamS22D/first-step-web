@@ -12,7 +12,6 @@ import {
 } from "recharts";
 
 import attendanceImg from "/assets/Profile/attendance.png";
-import percentImg from "/assets/Profile/percent.png";
 
 type HistoryPoint = {
   day: string;
@@ -21,7 +20,7 @@ type HistoryPoint = {
   mail: number;
 };
 
-type HistoryResponse = {
+type GraphResponse = {
   range: string;
   history: HistoryPoint[];
 };
@@ -78,10 +77,54 @@ const getFallbackData = (label: string): HistoryPoint[] => {
   return fallbackMonth;
 };
 
+const PercentDonut = ({
+  percent,
+  dimmed,
+}: {
+  percent: number;
+  dimmed?: boolean;
+}) => {
+  const safePercent = Math.max(0, Math.min(100, Math.round(percent)));
+
+  const size = 56;
+  const strokeWidth = 6;
+  const radius = (size - strokeWidth) / 2;
+  const center = size / 2;
+  const circumference = 2 * Math.PI * radius;
+
+  const progress = (safePercent / 100) * circumference;
+
+  const trackColor = "#E0E0E0";
+  const progressColor = dimmed ? "#BDBDBD" : "#3FB98A";
+
+  return (
+    <svg width={size} height={size} style={{ marginRight: 16 }}>
+      <circle
+        cx={center}
+        cy={center}
+        r={radius}
+        fill="none"
+        stroke={trackColor}
+        strokeWidth={strokeWidth}
+      />
+      <circle
+        cx={center}
+        cy={center}
+        r={radius}
+        fill="none"
+        stroke={progressColor}
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        strokeDasharray={`${progress} ${circumference - progress}`}
+        transform={`rotate(-90 ${center} ${center})`}
+      />
+    </svg>
+  );
+};
+
 export default function Profile() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("최근 한 달간");
-  const [activeTab, setActiveTab] = useState("전체");
 
   const [clickedData, setClickedData] = useState<HistoryPoint | null>(null);
 
@@ -91,7 +134,9 @@ export default function Profile() {
   const [loadingHistory, setLoadingHistory] = useState(false);
 
   const [streak, setStreak] = useState<number>(0);
+
   const [topPercent, setTopPercent] = useState<number | null>(null);
+  const [percentError, setPercentError] = useState(false);
 
   const options = ["최근 한 달간", "최근 일 년간", "최근 일주일간"];
 
@@ -107,7 +152,8 @@ export default function Profile() {
     const email = localStorage.getItem("email") ?? "test@example.com";
 
     const controller = new AbortController();
-    const fetchHistory = async () => {
+
+    const fetchGraph = async () => {
       setLoadingHistory(true);
       setClickedData(null);
 
@@ -130,7 +176,7 @@ export default function Profile() {
           return;
         }
 
-        const data: HistoryResponse = await res.json();
+        const data: GraphResponse = await res.json();
         if (Array.isArray(data.history) && data.history.length > 0) {
           setHistoryData(data.history);
         } else {
@@ -146,7 +192,7 @@ export default function Profile() {
       }
     };
 
-    fetchHistory();
+    fetchGraph();
 
     return () => controller.abort();
   }, [selected]);
@@ -157,6 +203,8 @@ export default function Profile() {
 
     const fetchPercent = async () => {
       try {
+        setPercentError(false);
+
         const res = await fetch("/profile/percent", {
           method: "POST",
           headers: {
@@ -168,7 +216,8 @@ export default function Profile() {
 
         if (!res.ok) {
           console.error("상위 퍼센트 API 실패", res.status);
-          setTopPercent(75); // 실패 시 기본값
+          setTopPercent(0);
+          setPercentError(true);
           return;
         }
 
@@ -176,12 +225,14 @@ export default function Profile() {
         if (typeof data.percent === "number") {
           setTopPercent(data.percent);
         } else {
-          setTopPercent(75);
+          setTopPercent(0);
+          setPercentError(true);
         }
       } catch (err: any) {
         if (err.name !== "AbortError") {
           console.error("상위 퍼센트 요청 오류", err);
-          setTopPercent(75);
+          setTopPercent(0);
+          setPercentError(true);
         }
       }
     };
@@ -207,7 +258,7 @@ export default function Profile() {
         });
 
         if (!res.ok) {
-          console.error("출석체크 API 실패", res.status);
+          console.error("출석 데이터 요청 실패", res.status);
           setStreak(0);
           return;
         }
@@ -220,7 +271,7 @@ export default function Profile() {
         }
       } catch (err: any) {
         if (err.name !== "AbortError") {
-          console.error("출석체크 요청 오류", err);
+          console.error("출석 데이터 요청 오류", err);
           setStreak(0);
         }
       }
@@ -253,6 +304,7 @@ export default function Profile() {
   const current = clickedData ?? defaultPoint;
 
   const isZeroStreak = streak === 0;
+  const displayPercent = topPercent ?? 0;
 
   return (
     <S.Container>
@@ -418,12 +470,23 @@ export default function Profile() {
 
           <S.SideInfo>
             <S.SmallCard>
-              <img src={percentImg} alt="percent" />
+              <PercentDonut
+                percent={displayPercent}
+                dimmed={percentError}
+              />
               <div>
                 <S.SmallCardTitle>상위</S.SmallCardTitle>
                 <S.ValueRow>
-                  <S.ValueNumber>{topPercent ?? 75}</S.ValueNumber>
-                  <S.ValueUnit>%</S.ValueUnit>
+                  <S.ValueNumber
+                    style={percentError ? { color: "#BDBDBD" } : undefined}
+                  >
+                    {displayPercent}
+                  </S.ValueNumber>
+                  <S.ValueUnit
+                    style={percentError ? { color: "#BDBDBD" } : undefined}
+                  >
+                    %
+                  </S.ValueUnit>
                 </S.ValueRow>
               </div>
             </S.SmallCard>

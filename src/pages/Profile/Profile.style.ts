@@ -138,8 +138,7 @@ export const SmallCard = styled.div`
   align-items: center;
 
   img {
-    width: 45px;
-    height: 45px;
+    height: 60px;
   }
 `;
 
