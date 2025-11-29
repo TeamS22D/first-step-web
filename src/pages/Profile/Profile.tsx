@@ -37,44 +37,34 @@ export default function Profile() {
 
 
   const data_month: HistoryPoint[] = [
-    { day: "0일", document: 3300, chat: 1800, mail: 900 },
-    { day: "5일", document: 3300, chat: 1800, mail: 900 },
-    { day: "10일", document: 3000, chat: 1600, mail: 1300 },
-    { day: "15일", document: 2400, chat: 2000, mail: 900 },
-    { day: "20일", document: 2800, chat: 1500, mail: 1000 },
-    { day: "25일", document: 3100, chat: 1700, mail: 1300 },
-    { day: "30일", document: 3200, chat: 1900, mail: 1000 },
+    { day: "0일",  document: 100, chat: 55, mail: 27 },
+    { day: "5일",  document: 100, chat: 55, mail: 27 },
+    { day: "10일", document: 90,  chat: 45, mail: 35 },
+    { day: "15일", document: 73,  chat: 61, mail: 27 },
+    { day: "20일", document: 85,  chat: 45, mail: 30 },
+    { day: "25일", document: 95,  chat: 52, mail: 37 },
+    { day: "30일", document: 98,  chat: 58, mail: 30 },
   ];
 
   const data_year: HistoryPoint[] = [
-    { day: "2월", document: 2000, chat: 1200, mail: 700 },
-    { day: "4월", document: 2200, chat: 1300, mail: 800 },
-    { day: "6월", document: 2500, chat: 1500, mail: 900 },
-    { day: "8월", document: 2600, chat: 1700, mail: 1000 },
-    { day: "10월", document: 2800, chat: 1800, mail: 1100 },
-    { day: "12월", document: 3000, chat: 1900, mail: 1200 },
+    { day: "2월",  document: 65, chat: 40, mail: 30 },
+    { day: "4월",  document: 70, chat: 45, mail: 35 },
+    { day: "6월",  document: 75, chat: 50, mail: 40 },
+    { day: "8월",  document: 80, chat: 55, mail: 45 },
+    { day: "10월", document: 85, chat: 60, mail: 50 },
+    { day: "12월", document: 90, chat: 65, mail: 55 },
   ];
 
   const data_week: HistoryPoint[] = [
-    { day: "월", document: 1000, chat: 500, mail: 200 },
-    { day: "화", document: 1300, chat: 600, mail: 300 },
-    { day: "수", document: 1200, chat: 800, mail: 350 },
-    { day: "목", document: 1500, chat: 700, mail: 300 },
-    { day: "금", document: 1600, chat: 900, mail: 400 },
-    { day: "토", document: 1700, chat: 950, mail: 450 },
-    { day: "일", document: 1800, chat: 1000, mail: 500 },
+    { day: "월", document: 60, chat: 30, mail: 20 },
+    { day: "화", document: 65, chat: 35, mail: 25 },
+    { day: "수", document: 70, chat: 40, mail: 30 },
+    { day: "목", document: 75, chat: 45, mail: 35 },
+    { day: "금", document: 80, chat: 50, mail: 40 },
+    { day: "토", document: 85, chat: 55, mail: 45 },
+    { day: "일", document: 90, chat: 60, mail: 50 },
   ];
 
-
-  const normalizeData = (data: HistoryPoint[]): HistoryPoint[] => {
-    const max = Math.max(...data.flatMap((d) => [d.document, d.chat, d.mail]));
-    return data.map((d) => ({
-      day: d.day,
-      document: Math.round((d.document / max) * 100),
-      chat: Math.round((d.chat / max) * 100),
-      mail: Math.round((d.mail / max) * 100),
-    }));
-  };
 
   const getRawData = (): HistoryPoint[] => {
     if (selected === "최근 일 년간") return data_year;
@@ -82,7 +72,7 @@ export default function Profile() {
     return data_month;
   };
 
-  const chartData = normalizeData(getRawData());
+  const chartData: HistoryPoint[] = getRawData();
 
   useEffect(() => {
     setClickedData(null);
@@ -90,8 +80,8 @@ export default function Profile() {
 
   const handleLineClick = (e: any) => {
     if (!e || !e.payload) return;
-
     const p = e.payload as HistoryPoint;
+
     setClickedData({
       day: p.day,
       document: p.document,
