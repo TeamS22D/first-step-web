@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as S from "./Profile.style";
 
 import {
@@ -8,18 +8,26 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  CartesianGrid
+  CartesianGrid,
 } from "recharts";
 
 import attendanceImg from "/assets/Profile/attendance.png";
 import percentImg from "/assets/Profile/percent.png";
+
+type HistoryPoint = {
+  day: string;
+  document: number;
+  chat: number;
+  mail: number;
+};
 
 export default function Profile() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("최근 한 달간");
   const [activeTab, setActiveTab] = useState("전체");
 
-  const [clickedData, setClickedData] = useState<any | null>(null);
+  // ✅ 그래프에서 마지막으로 클릭한 데이터
+  const [clickedData, setClickedData] = useState<HistoryPoint | null>(null);
 
   const options = ["최근 한 달간", "최근 일 년간", "최근 일주일간"];
 
@@ -28,7 +36,9 @@ export default function Profile() {
     setOpen(false);
   };
 
-  const data_month = [
+  // ------------ 원본 데이터 ------------
+
+  const data_month: HistoryPoint[] = [
     { day: "0일", document: 3300, chat: 1800, mail: 900 },
     { day: "5일", document: 3300, chat: 1800, mail: 900 },
     { day: "10일", document: 3000, chat: 1600, mail: 1300 },
@@ -38,7 +48,7 @@ export default function Profile() {
     { day: "30일", document: 3200, chat: 1900, mail: 1000 },
   ];
 
-  const data_year = [
+  const data_year: HistoryPoint[] = [
     { day: "2월", document: 2000, chat: 1200, mail: 700 },
     { day: "4월", document: 2200, chat: 1300, mail: 800 },
     { day: "6월", document: 2500, chat: 1500, mail: 900 },
@@ -47,7 +57,7 @@ export default function Profile() {
     { day: "12월", document: 3000, chat: 1900, mail: 1200 },
   ];
 
-  const data_week = [
+  const data_week: HistoryPoint[] = [
     { day: "월", document: 1000, chat: 500, mail: 200 },
     { day: "화", document: 1300, chat: 600, mail: 300 },
     { day: "수", document: 1200, chat: 800, mail: 350 },
@@ -57,9 +67,11 @@ export default function Profile() {
     { day: "일", document: 1800, chat: 1000, mail: 500 },
   ];
 
-  const normalizeData = (data: any[]) => {
-    const max = Math.max(...data.flatMap(d => [d.document, d.chat, d.mail]));
-    return data.map(d => ({
+  // ------------ 유틸 ------------
+
+  const normalizeData = (data: HistoryPoint[]): HistoryPoint[] => {
+    const max = Math.max(...data.flatMap((d) => [d.document, d.chat, d.mail]));
+    return data.map((d) => ({
       day: d.day,
       document: Math.round((d.document / max) * 100),
       chat: Math.round((d.chat / max) * 100),
@@ -67,7 +79,7 @@ export default function Profile() {
     }));
   };
 
-  const getRawData = () => {
+  const getRawData = (): HistoryPoint[] => {
     if (selected === "최근 일 년간") return data_year;
     if (selected === "최근 일주일간") return data_week;
     return data_month;
@@ -75,14 +87,30 @@ export default function Profile() {
 
   const chartData = normalizeData(getRawData());
 
-  if (!clickedData) setClickedData(chartData[chartData.length - 1]);
+  // ✅ 기간이 바뀌면 클릭값 리셋 (→ 자동으로 마지막 값이 쓰이도록)
+  useEffect(() => {
+    setClickedData(null);
+  }, [selected]);
 
-  const handleChartClick = (state: any) => {
-    if (state && state.activePayload && state.activePayload.length > 0) {
-      const d = state.activePayload[0].payload;
-      setClickedData(d);
-    }
+  // ✅ 선/점을 클릭했을 때 실행되는 핸들러
+  const handleLineClick = (e: any) => {
+    if (!e || !e.payload) return;
+
+    const p = e.payload as HistoryPoint;
+
+    // day, document, chat, mail 이 payload 안에 들어 있음
+    setClickedData({
+      day: p.day,
+      document: p.document,
+      chat: p.chat,
+      mail: p.mail,
+    });
   };
+
+  // ✅ 아래 박스에 실제로 쓸 데이터
+  const defaultPoint =
+    chartData[chartData.length - 1] ?? (null as any as HistoryPoint | null);
+  const current = clickedData ?? defaultPoint;
 
   return (
     <S.Container>
@@ -141,35 +169,81 @@ export default function Profile() {
                 <LineChart
                   data={chartData}
                   margin={{ top: 10, left: 0, right: 10, bottom: 0 }}
-                  onClick={handleChartClick}
                 >
                   <CartesianGrid stroke="#eee" vertical={false} />
                   <XAxis dataKey="day" tick={{ fill: "#555", fontSize: 12 }} />
-                  <YAxis tick={{ fill: "#555", fontSize: 12 }} domain={[0, 100]} />
+                  <YAxis
+                    tick={{ fill: "#555", fontSize: 12 }}
+                    domain={[0, 100]}
+                  />
 
-                  <Tooltip wrapperStyle={{ display: "none" }} />
+                  {/* ✅ 툴팁: 한글 라벨 + "점" 붙이기 */}
+                  <Tooltip
+                    cursor={false} // ← 파란 세로 강조선 숨기기
+                    formatter={(value: any, name: any) => [
+                      `${value}점`,
+                      name,
+                    ]}
+                  />
 
-                  <Line dataKey="document" type="monotone" stroke="#0ACF83" strokeWidth={3} dot={{ r: 4 }} isAnimationActive={false} />
-                  <Line dataKey="chat" type="monotone" stroke="#AF5EFF" strokeWidth={3} dot={{ r: 4 }} isAnimationActive={false} />
-                  <Line dataKey="mail" type="monotone" stroke="#0099FF" strokeWidth={3} dot={{ r: 4 }} isAnimationActive={false} />
-
+                  {/* ✅ 선/점 클릭하면 handleLineClick 으로 값 전달 */}
+                  <Line
+                    dataKey="document"
+                    name="문서형"
+                    type="monotone"
+                    stroke="#0ACF83"
+                    strokeWidth={3}
+                    dot={{ r: 4 }}
+                    activeDot={{ r: 6 }}
+                    isAnimationActive={false}
+                    onClick={handleLineClick}
+                  />
+                  <Line
+                    dataKey="chat"
+                    name="채팅형"
+                    type="monotone"
+                    stroke="#AF5EFF"
+                    strokeWidth={3}
+                    dot={{ r: 4 }}
+                    activeDot={{ r: 6 }}
+                    isAnimationActive={false}
+                    onClick={handleLineClick}
+                  />
+                  <Line
+                    dataKey="mail"
+                    name="메일형"
+                    type="monotone"
+                    stroke="#0099FF"
+                    strokeWidth={3}
+                    dot={{ r: 4 }}
+                    activeDot={{ r: 6 }}
+                    isAnimationActive={false}
+                    onClick={handleLineClick}
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </S.GraphCard>
 
+            {/* ✅ 여기서 current 값으로 박스 표시 */}
             <S.StatsBox>
               <S.StatItem>
-                <S.StatPercent chat>{clickedData?.chat}점</S.StatPercent>
+                <S.StatPercent $chat>
+                  {current ? `${current.chat}점` : "-"}
+                </S.StatPercent>
                 <S.StatValue>채팅형</S.StatValue>
               </S.StatItem>
 
               <S.StatItem>
-                <S.StatPercent document>{clickedData?.document}점</S.StatPercent>
+                <S.StatPercent $document>
+                  {current ? `${current.document}점` : "-"}
+                </S.StatPercent>
                 <S.StatValue>문서형</S.StatValue>
               </S.StatItem>
 
               <S.StatItem>
-                <S.StatPercent mail>{clickedData?.mail}점</S.StatPercent>
+                <S.StatPercent $mail>
+                  {current ? `${current.mail}점` : "-"}
+                </S.StatPercent>
                 <S.StatValue>메일형</S.StatValue>
               </S.StatItem>
             </S.StatsBox>
@@ -191,7 +265,8 @@ export default function Profile() {
               <S.LearningHeader>학습 효과</S.LearningHeader>
               <S.LearningText>
                 점점 맞춤법이 좋아지고 있어요~!{"\n\n"}
-                갈수록 점점 내용의 흐름이 좋아지고 있으며 예의와 격식을 갖춘 내용, 단어로 말하고 있는 듯 합니다!!
+                갈수록 점점 내용의 흐름이 좋아지고 있으며 예의와 격식을 갖춘
+                내용, 단어로 말하고 있는 듯 합니다!!
               </S.LearningText>
 
               <S.Divider />
@@ -199,7 +274,8 @@ export default function Profile() {
               <S.LearningHeader>개선 정도</S.LearningHeader>
               <S.LearningText>
                 점점 맞춤법이 좋아지고 있어요~!{"\n\n"}
-                갈수록 점점 내용의 흐름이 좋아지고 있으며 예의와 격식을 갖춘 내용, 단어로 말하고 있는 듯 합니다!!
+                갈수록 점점 내용의 흐름이 좋아지고 있으며 예의와 격식을 갖춘
+                내용, 단어로 말하고 있는 듯 합니다!!
               </S.LearningText>
             </S.LearningBox>
           </S.SideInfo>

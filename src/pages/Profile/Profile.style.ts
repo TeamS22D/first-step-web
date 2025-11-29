@@ -48,7 +48,7 @@ export const SubInfo = styled.div`
 `;
 
 export const LogoutBtn = styled.button`
-  background: #F1414C;
+  background: #f1414c;
   color: #fff;
   padding: 7px 15px;
   border: none;
@@ -121,7 +121,7 @@ export const FilterTabs = styled.div`
 export const FilterTab = styled.div<{ active?: boolean }>`
   padding: 11px 28px;
   border-radius: 100px;
-  background: ${({ active }) => (active ? "#3FB98A" : "#F2F2F2")};
+  background: ${({ active }) => (active ? "#3fb98a" : "#f2f2f2")};
   color: ${({ active }) => (active ? "#fff" : "#6a6a6a")};
   cursor: pointer;
 `;
@@ -238,18 +238,28 @@ export const StatItem = styled.div`
   text-align: center;
 `;
 
-export const StatPercent = styled.div<{ chat?: boolean; document?: boolean; mail?: boolean }>`
+export const StatPercentChat = styled.div`
   font-size: 22px;
   font-weight: 700;
-  color: ${({ document, chat, mail }) =>
-    document ? "#0ACF83" : chat ? "#AF5EFF" : mail ? "#0099FF" : "#333"};
+  color: #af5eff;
+`;
+
+export const StatPercentDocument = styled.div`
+  font-size: 22px;
+  font-weight: 700;
+  color: #0acf83;
+`;
+
+export const StatPercentMail = styled.div`
+  font-size: 22px;
+  font-weight: 700;
+  color: #0099ff;
 `;
 
 export const StatValue = styled.div`
   color: #6b6b6b;
 `;
 
-/* ✨ 클릭 Tooltip 스타일 */
 export const TooltipBox = styled.div`
   background: white;
   padding: 12px 16px;
@@ -275,4 +285,15 @@ export const TooltipBox = styled.div`
   .mail {
     color: #0099ff;
   }
+`;
+
+export const StatPercent = styled.div<{
+  $chat?: boolean;
+  $document?: boolean;
+  $mail?: boolean;
+}>`
+  font-size: 22px;
+  font-weight: 700;
+  color: ${({ $document, $chat, $mail }) =>
+    $document ? "#0ACF83" : $chat ? "#AF5EFF" : $mail ? "#0099FF" : "#333"};
 `;
