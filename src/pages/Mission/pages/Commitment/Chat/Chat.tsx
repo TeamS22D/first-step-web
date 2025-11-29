@@ -4,8 +4,8 @@ export default function Chat() {
     return(
         <S.Body>
             <S.Container>
-                
             </S.Container>
+            <S.Introduction/>
         </S.Body>
     )
 }
