@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { createBrowserRouter, Navigate } from 'react-router';
 import App from './App';
 import Login from './pages/Auth/pages/Login/Login';
@@ -9,12 +10,25 @@ import Home from './pages/Home/Home';
 import Missions from './pages/Missions/Missions';
 import MissionList from './components/Missions/components/MissionList';
 import Feedback from './pages/Feedback/Feedback';
+=======
+import { createBrowserRouter } from "react-router-dom";
+import App from "./App";
+import Login from "./pages/Auth/pages/Login/Login";
+import Register from "./pages/Auth/pages/Register/Register";
+import AuthLayout from "./components/AuthLayout/AuthLayout";
+import NotFound from "./pages/NotFound/NotFound";
+import Dictionary from "./pages/Dictionary/Dictionary";
+import Occupation from "./pages/Occupation/Occupation";
+import Job from "./pages/Job/Job";
+import Profile from "./pages/Profile/Profile";
+>>>>>>> profile
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     children: [
+<<<<<<< HEAD
       {
         path: 'home',
         element: <Home />
@@ -75,26 +89,30 @@ const router = createBrowserRouter([
           },
         ]
       },
+=======
+      { path: "dict", element: <Dictionary /> },
+      { path: "profile", element: <Profile /> },
+>>>>>>> profile
     ],
   },
   {
-    path: '/auth',
+    path: "/auth",
     element: <AuthLayout />,
     children: [
-      {
-        path: 'login',
-        element: <Login />
-      },
-      {
-        path: 'register',
-        element: <Register />
-      },
-    ]
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+    ],
   },
+<<<<<<< HEAD
   {
     path: '/*',
     element: <NotFound />,
   },
+=======
+  { path: "/occupation", element: <Occupation /> },
+  { path: "/job", element: <Job /> },
+  { path: "/*", element: <NotFound /> },
+>>>>>>> profile
 ]);
 
 export default router;
