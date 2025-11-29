@@ -24,9 +24,8 @@ type HistoryPoint = {
 export default function Profile() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("최근 한 달간");
-  const [activeTab, setActiveTab] = useState("전체"); // 지금은 UI만, 로직 없음
+  const [activeTab, setActiveTab] = useState("전체");
 
-  // 그래프에서 마지막으로 클릭한 데이터
   const [clickedData, setClickedData] = useState<HistoryPoint | null>(null);
 
   const options = ["최근 한 달간", "최근 일 년간", "최근 일주일간"];
@@ -35,8 +34,6 @@ export default function Profile() {
     setSelected(v);
     setOpen(false);
   };
-
-  // ----------------- 0~100 스케일 데이터 -----------------
 
   const data_month: HistoryPoint[] = [
     { day: "0일",  document: 100, chat: 55, mail: 27 },
@@ -75,12 +72,10 @@ export default function Profile() {
 
   const chartData: HistoryPoint[] = getRawData();
 
-  // 기간이 바뀌면 클릭된 값 리셋 → 기본값은 마지막 지점
   useEffect(() => {
     setClickedData(null);
   }, [selected]);
 
-  // 선/점 클릭했을 때 실행되는 핸들러
   const handleLineClick = (e: any) => {
     if (!e || !e.payload) return;
     const p = e.payload as HistoryPoint;
@@ -93,7 +88,6 @@ export default function Profile() {
     });
   };
 
-  // 아래 박스에 실제로 쓸 데이터 (클릭 없으면 마지막 포인트)
   const defaultPoint =
     chartData[chartData.length - 1] ?? (null as any as HistoryPoint | null);
   const current = clickedData ?? defaultPoint;
@@ -163,7 +157,6 @@ export default function Profile() {
                     domain={[0, 100]}
                   />
 
-                  {/* 파란 세로줄 제거 + 점수 포맷 & 한글 라벨 */}
                   <Tooltip
                     cursor={false}
                     formatter={(value: any, name: any) => [
@@ -172,7 +165,6 @@ export default function Profile() {
                     ]}
                   />
 
-                  {/* 선/점 클릭하면 handleLineClick 으로 값 전달 */}
                   <Line
                     dataKey="document"
                     name="문서형"
@@ -210,7 +202,6 @@ export default function Profile() {
               </ResponsiveContainer>
             </S.GraphCard>
 
-            {/* 클릭된 데이터 / 없으면 마지막 데이터 */}
             <S.StatsBox>
               <S.StatItem>
                 <S.StatPercent $chat>

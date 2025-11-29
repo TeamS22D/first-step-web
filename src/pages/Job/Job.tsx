@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 import * as S from "./Job.style";
 
 import selectPng from "../../assets/Dictionary/select.png";
@@ -10,8 +11,18 @@ type Field = {
   node: ReactNode;
 };
 
-export default function Occupation() {
+type JobResponse = {
+  message: string;
+  selectedJob?: {
+    code: string;
+    label: string;
+  };
+};
+
+export default function Job() {
   const [selected, setSelected] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const fields: Field[] = [
     {
@@ -27,13 +38,48 @@ export default function Occupation() {
     {
       id: "dataAnaly",
       label: "데이터 분석가",
-      node: <img src="/assets/Dictionary/dataAnalyst.png" alt="데이터 분석가" />,
+      node: (
+        <img src="/assets/Dictionary/dataAnalyst.png" alt="데이터 분석가" />
+      ),
     },
   ];
 
-  const handleSubmit = () => {
-    if (!selected) return;
-    localStorage.setItem("occupation", selected);
+  const handleSubmit = async () => {
+    if (!selected || loading) return;
+
+    const email = localStorage.getItem("email") ?? "test@example.com";
+    let jobCode = selected;
+
+    setLoading(true);
+    try {
+      try {
+        const res = await fetch("/job", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            job: selected,
+          }),
+        });
+
+        if (res.ok) {
+          const data: JobResponse = await res.json();
+          jobCode = data.selectedJob?.code ?? selected;
+        } else {
+          console.error("직업 선택 API 실패", res.status);
+        }
+      } catch (err) {
+        console.error("직업 선택 요청 오류", err);
+      }
+
+      localStorage.setItem("job", jobCode);
+
+      navigate("/Home");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -50,7 +96,7 @@ export default function Occupation() {
       </S.Description>
 
       <S.TopRow>
-        {fields.slice(0, 3).map((field) => {
+        {fields.map((field) => {
           const isSelected = selected === field.id;
 
           return (
@@ -72,8 +118,8 @@ export default function Occupation() {
 
       <S.BottomRow />
 
-      <LongButton disabled={!selected}>
-        선택 완료
+      <LongButton onClick={handleSubmit} disabled={!selected || loading}>
+        {loading ? "저장 중..." : "선택 완료"}
       </LongButton>
     </S.Container>
   );
