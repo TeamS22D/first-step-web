@@ -24,29 +24,32 @@ export const TitleTopContainer = styled.div`
     gap: 18px;
     align-items: center;
 
-    .TitleText{
-        color: #000;
-        font-family: "Pretendard Variable";
-        font-size: 32px;
-        font-weight: 600;
-        letter-spacing: -1.6px;
-    }
-    .period{
-        display: flex;
-        padding: 3.1px 12.4px;
-        justify-content: center;
-        align-items: center;
-        border-radius: 18.603px;
-        background: #595959;
 
-        color:  #FFF;
-        text-align: center;
-        font-family: "Pretendard Variable";
-        font-size: 12.402px;
-        font-weight: 600;
-        letter-spacing: -0.62px;
-    }
 `
+export const TitleText = styled.span`
+    color: #000;
+    font-family: "Pretendard Variable";
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -1.6px;
+`
+
+export const period = styled.div`
+    display: flex;
+    padding: 3.1px 12.4px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 18.603px;
+    background: #595959;
+
+    color:  #FFF;
+    text-align: center;
+    font-family: "Pretendard Variable";
+    font-size: 12.402px;
+    font-weight: 600;
+    letter-spacing: -0.62px;
+`
+
 export const TitleBottomContainer = styled(TitleTopContainer)`
     height: 19px;
     display: flex;
