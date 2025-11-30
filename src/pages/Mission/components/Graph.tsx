@@ -37,15 +37,15 @@ export default function Graph() {
         data: data.map((row) => row.count),
         backgroundColor: 'rgba(75, 192, 192, 0.4)',
         borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 0,
-        pointRadius: 0,
+        borderWidth: 1,
+        pointRadius: 3,
       },
     ],
   };
 
   const options: ChartOptions<'radar'> = {
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     plugins: {
       legend: { display: false },
       tooltip: { enabled: true },
@@ -65,8 +65,8 @@ export default function Graph() {
         },
         pointLabels: {
           font: {
-            size: 10,
-            weight: 500,
+            size: 11,
+            weight: 400,
           },
           color: '#00b48c',
         },
