@@ -2,11 +2,11 @@ import { Outlet } from "react-router";
 import {GlobalStyle} from "../../styles/GlobalStyle.ts";
 import { ThemeProvider } from "styled-components";
 import { lightTheme } from "../../theme/theme.ts";
-import * as S from './MissionLayout.ts';
+import * as S from './MissionLayout.style.ts';
 import StepComponent from '../Step/StepsComponent.tsx';
 import GuideBox from "@/pages/Mission/components/GuideBox.tsx";
 
-function MissionLayout() {
+export default function MissionLayout() {
     return (
         <ThemeProvider theme={lightTheme}>
             <S.Wrapper>
@@ -25,8 +25,6 @@ function MissionLayout() {
         </ThemeProvider>
     )
 }
-
-export default MissionLayout;
 
 function Buttons() {
     return(

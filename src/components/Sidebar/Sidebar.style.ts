@@ -13,6 +13,29 @@ export const SidebarConatiner = styled.div`
     padding: 28px 23px;
 `;
 
+export const FilterRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: -5px;
+`;
+
+export const Dropdown = styled.div`
+  padding: 8px 16px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1.5px solid #E5E5E5;
+  font-size: 13px;
+  color: #5b5b5b;
+  cursor: pointer;
+`;
+
+export const Tabs = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+
 export const Logo = styled.img`
     width: 32px;
 `

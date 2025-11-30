@@ -1,77 +1,133 @@
-import { createBrowserRouter } from 'react-router';
-import App from './App';
-import Login from './pages/Auth/pages/Login/Login';
-import Register from './pages/Auth/pages/Register/Register';
-import AuthLayout from './components/AuthLayout/AuthLayout';
-import NotFound from './pages/NotFound/NotFound';
-import Dictionary from './pages/Dictionary/Dictionary';
-import Home from './pages/Home/Home';
-import Feedback  from './pages/Mission/pages/Feedback/Feedback.tsx'
-import Complete from './pages/Mission/pages/Complete/Complete.tsx'
-import CommitmentLayout from './components/CommitmentLayout/CommitmentLayout.tsx';
-import Document from './pages/Mission/pages/Commitment/Document/Document.tsx';
-import Mail from './pages/Mission/pages/Commitment/Mail/Mail.tsx'
-import Chat from './pages/Mission/pages/Commitment/Chat/Chat.tsx'
+import { createBrowserRouter, Navigate } from "react-router-dom";
+
+import App from "./App";
+
+import Login from "./pages/Auth/pages/Login/Login";
+import Register from "./pages/Auth/pages/Register/Register";
+import AuthLayout from "./components/AuthLayout/AuthLayout";
+
+import NotFound from "./pages/NotFound/NotFound";
+
+import Home from "./pages/Home/Home";
+import Dictionary from "./pages/Dictionary/Dictionary";
+import Missions from "./pages/Missions/Missions";
+import MissionList from "./components/Missions/components/MissionList";
+import Feedback from "./pages/Feedback/Feedback";
+
+import Occupation from "./pages/Occupation/Occupation";
+import Job from "./pages/Job/Job";
+import Profile from "./pages/Profile/Profile";
+import MissionLayout from "./components/MissionLayout/MissionLayout.tsx";
+import Document from './pages/Mission/pages/Commitment/Document/Document.tsx'
+import Mail from "./pages/Mission/pages/Commitment/Mail/Mail.tsx";
+import Chat from "./pages/Mission/pages/Commitment/Chat/Chat.tsx";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     children: [
       {
-        path: 'home',
-        element: <Home />
+        path: "home",
+        element: <Home />,
+      },
+
+      {
+        path: "dict",
+        element: <Dictionary />,
+      },
+
+      {
+        path: "mission",
+        element: <Missions />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="all" replace />,
+          },
+          {
+            path: "all",
+            element: <MissionList category="all" />,
+          },
+          {
+            path: "document",
+            element: <MissionList category="document" />,
+          },
+          {
+            path: "chat",
+            element: <MissionList category="chat" />,
+          },
+          {
+            path: "mail",
+            element: <MissionList category="mail" />,
+          },
+        ],
+      },
+
+      {
+        path: "feedback",
+        element: <Feedback />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="all" replace />,
+          },
+          {
+            path: "all",
+            element: <MissionList category="all" />,
+          },
+          {
+            path: "document",
+            element: <MissionList category="document" />,
+          },
+          {
+            path: "chat",
+            element: <MissionList category="chat" />,
+          },
+          {
+            path: "mail",
+            element: <MissionList category="mail" />,
+          },
+        ],
       },
       {
-        path: 'dict',
-        element: <Dictionary />
-      },
-      {
-        path: 'mission',
-        element: <CommitmentLayout />,
+        path: 'performance',
+        element: <MissionLayout />,
         children: [
           {
             path: 'document',
-            element: <Document/>
+            element: <Document />,
           },
           {
             path: 'mail',
-            element: <Mail/>
+            element: <Mail/>,
           },
           {
             path: 'chat',
-            element: <Chat/>
-          },
+            element: <Chat/>,
+          }
         ]
       },
       {
-        path: 'feedback',
-        element: <Feedback />
-      },
-      {
-        path: 'complete',
-        element: <Complete />
+        path: "profile",
+        element: <Profile />,
       },
     ],
   },
+
   {
-    path: '/auth',
+    path: "/auth",
     element: <AuthLayout />,
     children: [
-      {
-        path: 'login',
-        element: <Login />
-      },
-      {
-        path: 'register',
-        element: <Register />
-      },
-    ]
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+    ],
   },
-  {
-    path: '/*',
-    element: <NotFound />,
-  },
+
+  { path: "/occupation", element: <Occupation /> },
+  { path: "/job", element: <Job /> },
+
+  { path: "*", element: <NotFound /> },
 ]);
 
 export default router;

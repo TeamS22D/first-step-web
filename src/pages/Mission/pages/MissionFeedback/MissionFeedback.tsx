@@ -1,8 +1,9 @@
 import { GlobalStyle } from "../../../../styles/GlobalStyle";
 import { ThemeProvider } from "styled-components";
 import { lightTheme } from "../../../../theme/theme";
-import * as S from './Feedback';
+import * as S from './MissionFeedback';
 import Graph from "../../components/Graph";
+import React from "react";
 
 const titleInfo = {
   mainTitle: "[보고서] 업무 보고서 작성",
@@ -118,7 +119,7 @@ export function BottomBox() {
   )
 }
 
-function Feedback() {
+function MissionFeedback() {
   return (
     <ThemeProvider theme={lightTheme}>
       <GlobalStyle />
@@ -134,4 +135,4 @@ function Feedback() {
   )
 }
 
-export default Feedback;
+export default MissionFeedback;
