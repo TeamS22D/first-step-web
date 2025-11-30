@@ -2,7 +2,6 @@ import * as Text from "@/components/Text/Text.style"
 import * as S from "./styles/Words.style"
 import Searchbar from "@/components/Searchbar/Searchbar"
 import { useCallback, useEffect, useState } from "react";
-import Data from "./TestJSON/data.json";
 import React from "react";
 import * as I from "./types/Words.type"
 import axios from "axios";
