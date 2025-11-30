@@ -1,34 +1,36 @@
 import { GlobalStyle } from "../../styles/GlobalStyle";
-import * as S from './StepsComponent';
+import * as S from "./StepsComponent.style";
+
+interface StepsComponentProps {
+    step: number;  
+}
 
 interface IconProps {
     src: string;
     alt: string;
 }
 
+const Icon = ({ src, alt }: IconProps) => {
+    return <S.Icon src={src} alt={alt} />;
+};
 
-const Icon = ({src, alt}:IconProps) => {
-    return (
-        <S.Icon src={src} alt={alt} />
-    )
-}
+const stepLabels = ["보고서 실습", "AI 피드백", "미션 완료"];
 
-
-function StepsComponent() {
-    
+export default function StepsComponent({ step }: StepsComponentProps) {
     return (
         <>
-            <GlobalStyle/>
+            <GlobalStyle />
             <S.Steps>
-                <S.Step color='#3FB98A' style={{color:'#FFFFFF'}}>보고서 실습</S.Step>
-                <Icon src="/assets/Mission/Step.png" alt="IconStep"/>
-                <S.Step>AI 피드백</S.Step>
-                <Icon src="/assets/Mission/Step.png" alt="IconStep"/>
-                <S.Step>미션 완료</S.Step>
+                {stepLabels.map((label, i) => (
+                    <span key={i} style={{ display: "flex", alignItems: "center" }}>
+                        <S.Step on={step === i}>{label}</S.Step>
+                        {i < stepLabels.length - 1 && (
+                            <Icon src="/assets/Mission/Step.png" alt="IconStep" />
+                        )}
+                    </span>
+                ))}
             </S.Steps>
         </>
-    )
-
+    );
 }
 
-export default StepsComponent;

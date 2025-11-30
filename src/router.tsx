@@ -21,6 +21,8 @@ import MissionLayout from "./components/MissionLayout/MissionLayout.tsx";
 import Document from './pages/Mission/pages/Commitment/Document/Document.tsx'
 import Mail from "./pages/Mission/pages/Commitment/Mail/Mail.tsx";
 import Chat from "./pages/Mission/pages/Commitment/Chat/Chat.tsx";
+import MissionFeedback from './pages/Mission/pages/MissionFeedback/MissionFeedback.tsx'
+import MissionComplete from "./pages/Mission/pages/MissionComplete/MissionComplete.tsx";
 
 const router = createBrowserRouter([
   {
@@ -107,6 +109,14 @@ const router = createBrowserRouter([
             element: <Chat/>,
           }
         ]
+      },
+      {
+        path: "MissionFeedback",
+        element: <MissionFeedback />,
+      },
+      {
+        path: "MissionComplete",
+        element: <MissionComplete />,
       },
       {
         path: "profile",

@@ -16,20 +16,23 @@ export const Icon = styled.img`
     }
 `
 
-export const Step = styled.div`
+interface StepProps {
+    on?: boolean;
+  }
+
+export const Step = styled.div<StepProps>`
     display: flex;
     padding: 12px 20px;
     justify-content: center;
     align-items: center;
     gap: 10px;
     border-radius: 3.611px;
-    background: ${(props) => props.color};
-    border: 1.5px solid #F2F2F2;
+    background: ${props => (props.on? "#3FB98A" : "#FFFFFF")};
+    border: 1.5px solid ${props => (props.on? "#FFFFFF" : "#F2F2F2")};
 
-    & > text {
-    color: ${(props) => props.color};
+    color: ${props => (props.on? "#FFFFFF" : "#2B2B2B")};
     font-family: Inter;
     font-size: 14.444px;
     font-weight: 500;
-  }
+  
 `

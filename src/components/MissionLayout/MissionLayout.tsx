@@ -13,7 +13,7 @@ export default function MissionLayout() {
                 <GlobalStyle/>
                 <S.Container>
                     <S.TopContainer>
-                        <StepComponent/>
+                        <StepComponent step={0}/>
                     </S.TopContainer>
                     <S.Body>
                         <GuideBox/>

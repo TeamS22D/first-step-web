@@ -1,9 +1,8 @@
 import { GlobalStyle } from "../../../../styles/GlobalStyle";
 import { ThemeProvider } from "styled-components";
 import { lightTheme } from "../../../../theme/theme";
-import {Step} from '../../../../components/Step/StepsComponent';
-import * as S from './Complete';
-import React from "react";
+import StepsComponent from '../../../../components/Step/StepsComponent';
+import * as S from './MissionComplete.style';
 
 interface ImageProps {
     src: string;
@@ -19,13 +18,13 @@ const Image = ({src, alt}:ImageProps) => {
 
 const firm: string = '수고 하셨습니다!! \n다른 미션에서도 능력을 발휘해 주시길~'
 
-function Complete() {
+export default function MissionComplete() {
     return (
         <ThemeProvider theme={lightTheme}>
             <GlobalStyle/>
             <S.Container>
                 <S.TopContainer>
-                    <Step/>
+                    <StepsComponent step={2} />
                 </S.TopContainer>
                 <S.Body>
                     <S.container>
@@ -47,4 +46,3 @@ function Complete() {
 
 }
 
-export default Complete;

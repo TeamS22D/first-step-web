@@ -1,9 +1,9 @@
 import { GlobalStyle } from "../../../../styles/GlobalStyle";
 import { ThemeProvider } from "styled-components";
 import { lightTheme } from "../../../../theme/theme";
-import * as S from './MissionFeedback';
+import * as S from './MissionFeedback.style.ts';
 import Graph from "../../components/Graph";
-import React from "react";
+import StepsComponent from '../../../../components/Step/StepsComponent.tsx'
 
 const titleInfo = {
   mainTitle: "[보고서] 업무 보고서 작성",
@@ -119,20 +119,27 @@ export function BottomBox() {
   )
 }
 
-function MissionFeedback() {
+export default function MissionFeedback() {
   return (
+
     <ThemeProvider theme={lightTheme}>
       <GlobalStyle />
-      <S.Body>
-        <TitleBox />
-        <MiddleBox feedback={feedbackText} />
-        <BottomBox />
-        <S.buttoncontainer>
-          <S.backButton>돌아가기</S.backButton>
-        </S.buttoncontainer>
-      </S.Body>
+        <S.Container>
+              <S.TopContainer>
+                  <StepsComponent step={1}/>
+              </S.TopContainer>
+                <S.Body>
+                  <TitleBox />
+                  <MiddleBox feedback={feedbackText} />
+                  <BottomBox />
+                  <S.buttoncontainer>
+                    <S.backButton>돌아가기</S.backButton>
+                  </S.buttoncontainer>
+                </S.Body>
+          </S.Container>
+          <S.gongback/> 
+          {/* 공백 왜 안될까 ㅜㅜ */}
     </ThemeProvider>
   )
 }
 
-export default MissionFeedback;

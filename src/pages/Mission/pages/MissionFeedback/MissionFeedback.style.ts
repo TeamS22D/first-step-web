@@ -1,8 +1,34 @@
 import styled from 'styled-components';
 
-export const Body = styled.div`
+export const Wrapper = styled.div`
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+`
+
+export const Container = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 62px;
+    align-items: center;
+`;
+export const TopContainer = styled.div`
+    width: 100%;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+`
+
+export const Body = styled.div`
+    width: 100%;
+    height: 90%;
     padding: 15px 75px 0px 70px;
     display: flex;
     flex-direction: column;
@@ -264,4 +290,9 @@ export const backButton = styled.div`
     font-weight: 400;
     line-height: normal;
     letter-spacing: -0.8px;
+`
+
+export const gongback = styled.div`
+    width: 100%;
+    height: 42px;
 `
