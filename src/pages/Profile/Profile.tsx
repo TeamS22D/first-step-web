@@ -149,8 +149,6 @@ export default function Profile() {
     const rangeKey = rangeLabelToKey[selected];
     if (!rangeKey) return;
 
-    const email = localStorage.getItem("email") ?? "test@example.com";
-
     const controller = new AbortController();
 
     const fetchGraph = async () => {
@@ -164,7 +162,6 @@ export default function Profile() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email,
             range: rangeKey,
           }),
           signal: controller.signal,
@@ -470,10 +467,7 @@ export default function Profile() {
 
           <S.SideInfo>
             <S.SmallCard>
-              <PercentDonut
-                percent={displayPercent}
-                dimmed={percentError}
-              />
+              <PercentDonut percent={displayPercent} dimmed={percentError} />
               <div>
                 <S.SmallCardTitle>상위</S.SmallCardTitle>
                 <S.ValueRow>
