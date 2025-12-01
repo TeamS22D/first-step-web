@@ -17,7 +17,7 @@ export const Image = styled.img`
 
 export const guideContainer = styled.div`
     height: 100%;
-    width: 32%;
+    width: 28%;
     border-radius: 10px;
     border: 2px solid #F2F2F2;
     display: flex;
@@ -66,7 +66,11 @@ export const categoryContainer = styled.div`
 
 `
 
-export const category = styled.div`
+interface CategoryProps {
+    on?: boolean;
+}
+
+export const category = styled.div<CategoryProps>`
     display: flex;
     height: 25.751px;
     padding: 8px;
@@ -74,9 +78,9 @@ export const category = styled.div`
     align-items: center;
     gap: 8px;
     border-radius: 12px;
-    background: #F2F2F2;
+    background: ${props => (props.on? "#3FB98A" : "#F2F2F2")};
 
-    color: #6A6A6A;
+    color: ${props => (props.on? "#FFFFFF" : "#2B2B2B")}; 
     font-family: "Pretendard Variable";
     font-size: 10px;
     font-weight: 700;

@@ -111,11 +111,11 @@ const router = createBrowserRouter([
         ]
       },
       {
-        path: "MissionFeedback",
+        path: "missionfeedback",
         element: <MissionFeedback />,
       },
       {
-        path: "MissionComplete",
+        path: "missioncomplete",
         element: <MissionComplete />,
       },
       {
