@@ -8,7 +8,7 @@ import managePng from "../../assets/Dictionary/manage.png";
 import financePng from "../../assets/Dictionary/finance.png";
 import factoryPng from "../../assets/Dictionary/factory.png";
 import selectPng from "../../assets/Dictionary/select.png";
-import LongButton from "../../components/LongButton";
+import LongButton from "../../components/Buttons/LongButton";
 
 type Field = {
   id: string;
@@ -39,13 +39,13 @@ export default function Occupation() {
 
   const handleSubmit = async () => {
     if (!selected || loading) return;
-
+    const email = localStorage.getItem("email") ?? "test@example.com";
     let occupationCode = selected;
 
     setLoading(true);
     try {
       try {
-        const res = await fetch("/user/occupation", {
+        const res = await fetch("/occupation", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

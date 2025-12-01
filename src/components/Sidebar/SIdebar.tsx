@@ -29,7 +29,7 @@ function Sidebar() {
         <S.SidebarConatiner>
             <Icon src={Logo} alt="로고" to="/" isLogo/>
             <S.MenuContainer>
-                <Icon src={Home} alt="홈 페이지" to="/" text="홈"/>
+                <Icon src={Home} alt="홈 페이지" to="/home" text="홈"/>
                 <Icon src={Mission} alt="미션 페이지" to="/mission" text="미션"/>
                 <Icon src={Dict} alt="용어 사전 페이지" to="dict" text="용어 사전"/>
                 <Icon src={Feedback} alt="미션 피드백 페이지" to="feedback" text="미션 피드백"/>
@@ -39,4 +39,4 @@ function Sidebar() {
     )
 }
 
-export default Sidebar; 
+export default Sidebar;

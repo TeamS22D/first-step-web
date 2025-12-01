@@ -19,7 +19,7 @@ export const Description = styled.div`
   font-size: 18px;
   line-height: 1;
   color: #9F9C9C;
-  margin-bottom: 30px;
+  margin-bottom: 126.5px;
 `;
 
 export const TopRow = styled.div`
@@ -31,7 +31,7 @@ export const TopRow = styled.div`
 export const BottomRow = styled.div`
   display: flex;
   gap: 32px;
-  margin-bottom: 40px;
+  margin-bottom: 126.5px;
 `;
 
 export const Card = styled.div<{ $selected: boolean }>`
@@ -73,7 +73,7 @@ export const CheckCircle = styled.div<{ $selected: boolean }>`
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  border: 2px solid ${({ $selected }) => ($selected ? "#89DCBC" : "#ccc")};
+  border: 2px solid ${({ $selected }) => ($selected ? "#89dcbc" : "#ccc")};
   background: #fff;
 
   display: flex;
@@ -84,9 +84,4 @@ export const CheckCircle = styled.div<{ $selected: boolean }>`
     height: 30px;
     margin-top: 10px;
   }
-`;
-
-
-export const LongButton = styled.a`
-  text-decoration: none;
 `;
