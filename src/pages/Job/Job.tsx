@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import * as S from "./Job.style";
 
 import selectPng from "../../assets/Dictionary/select.png";
-import LongButton from "../Auth/components/LongButton";
+import LongButton from "../../components/Buttons/LongButton";
 
 type Field = {
   id: string;
@@ -43,12 +43,15 @@ export default function Job() {
       ),
     },
   ];
-
   const serverUrl = 'http://firsstep.p-e.kr:3000/';
 
   const handleSubmit = async () => {
     if (!selected || loading) return;
 
+  const handleSubmit = async () => {
+    if (!selected || loading) return;
+
+    const email = localStorage.getItem("email") ?? "test@example.com";
     let jobCode = selected;
 
     setLoading(true);
@@ -61,6 +64,13 @@ export default function Job() {
             "Authorization":  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiaWQiOjgsImlhdCI6MTc2NDUwMTg5MX0.lhr8DsqdXfU13bJaEV595bpd9s2x02pdXg9ZIsDoQsU",
           },
           body: JSON.stringify({
+        const res = await fetch("/job", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
             job: selected,
           }),
         });
@@ -76,6 +86,7 @@ export default function Job() {
       }
 
       localStorage.setItem("job", jobCode);
+
       navigate("/Home");
     } finally {
       setLoading(false);
@@ -119,6 +130,7 @@ export default function Job() {
       <S.BottomRow />
 
       <LongButton disabled={!selected || loading}>
+      <LongButton onClick={handleSubmit} disabled={!selected || loading}>
         {loading ? "저장 중..." : "선택 완료"}
       </LongButton>
     </S.Container>

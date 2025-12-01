@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 import * as S from "./Occupation.style";
 
 import itPng from "../../assets/Dictionary/it.png";
@@ -7,7 +8,7 @@ import managePng from "../../assets/Dictionary/manage.png";
 import financePng from "../../assets/Dictionary/finance.png";
 import factoryPng from "../../assets/Dictionary/factory.png";
 import selectPng from "../../assets/Dictionary/select.png";
-import LongButton from "../Auth/components/LongButton";
+import LongButton from "../../components/Buttons/LongButton";
 
 type Field = {
   id: string;
@@ -15,20 +16,62 @@ type Field = {
   node: ReactNode;
 };
 
+type OccupationResponse = {
+  message: string;
+  selectedOccupation?: {
+    code: string;
+    label: string;
+  };
+};
+
 export default function Occupation() {
   const [selected, setSelected] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const fields: Field[] = [
-    { id: "it", label: "IT", node: <img src={itPng} alt="it" /> },
-    { id: "video", label: "영상 콘텐츠", node: <img src={videoPng} alt="영상 콘텐츠" /> },
-    { id: "manage", label: "경영", node: <img src={managePng} alt="경영" /> },
-    { id: "finance", label: "금융", node: <img src={financePng} alt="금융" /> },
-    { id: "factory", label: "제조", node: <img src={factoryPng} alt="제조" /> },
+    { id: "it",      label: "IT",          node: <img src={itPng} alt="it" /> },
+    { id: "video",   label: "영상 콘텐츠", node: <img src={videoPng} alt="영상 콘텐츠" /> },
+    { id: "manage",  label: "경영",       node: <img src={managePng} alt="경영" /> },
+    { id: "finance", label: "금융",       node: <img src={financePng} alt="금융" /> },
+    { id: "factory", label: "제조",       node: <img src={factoryPng} alt="제조" /> },
   ];
 
-  const handleSubmit = () => {
-    if (!selected) return;
-    localStorage.setItem("occupation", selected);
+  const handleSubmit = async () => {
+    if (!selected || loading) return;
+
+    const email = localStorage.getItem("email") ?? "test@example.com";
+    let occupationCode = selected;
+
+    setLoading(true);
+    try {
+      try {
+        const res = await fetch("/occupation", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            occupation: selected,
+          }),
+        });
+
+        if (res.ok) {
+          const data: OccupationResponse = await res.json();
+          occupationCode = data.selectedOccupation?.code ?? selected;
+        } else {
+          console.error("분야 선택 API 실패", res.status);
+        }
+      } catch (err) {
+        console.error("분야 선택 요청 오류", err);
+      }
+
+      localStorage.setItem("occupation", occupationCode);
+      navigate("/job");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -37,7 +80,10 @@ export default function Occupation() {
 
       <S.Description>
         <p>안녕하세요. 민선영님.</p>
-        <p>첫걸음 서비스 이용을 위해 분야를 선택해주세요. 선택 직군에 맞는 미션으로 더 나은 서비스를</p>
+        <p>
+          첫걸음 서비스 이용을 위해 분야를 선택해주세요. 선택 직군에 맞는
+          미션으로 더 나은 서비스를
+        </p>
         <p>지원하겠습니다. 저희는 당신의 첫걸음을 응원하고 지지하겠습니다.</p>
       </S.Description>
 
@@ -83,8 +129,8 @@ export default function Occupation() {
         })}
       </S.BottomRow>
 
-      <LongButton disabled={!selected}>
-        선택 완료
+      <LongButton onClick={handleSubmit} disabled={!selected || loading}>
+        {loading ? "저장 중..." : "선택 완료"}
       </LongButton>
     </S.Container>
   );

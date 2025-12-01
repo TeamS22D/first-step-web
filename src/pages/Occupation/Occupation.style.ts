@@ -85,3 +85,8 @@ export const CheckCircle = styled.div<{ $selected: boolean }>`
     margin-top: 10px;
   }
 `;
+
+
+export const LongButton = styled.a`
+  text-decoration: none;
+`;
