@@ -42,7 +42,7 @@ export const BottomContainer = styled.div`
     display: flex;
     gap: 16px;
     justify-content: flex-end;
-    padding: 0 52px;
+    padding: 0 80px;
 `
 
 

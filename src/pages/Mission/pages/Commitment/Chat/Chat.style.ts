@@ -21,8 +21,59 @@ export const Container = styled.div`
     border-radius: 10px;
     border: 2px solid #F2F2F2;
     background: #F2F2F2;
+    flex-direction: column;
+
+    padding: 15px 18px;
 `;
 
+export const Contant = styled.div`
+    width: 100%;
+    height: 100%;
+`
+
+export const InputBox = styled.div`
+    border-radius: 10px;
+    background: #FFF;
+    display: inline-flex;
+    padding: 5px 8px 5px 29px;
+    align-items: center;
+    gap: 12px;
+`
+
+type MyComponentProps = {
+    placeholder: string;
+  };
+
+export const Input = styled.input<MyComponentProps>`
+    width: 100%;
+    height: 17px;
+    border: none;
+
+    &::placeholder {
+        color: #D9D9D9;
+        font-family: "Pretendard Variable";
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: -0.7px;
+  }
+`
+
+export const SendButton = styled.button`
+    width: 43px;
+    height: 43px;
+    background-color: #0ACF83;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #fff;
+    border-radius: 10px;
+`
+export const Send = styled.img`
+    width: 19.17px;
+    height: 19.17px;
+`
+
+// 상사 정보 
 export const Introduction = styled.div`
     display: flex;
     height: 770px;
@@ -35,8 +86,8 @@ export const Introduction = styled.div`
     border: 2px solid #F2F2F2;
     display: flex;
     flex-direction: column;
-    gap: 33px;
-    padding: 41px 25px 0 25px;
+    gap: 40px;
+    padding: 41px 33px 0 33px;
     align-items: center;
 `;
 
@@ -89,4 +140,55 @@ export const age = styled(name)`
 
 export const slash = styled.span`
     stroke: #B2B2B2;
+`
+
+export const BottomWrapper = styled.div`
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+`
+
+export const atr = styled.div`
+    display: flex;
+    width: 100%;
+    height: 80px;
+    align-self: stretch;
+    border-radius: 10px;
+    background: #EAF8F2;
+    align-items: center;
+    gap: 17px;
+    padding-left: 3px;
+`
+
+export const bar = styled.div`
+    width: 6px;
+    height: 70px;
+    border-radius: 10px;
+    background: #3FB98A;
+`
+
+export const FontWrapper = styled.div`
+    width: 240px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 9px;
+`
+
+export const atrTitle = styled.div`
+    color: #404040;
+    font-family: "Pretendard Variable";
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.8px;
+`
+
+export const atrSub = styled(atrTitle)`
+    color: #6A6A6A;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: -0.6px;
 `
