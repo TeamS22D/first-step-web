@@ -24,6 +24,8 @@ export default function Job() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const serverUrl = "http://firsstep.p-e.kr:3000";
+
   const fields: Field[] = [
     {
       id: "developer",
@@ -38,15 +40,9 @@ export default function Job() {
     {
       id: "dataAnaly",
       label: "데이터 분석가",
-      node: (
-        <img src="/assets/Dictionary/dataAnalyst.png" alt="데이터 분석가" />
-      ),
+      node: <img src="/assets/Dictionary/dataAnalyst.png" alt="데이터 분석가" />,
     },
   ];
-  const serverUrl = 'http://firsstep.p-e.kr:3000/';
-
-  const handleSubmit = async () => {
-    if (!selected || loading) return;
 
   const handleSubmit = async () => {
     if (!selected || loading) return;
@@ -55,42 +51,34 @@ export default function Job() {
     let jobCode = selected;
 
     setLoading(true);
+
     try {
-      try {
-        const res = await fetch(`${ serverUrl }/user/job`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization":  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiaWQiOjgsImlhdCI6MTc2NDUwMTg5MX0.lhr8DsqdXfU13bJaEV595bpd9s2x02pdXg9ZIsDoQsU",
-          },
-          body: JSON.stringify({
-        const res = await fetch("/job", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            job: selected,
-          }),
-        });
+      const res = await fetch(`${serverUrl}/user/job`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiaWQiOjgsImlhdCI6MTc2NDUwMTg5MX0.lhr8DsqdXfU13bJaEV595bpd9s2x02pdXg9ZIsDoQsU",
+        },
+        body: JSON.stringify({
+          email,
+          job: selected,
+        }),
+      });
 
-        if (res.ok) {
-          const data: JobResponse = await res.json();
-          jobCode = data.selectedJob?.code ?? selected;
-        } else {
-          console.error("직업 선택 API 실패", res.status);
-        }
-      } catch (err) {
-        console.error("직업 선택 요청 오류", err);
+      if (res.ok) {
+        const data: JobResponse = await res.json();
+        jobCode = data.selectedJob?.code ?? selected;
+      } else {
+        console.error("직업 선택 API 실패:", res.status);
       }
-
-      localStorage.setItem("job", jobCode);
-
-      navigate("/Home");
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      console.error("직업 선택 요청 오류:", err);
     }
+
+    localStorage.setItem("job", jobCode);
+    navigate("/Home");
+    setLoading(false);
   };
 
   return (
@@ -100,7 +88,7 @@ export default function Job() {
       <S.Description>
         <p>안녕하세요. 민선영님.</p>
         <p>
-          첫걸음 서비스 이용을 위해 직업을 선택해주세요. 선택 직군에 맞는
+          첫걸음 서비스 이용을 위해 분야를 선택해주세요. 선택 직군에 맞는
           미션으로 더 나은 서비스를
         </p>
         <p>지원하겠습니다. 저희는 당신의 첫걸음을 응원하고 지지하겠습니다.</p>
@@ -127,9 +115,6 @@ export default function Job() {
         })}
       </S.TopRow>
 
-      <S.BottomRow />
-
-      <LongButton disabled={!selected || loading}>
       <LongButton onClick={handleSubmit} disabled={!selected || loading}>
         {loading ? "저장 중..." : "선택 완료"}
       </LongButton>
