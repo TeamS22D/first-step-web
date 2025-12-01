@@ -68,7 +68,9 @@ export default function Job() {
     }
 
     localStorage.setItem("job", jobCode);
+
     navigate("/Home");
+    
     setLoading(false);
   };
 
