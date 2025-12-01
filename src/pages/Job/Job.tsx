@@ -24,7 +24,7 @@ export default function Job() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const serverUrl = "http://firsstep.p-e.kr:3000";
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
 
   const fields: Field[] = [
     {
