@@ -37,6 +37,8 @@ export default function Occupation() {
     { id: "factory", label: "제조",       node: <img src={factoryPng} alt="제조" /> },
   ];
 
+  const serverUrl = 'http://firsstep.p-e.kr:3000';
+
   const handleSubmit = async () => {
     if (!selected || loading) return;
     const email = localStorage.getItem("email") ?? "test@example.com";
@@ -45,10 +47,11 @@ export default function Occupation() {
     setLoading(true);
     try {
       try {
-        const res = await fetch("/occupation", {
+        const res = await fetch(`${serverUrl}/user/occupation`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization":  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiaWQiOjgsImlhdCI6MTc2NDUwMTg5MX0.lhr8DsqdXfU13bJaEV595bpd9s2x02pdXg9ZIsDoQsU",
           },
           body: JSON.stringify({
             occupation: selected,
