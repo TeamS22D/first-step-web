@@ -37,7 +37,7 @@ export default function Occupation() {
     { id: "factory", label: "제조",       node: <img src={factoryPng} alt="제조" /> },
   ];
 
-  const serverUrl = 'http://firsstep.p-e.kr:3000';
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
 
   const handleSubmit = async () => {
     if (!selected || loading) return;
