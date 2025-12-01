@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./Job.style";
+import axiosInstance from "../../axioslnstance";
 
 import selectPng from "../../assets/Dictionary/select.png";
 import LongButton from "../../components/Buttons/LongButton";
@@ -23,8 +24,6 @@ export default function Job() {
   const [selected, setSelected] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  const serverUrl = import.meta.env.VITE_SERVER_URL;
 
   const fields: Field[] = [
     {
@@ -53,21 +52,13 @@ export default function Job() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${serverUrl}/user/job`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiaWQiOjgsImlhdCI6MTc2NDUwMTg5MX0.lhr8DsqdXfU13bJaEV595bpd9s2x02pdXg9ZIsDoQsU",
-        },
-        body: JSON.stringify({
-          email,
-          job: selected,
-        }),
+      const res = await axiosInstance.post(`/user/job`, {
+        email,
+        job: selected,
       });
 
-      if (res.ok) {
-        const data: JobResponse = await res.json();
+      if (res.status === 200) {
+        const data: JobResponse = await res.data;
         jobCode = data.selectedJob?.code ?? selected;
       } else {
         console.error("직업 선택 API 실패:", res.status);
@@ -77,7 +68,9 @@ export default function Job() {
     }
 
     localStorage.setItem("job", jobCode);
+
     navigate("/Home");
+    
     setLoading(false);
   };
 
