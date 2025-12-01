@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import * as S from "./Job.style";
 
 import selectPng from "../../assets/Dictionary/select.png";
-import LongButton from "../../components/Buttons/LongButton";
+import LongButton from "../Auth/components/LongButton";
 
 type Field = {
   id: string;
@@ -44,6 +44,8 @@ export default function Job() {
     },
   ];
 
+  const serverUrl = 'http://firsstep.p-e.kr:3000/';
+
   const handleSubmit = async () => {
     if (!selected || loading) return;
 
@@ -52,10 +54,11 @@ export default function Job() {
     setLoading(true);
     try {
       try {
-        const res = await fetch("/user/job", {
+        const res = await fetch(`${ serverUrl }/user/job`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization":  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiaWQiOjgsImlhdCI6MTc2NDUwMTg5MX0.lhr8DsqdXfU13bJaEV595bpd9s2x02pdXg9ZIsDoQsU",
           },
           body: JSON.stringify({
             job: selected,
@@ -115,7 +118,7 @@ export default function Job() {
 
       <S.BottomRow />
 
-      <LongButton onClick={handleSubmit} disabled={!selected || loading}>
+      <LongButton disabled={!selected || loading}>
         {loading ? "저장 중..." : "선택 완료"}
       </LongButton>
     </S.Container>
