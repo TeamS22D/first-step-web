@@ -8,8 +8,6 @@ export const Container = styled.div`
     height: 100vh;
 `;
 
-
-
 export const Helper = styled.div`
     width: 100%;
     display: flex;
@@ -21,3 +19,6 @@ export const Helper = styled.div`
     };
 `;
 
+export const Error = styled.span`
+    color: ${(props) => props.theme.error}
+`
