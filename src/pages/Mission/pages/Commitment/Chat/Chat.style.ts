@@ -15,7 +15,7 @@ export const Container = styled.div`
     display: flex;
     height: 770px;
     color: black;
-    width: 75%;
+    width: 100%;
     box-sizing: border-box;
     border: 1px solid;
     border-radius: 10px;
@@ -59,7 +59,7 @@ export const Input = styled.input<MyComponentProps>`
 `
 
 export const SendButton = styled.button`
-    width: 43px;
+    width: 45px;
     height: 43px;
     background-color: #0ACF83;
     display: flex;
@@ -69,7 +69,7 @@ export const SendButton = styled.button`
     border-radius: 10px;
 `
 export const Send = styled.img`
-    width: 19.17px;
+    width: 21.17px;
     height: 19.17px;
 `
 
