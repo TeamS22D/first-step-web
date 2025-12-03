@@ -2,6 +2,8 @@ import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./Occupation.style";
 
+import axiosInstance from "../../axioslnstance"; 
+
 import itPng from "../../assets/Dictionary/it.png";
 import videoPng from "../../assets/Dictionary/video.png";
 import managePng from "../../assets/Dictionary/manage.png";
@@ -44,31 +46,24 @@ export default function Occupation() {
     let occupationCode = selected;
 
     setLoading(true);
-    try {
-      try {
-        const res = await fetch("/occupation", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            occupation: selected,
-          }),
-        });
 
-        if (res.ok) {
-          const data: OccupationResponse = await res.json();
-          occupationCode = data.selectedOccupation?.code ?? selected;
-        } else {
-          console.error("분야 선택 API 실패", res.status);
-        }
-      } catch (err) {
-        console.error("분야 선택 요청 오류", err);
+    try {
+      const res = await axiosInstance.post<OccupationResponse>("/occupation", {
+        email,
+        occupation: selected,
+      });
+
+      if (res.status === 200) {
+        const data = res.data;
+        occupationCode = data.selectedOccupation?.code ?? selected;
+      } else {
+        console.error("분야 선택 API 실패:", res.status);
       }
 
       localStorage.setItem("occupation", occupationCode);
       navigate("/job");
+    } catch (err) {
+      console.error("분야 선택 요청 오류:", err);
     } finally {
       setLoading(false);
     }

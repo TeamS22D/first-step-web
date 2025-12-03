@@ -11,6 +11,8 @@ import {
   CartesianGrid,
 } from "recharts";
 
+import axiosInstance from "../../axioslnstance";
+
 import attendanceImg from "/assets/Profile/attendance.png";
 import percentImg from "/assets/Profile/percent.png";
 
@@ -21,12 +23,26 @@ type HistoryPoint = {
   mail: number;
 };
 
+type HistoryResponse = {
+  range: string;
+  history: HistoryPoint[];
+};
+
+type PercentResponse = {
+  percent: number;
+};
+
 export default function Profile() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("최근 한 달간");
   const [activeTab, setActiveTab] = useState("전체");
 
   const [clickedData, setClickedData] = useState<HistoryPoint | null>(null);
+
+  const [historyData, setHistoryData] = useState<HistoryPoint[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
+
+  const [percent, setPercent] = useState<number | null>(null);
 
   const options = ["최근 한 달간", "최근 일 년간", "최근 일주일간"];
 
@@ -35,46 +51,51 @@ export default function Profile() {
     setOpen(false);
   };
 
-  const data_month: HistoryPoint[] = [
-    { day: "0일",  document: 100, chat: 55, mail: 27 },
-    { day: "5일",  document: 100, chat: 55, mail: 27 },
-    { day: "10일", document: 90,  chat: 45, mail: 35 },
-    { day: "15일", document: 73,  chat: 61, mail: 27 },
-    { day: "20일", document: 85,  chat: 45, mail: 30 },
-    { day: "25일", document: 95,  chat: 52, mail: 37 },
-    { day: "30일", document: 98,  chat: 58, mail: 30 },
-  ];
+  useEffect(() => {
+    const fetchHistory = async () => {
+      setLoadingHistory(true);
 
-  const data_year: HistoryPoint[] = [
-    { day: "2월",  document: 65, chat: 40, mail: 30 },
-    { day: "4월",  document: 70, chat: 45, mail: 35 },
-    { day: "6월",  document: 75, chat: 50, mail: 40 },
-    { day: "8월",  document: 80, chat: 55, mail: 45 },
-    { day: "10월", document: 85, chat: 60, mail: 50 },
-    { day: "12월", document: 90, chat: 65, mail: 55 },
-  ];
+      try {
 
-  const data_week: HistoryPoint[] = [
-    { day: "월", document: 60, chat: 30, mail: 20 },
-    { day: "화", document: 65, chat: 35, mail: 25 },
-    { day: "수", document: 70, chat: 40, mail: 30 },
-    { day: "목", document: 75, chat: 45, mail: 35 },
-    { day: "금", document: 80, chat: 50, mail: 40 },
-    { day: "토", document: 85, chat: 55, mail: 45 },
-    { day: "일", document: 90, chat: 60, mail: 50 },
-  ];
+        const range =
+          selected === "최근 일 년간"
+            ? "year"
+            : selected === "최근 일주일간"
+            ? "week"
+            : "month";
 
-  const getRawData = (): HistoryPoint[] => {
-    if (selected === "최근 일 년간") return data_year;
-    if (selected === "최근 일주일간") return data_week;
-    return data_month;
-  };
+        const res = await axiosInstance.get<HistoryResponse>("/profile/graph", {
+          params: { range },
+        });
 
-  const chartData: HistoryPoint[] = getRawData();
+        setHistoryData(res.data.history);
+        setClickedData(null);
+      } catch (err) {
+        console.error("히스토리 데이터 불러오기 오류:", err);
+        setHistoryData([]); // 에러 시 빈 배열
+      } finally {
+        setLoadingHistory(false);
+      }
+    };
+
+    fetchHistory();
+  }, [selected]);
 
   useEffect(() => {
-    setClickedData(null);
-  }, [selected]);
+    const fetchPercent = async () => {
+      try {
+        const res = await axiosInstance.get<PercentResponse>("/profile/percent");
+        setPercent(res.data.percent);
+      } catch (err) {
+        console.error("상위 퍼센트 불러오기 오류:", err);
+        setPercent(null);
+      }
+    };
+
+    fetchPercent();
+  }, []);
+
+  const chartData: HistoryPoint[] = historyData;
 
   const handleLineClick = (e: any) => {
     if (!e || !e.payload) return;
@@ -89,7 +110,7 @@ export default function Profile() {
   };
 
   const defaultPoint =
-    chartData[chartData.length - 1] ?? (null as any as HistoryPoint | null);
+    chartData.length > 0 ? chartData[chartData.length - 1] : null;
   const current = clickedData ?? defaultPoint;
 
   return (
@@ -145,61 +166,72 @@ export default function Profile() {
             <S.GraphCard>
               <S.CardTitle>기간별 히스토리</S.CardTitle>
 
-              <ResponsiveContainer width="100%" height={280}>
-                <LineChart
-                  data={chartData}
-                  margin={{ top: 10, left: 0, right: 10, bottom: 0 }}
-                >
-                  <CartesianGrid stroke="#eee" vertical={false} />
-                  <XAxis dataKey="day" tick={{ fill: "#555", fontSize: 12 }} />
-                  <YAxis
-                    tick={{ fill: "#555", fontSize: 12 }}
-                    domain={[0, 100]}
-                  />
+              {loadingHistory && <div>히스토리 불러오는 중...</div>}
 
-                  <Tooltip
-                    cursor={false}
-                    formatter={(value: any, name: any) => [
-                      `${value}점`,
-                      name,
-                    ]}
-                  />
+              {!loadingHistory && chartData.length > 0 && (
+                <ResponsiveContainer width="100%" height={280}>
+                  <LineChart
+                    data={chartData}
+                    margin={{ top: 10, left: 0, right: 10, bottom: 0 }}
+                  >
+                    <CartesianGrid stroke="#eee" vertical={false} />
+                    <XAxis
+                      dataKey="day"
+                      tick={{ fill: "#555", fontSize: 12 }}
+                    />
+                    <YAxis
+                      tick={{ fill: "#555", fontSize: 12 }}
+                      domain={[0, 100]}
+                    />
 
-                  <Line
-                    dataKey="document"
-                    name="문서형"
-                    type="monotone"
-                    stroke="#0ACF83"
-                    strokeWidth={3}
-                    dot={{ r: 4 }}
-                    activeDot={{ r: 6 }}
-                    isAnimationActive={false}
-                    onClick={handleLineClick}
-                  />
-                  <Line
-                    dataKey="chat"
-                    name="채팅형"
-                    type="monotone"
-                    stroke="#AF5EFF"
-                    strokeWidth={3}
-                    dot={{ r: 4 }}
-                    activeDot={{ r: 6 }}
-                    isAnimationActive={false}
-                    onClick={handleLineClick}
-                  />
-                  <Line
-                    dataKey="mail"
-                    name="메일형"
-                    type="monotone"
-                    stroke="#0099FF"
-                    strokeWidth={3}
-                    dot={{ r: 4 }}
-                    activeDot={{ r: 6 }}
-                    isAnimationActive={false}
-                    onClick={handleLineClick}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+                    <Tooltip
+                      cursor={false}
+                      formatter={(value: any, name: any) => [
+                        `${value}점`,
+                        name,
+                      ]}
+                    />
+
+                    <Line
+                      dataKey="document"
+                      name="문서형"
+                      type="monotone"
+                      stroke="#0ACF83"
+                      strokeWidth={3}
+                      dot={{ r: 4 }}
+                      activeDot={{ r: 6 }}
+                      isAnimationActive={false}
+                      onClick={handleLineClick}
+                    />
+                    <Line
+                      dataKey="chat"
+                      name="채팅형"
+                      type="monotone"
+                      stroke="#AF5EFF"
+                      strokeWidth={3}
+                      dot={{ r: 4 }}
+                      activeDot={{ r: 6 }}
+                      isAnimationActive={false}
+                      onClick={handleLineClick}
+                    />
+                    <Line
+                      dataKey="mail"
+                      name="메일형"
+                      type="monotone"
+                      stroke="#0099FF"
+                      strokeWidth={3}
+                      dot={{ r: 4 }}
+                      activeDot={{ r: 6 }}
+                      isAnimationActive={false}
+                      onClick={handleLineClick}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              )}
+
+              {!loadingHistory && chartData.length === 0 && (
+                <div>표시할 히스토리 데이터가 없습니다.</div>
+              )}
             </S.GraphCard>
 
             <S.StatsBox>
@@ -232,7 +264,7 @@ export default function Profile() {
               <div>
                 <S.SmallCardTitle>상위</S.SmallCardTitle>
                 <S.ValueRow>
-                  <S.ValueNumber>75</S.ValueNumber>
+                  <S.ValueNumber>{percent ?? "-"}</S.ValueNumber>
                   <S.ValueUnit>%</S.ValueUnit>
                 </S.ValueRow>
               </div>
@@ -246,7 +278,7 @@ export default function Profile() {
                 내용, 단어로 말하고 있는 듯 합니다!!
               </S.LearningText>
 
-              <S.Divider />
+            <S.Divider />
 
               <S.LearningHeader>개선 정도</S.LearningHeader>
               <S.LearningText>
