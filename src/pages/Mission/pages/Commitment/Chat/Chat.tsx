@@ -75,7 +75,7 @@ function ChatBox() {
     const ws = useRef<WebSocket | null>(null);
     const [messages, setMessages] = useState<string[]>([]);
     const [input, setInput] = useState("");
-    const chatUrl = `wss://3da16e6f7c1d.ngrok-free.app/chat/mission1`; // 채팅용 WebSocket
+    const chatUrl = `wss://db3677029113.ngrok-free.app/chat/mission1`; // 채팅용 WebSocket
 
     useEffect(() => {
         ws.current = new WebSocket(chatUrl);
@@ -110,6 +110,7 @@ function ChatBox() {
         if (!input.trim()) return;
         if (ws.current && ws.current.readyState === WebSocket.OPEN) {
             ws.current.send(input);
+
             setMessages((prev) => [...prev.slice(0, ), `나: ${input}`.slice(3, )]); 
             setInput("");
         } else {
@@ -118,17 +119,28 @@ function ChatBox() {
     };
 
     return (
-        <S.Container>
+        <S.Container>            
             <S.Contant>
-                {messages.map((msg, i) => (
-                <S.messageWrapper>
-                    <S.message>
-                        <p key={i}>{msg.slice(0, )}</p> 
-                        {/* 내가 보낸 건 { (3, ) }
-                            받아온 건 { (0, ) } */}
-                    </S.message>
-                </S.messageWrapper>
-                ))}
+                {messages.map((msg, i) => {
+                    if (i % 2 === 1) {
+                        return (
+                            <S.messageWrapper me key={i}>
+                                <S.message me>
+                                    <p>{msg.slice(3, )}</p>
+                                </S.message>
+                            </S.messageWrapper>
+                        )
+                    }
+                    return (
+                        // 서버한테서 받아온 메시지
+                        <S.messageWrapper key={i}> 
+                            <S.message>
+                                <p>{msg.slice(0, )}</p>
+                            </S.message>
+                        </S.messageWrapper>
+                    )
+                })
+                }
             </S.Contant>
 
             <S.InputBox>
