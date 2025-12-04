@@ -5,7 +5,7 @@ export const Image = styled.img`
 `
 
 export const Body = styled.div`
-    width: 68%;
+    width: 75%;
     height: 110%;
     display: flex;
     justify-content: center;
@@ -48,6 +48,7 @@ export const Input = styled.input<MyComponentProps>`
     width: 100%;
     height: 17px;
     border: none;
+    outline: none;
 
     &::placeholder {
         color: #D9D9D9;
@@ -79,7 +80,7 @@ export const Introduction = styled.div`
     height: 770px;
     color: black;
     margin-left: 20px;
-    width: 40%;
+    width: 38%;
     box-sizing: border-box;
     border: 1px solid;
     border-radius: 10px;
