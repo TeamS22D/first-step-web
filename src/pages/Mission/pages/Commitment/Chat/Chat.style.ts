@@ -74,6 +74,35 @@ export const Send = styled.img`
     height: 19.17px;
 `
 
+//chat 메시지 창
+
+interface MeSend {
+    me?: boolean;
+  }
+
+export const messageWrapper = styled.div<MeSend>`
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: ${props => (props.me? "flex-start" : "flex-end")};
+`
+
+export const message = styled.div<MeSend>`
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 10px;
+
+    text-align: center;
+    font-family: "Pretendard Variable";
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.8px;
+
+    background-color: ${props => (props.me? "#3FB98A" : "#FFFFFF")};
+    color: ${props => (props.me? "#FFFFFF" : "#404040")};
+`
+
 // 상사 정보 
 export const Introduction = styled.div`
     display: flex;
@@ -193,3 +222,4 @@ export const atrSub = styled(atrTitle)`
     font-weight: 400;
     letter-spacing: -0.6px;
 `
+

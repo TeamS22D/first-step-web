@@ -1,8 +1,7 @@
 import * as S from './Chat.style'
 import ImageFirm from '@/assets/Mission/ChatFirm.png'
 import ImageSend from '@/assets/Mission/Send.png'
-import React, { useRef, useState} from 'react';
-import useWebSocket from 'react-use-websocket';
+import { useRef, useState} from 'react';
 import { useEffect } from 'react'
 
 
@@ -111,7 +110,7 @@ function ChatBox() {
         if (!input.trim()) return;
         if (ws.current && ws.current.readyState === WebSocket.OPEN) {
             ws.current.send(input);
-            setMessages((prev) => [...prev, `나: ${input}`]); // 내 메시지도 추가
+            setMessages((prev) => [...prev.slice(0, ), `나: ${input}`.slice(3, )]); 
             setInput("");
         } else {
             console.log("WebSocket not open");
@@ -122,7 +121,13 @@ function ChatBox() {
         <S.Container>
             <S.Contant>
                 {messages.map((msg, i) => (
-                    <p key={i}>{msg}</p>
+                <S.messageWrapper>
+                    <S.message>
+                        <p key={i}>{msg.slice(0, )}</p> 
+                        {/* 내가 보낸 건 { (3, ) }
+                            받아온 건 { (0, ) } */}
+                    </S.message>
+                </S.messageWrapper>
                 ))}
             </S.Contant>
 
