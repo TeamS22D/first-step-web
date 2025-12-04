@@ -73,9 +73,14 @@ function Atr() {
 
 function ChatBox() {
     const ws = useRef<WebSocket | null>(null);
-    const [messages, setMessages] = useState<string[]>([]);
+
+    // 메시지를 객체 형태로 관리
+    const [messages, setMessages] = useState<
+        { id: number; sender: "user" | "ai"; text: string }[]
+    >([]);
+
     const [input, setInput] = useState("");
-    const chatUrl = `wss://db3677029113.ngrok-free.app/chat/mission1`; // 채팅용 WebSocket
+    const chatUrl = `wss://b01c72a989e8.ngrok-free.app/chat/mission1`;
 
     useEffect(() => {
         ws.current = new WebSocket(chatUrl);
@@ -85,10 +90,28 @@ function ChatBox() {
         };
 
         ws.current.onmessage = (event) => {
-            console.log("RECEIVED:", event.data);
-            if (event.data) {
-                setMessages((prev) => [...prev, event.data]); // 채팅창에 메시지 추가
-            }
+            const chunk = event.data;
+            console.log("RECEIVED:", chunk);
+
+            if (chunk === "[END_OF_STREAM]") return;
+
+            setMessages((prev) => {
+                const last = prev[prev.length - 1];
+
+                // 이미 ai가 말하는 중이면 이어 붙이기
+                if (last && last.sender === "ai") {
+                    return [
+                        ...prev.slice(0, -1),
+                        { ...last, text: last.text + chunk }
+                    ];
+                }
+
+                // 새로운 ai 메시지 시작
+                return [
+                    ...prev,
+                    { id: Date.now(), sender: "ai", text: chunk }
+                ];
+            });
         };
 
         ws.current.onerror = () => {
@@ -99,7 +122,6 @@ function ChatBox() {
             console.log("Chat WebSocket CLOSED");
         };
 
-        // cleanup
         return () => {
             ws.current?.readyState === 1 && ws.current.close();
         };
@@ -111,7 +133,11 @@ function ChatBox() {
         if (ws.current && ws.current.readyState === WebSocket.OPEN) {
             ws.current.send(input);
 
-            setMessages((prev) => [...prev.slice(0, ), `나: ${input}`.slice(3, )]); 
+            setMessages((prev) => [
+                ...prev,
+                { id: Date.now(), sender: "user", text: input }
+            ]);
+
             setInput("");
         } else {
             console.log("WebSocket not open");
@@ -119,28 +145,27 @@ function ChatBox() {
     };
 
     return (
-        <S.Container>            
+        <S.Container>
             <S.Contant>
-                {messages.map((msg, i) => {
-                    if (i % 2 === 1) {
+                {messages.map((msg) => {
+                    if (msg.sender === "user") {
                         return (
-                            <S.messageWrapper me key={i}>
-                                <S.message me>
-                                    <p>{msg.slice(3, )}</p>
+                            <S.messageWrapper key={msg.id}>
+                                <S.message>
+                                    <p>{msg.text}</p>
                                 </S.message>
                             </S.messageWrapper>
-                        )
+                        );
                     }
+
                     return (
-                        // 서버한테서 받아온 메시지
-                        <S.messageWrapper key={i}> 
-                            <S.message>
-                                <p>{msg.slice(0, )}</p>
+                        <S.messageWrapper me key={msg.id}>
+                            <S.message me >
+                                <span>{msg.text}</span>
                             </S.message>
                         </S.messageWrapper>
-                    )
-                })
-                }
+                    );
+                })}
             </S.Contant>
 
             <S.InputBox>
@@ -156,3 +181,4 @@ function ChatBox() {
         </S.Container>
     );
 }
+

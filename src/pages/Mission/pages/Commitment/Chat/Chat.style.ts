@@ -22,13 +22,20 @@ export const Container = styled.div`
     border: 2px solid #F2F2F2;
     background: #F2F2F2;
     flex-direction: column;
-
     padding: 15px 18px;
+    
+    gap: 20px;
 `;
 
 export const Contant = styled.div`
     width: 100%;
     height: 100%;
+    display: flex;
+    gap: 16px;
+    flex-direction: column-reverse;
+
+    overflow: hidden;
+    overflow-y: auto;
 `
 
 export const InputBox = styled.div`
@@ -92,8 +99,8 @@ export const message = styled.div<MeSend>`
     align-items: center;
     padding: 8px 12px;
     border-radius: 10px;
+    max-width: 350px;
 
-    text-align: center;
     font-family: "Pretendard Variable";
     font-size: 16px;
     font-weight: 500;
