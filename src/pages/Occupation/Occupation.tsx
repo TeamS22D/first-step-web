@@ -48,7 +48,7 @@ export default function Occupation() {
     setLoading(true);
 
     try {
-      const res = await axiosInstance.post<OccupationResponse>("/occupation", {
+      const res = await axiosInstance.post<OccupationResponse>("user/occupation", {
         email,
         occupation: selected,
       });
