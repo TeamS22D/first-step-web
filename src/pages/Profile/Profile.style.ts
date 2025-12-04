@@ -151,7 +151,8 @@ export const SmallCardTitle = styled.div`
 export const ValueRow = styled.div`
   display: flex;
   gap: 4px;
-  align-items: flex-end;
+  align-items: center;
+  margin-top: 6px;
 `;
 
 export const ValueNumber = styled.div`
