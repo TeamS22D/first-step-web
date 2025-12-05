@@ -80,7 +80,7 @@ function ChatBox() {
     >([]);
 
     const [input, setInput] = useState("");
-    const chatUrl = `wss://b01c72a989e8.ngrok-free.app/chat/mission1`;
+    const chatUrl = `wss://5cb80eb4eb1b.ngrok-free.app/chat/mission1`;
 
     useEffect(() => {
         ws.current = new WebSocket(chatUrl);

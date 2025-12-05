@@ -32,7 +32,7 @@ export const Contant = styled.div`
     height: 100%;
     display: flex;
     gap: 16px;
-    flex-direction: column-reverse;
+    flex-direction: column;
 
     overflow: hidden;
     overflow-y: auto;
@@ -104,7 +104,8 @@ export const message = styled.div<MeSend>`
     font-family: "Pretendard Variable";
     font-size: 16px;
     font-weight: 500;
-    letter-spacing: -0.8px;
+    letter-spacing: 1px;
+    line-height: 20px;
 
     background-color: ${props => (props.me? "#3FB98A" : "#FFFFFF")};
     color: ${props => (props.me? "#FFFFFF" : "#404040")};
