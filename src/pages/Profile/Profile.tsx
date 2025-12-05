@@ -16,8 +16,17 @@ import axiosInstance from "../../axioslnstance";
 import attendanceImg from "/assets/Profile/attendance.png";
 import percentImg from "/assets/Profile/percent.png";
 
+// ===== 서버/목업 스위치 =====
+const USE_MOCK = true; // 서버 완성되면 false 로만 바꾸면 됨
+
+// ===== API Endpoints =====
+const ATTENDANCE_ENDPOINT = "/user/attendance";
+const GRAPH_ENDPOINT = "/profile/graph";
+const PERCENT_ENDPOINT = "/profile/percent";
+
+// ===== 타입 정의 (day -> index 로 변경) =====
 type HistoryPoint = {
-  day: string;
+  index: string;  // <--- 기존 day: string 에서 이름만 변경
   document: number;
   chat: number;
   mail: number;
@@ -32,6 +41,41 @@ type PercentResponse = {
   percent: number;
 };
 
+type AttendanceResponse = {
+  message: string;
+  streak: number;
+};
+
+// ===== 목업 데이터 (day -> index) =====
+const MOCK_HISTORY_MONTH: HistoryPoint[] = [
+  { index: "0일", document: 100, chat: 55, mail: 27 },
+  { index: "5일", document: 100, chat: 55, mail: 27 },
+  { index: "10일", document: 90, chat: 45, mail: 35 },
+  { index: "15일", document: 73, chat: 61, mail: 27 },
+  { index: "20일", document: 85, chat: 45, mail: 30 },
+  { index: "25일", document: 95, chat: 52, mail: 37 },
+  { index: "30일", document: 98, chat: 58, mail: 30 },
+];
+
+const MOCK_HISTORY_YEAR: HistoryPoint[] = [
+  { index: "2월", document: 65, chat: 40, mail: 30 },
+  { index: "4월", document: 70, chat: 45, mail: 35 },
+  { index: "6월", document: 75, chat: 50, mail: 40 },
+  { index: "8월", document: 80, chat: 55, mail: 45 },
+  { index: "10월", document: 85, chat: 60, mail: 50 },
+  { index: "12월", document: 90, chat: 65, mail: 55 },
+];
+
+const MOCK_HISTORY_WEEK: HistoryPoint[] = [
+  { index: "월", document: 60, chat: 30, mail: 20 },
+  { index: "화", document: 65, chat: 35, mail: 25 },
+  { index: "수", document: 70, chat: 40, mail: 30 },
+  { index: "목", document: 75, chat: 45, mail: 35 },
+  { index: "금", document: 80, chat: 50, mail: 40 },
+  { index: "토", document: 85, chat: 55, mail: 45 },
+  { index: "일", document: 90, chat: 60, mail: 50 },
+];
+
 export default function Profile() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("최근 한 달간");
@@ -44,6 +88,9 @@ export default function Profile() {
 
   const [percent, setPercent] = useState<number | null>(null);
 
+  const [streak, setStreak] = useState<number | null>(null);
+  const [loadingAttendance, setLoadingAttendance] = useState(false);
+
   const options = ["최근 한 달간", "최근 일 년간", "최근 일주일간"];
 
   const handleSelect = (v: string) => {
@@ -51,12 +98,52 @@ export default function Profile() {
     setOpen(false);
   };
 
+  // ===== 출석체크 / 목업 =====
+  useEffect(() => {
+    const checkAttendance = async () => {
+      if (USE_MOCK) {
+        setStreak(3);
+        return;
+      }
+
+      setLoadingAttendance(true);
+      try {
+        const res = await axiosInstance.post<AttendanceResponse>(
+          ATTENDANCE_ENDPOINT
+        );
+        if (typeof res.data.streak === "number") {
+          setStreak(res.data.streak);
+        } else {
+          setStreak(null);
+          console.warn("attendance 응답에 streak 필드가 없습니다:", res.data);
+        }
+      } catch (err: any) {
+        console.error("출석체크 오류:", err?.response?.data ?? err);
+        setStreak(null);
+      } finally {
+        setLoadingAttendance(false);
+      }
+    };
+
+    checkAttendance();
+  }, []);
+
+  // ===== 히스토리 그래프 / 목업 =====
   useEffect(() => {
     const fetchHistory = async () => {
+      if (USE_MOCK) {
+        let mock: HistoryPoint[];
+        if (selected === "최근 일 년간") mock = MOCK_HISTORY_YEAR;
+        else if (selected === "최근 일주일간") mock = MOCK_HISTORY_WEEK;
+        else mock = MOCK_HISTORY_MONTH;
+
+        setHistoryData(mock);
+        setClickedData(null);
+        return;
+      }
+
       setLoadingHistory(true);
-
       try {
-
         const range =
           selected === "최근 일 년간"
             ? "year"
@@ -64,15 +151,20 @@ export default function Profile() {
             ? "week"
             : "month";
 
-        const res = await axiosInstance.get<HistoryResponse>("/user/profile/graph", {
+        const res = await axiosInstance.get<HistoryResponse>(GRAPH_ENDPOINT, {
           params: { range },
         });
 
-        setHistoryData(res.data.history);
+        if (Array.isArray(res.data.history)) {
+          setHistoryData(res.data.history);
+        } else {
+          setHistoryData([]);
+          console.warn("graph 응답에 history 배열이 없습니다:", res.data);
+        }
         setClickedData(null);
-      } catch (err) {
-        console.error("히스토리 데이터 불러오기 오류:", err);
-        setHistoryData([]); 
+      } catch (err: any) {
+        console.error("히스토리 데이터 불러오기 오류:", err?.response?.data ?? err);
+        setHistoryData([]);
       } finally {
         setLoadingHistory(false);
       }
@@ -81,13 +173,24 @@ export default function Profile() {
     fetchHistory();
   }, [selected]);
 
+  // ===== 상위 퍼센트 / 목업 =====
   useEffect(() => {
     const fetchPercent = async () => {
+      if (USE_MOCK) {
+        setPercent(75);
+        return;
+      }
+
       try {
-        const res = await axiosInstance.get<PercentResponse>("/user/profile/percent");
-        setPercent(res.data.percent);
-      } catch (err) {
-        console.error("상위 퍼센트 불러오기 오류:", err);
+        const res = await axiosInstance.get<PercentResponse>(PERCENT_ENDPOINT);
+        if (typeof res.data.percent === "number") {
+          setPercent(res.data.percent);
+        } else {
+          setPercent(null);
+          console.warn("percent 응답에 percent 필드가 없습니다:", res.data);
+        }
+      } catch (err: any) {
+        console.error("상위 퍼센트 불러오기 오류:", err?.response?.data ?? err);
         setPercent(null);
       }
     };
@@ -102,7 +205,7 @@ export default function Profile() {
     const p = e.payload as HistoryPoint;
 
     setClickedData({
-      day: p.day,
+      index: p.index,
       document: p.document,
       chat: p.chat,
       mail: p.mail,
@@ -154,7 +257,9 @@ export default function Profile() {
             <div>
               <S.SmallCardTitle>연속 학습일</S.SmallCardTitle>
               <S.ValueRow>
-                <S.ValueNumber>1</S.ValueNumber>
+                <S.ValueNumber>
+                  {loadingAttendance ? "-" : streak ?? "-"}
+                </S.ValueNumber>
                 <S.ValueUnit>일</S.ValueUnit>
               </S.ValueRow>
             </div>
@@ -175,8 +280,9 @@ export default function Profile() {
                     margin={{ top: 10, left: 0, right: 10, bottom: 0 }}
                   >
                     <CartesianGrid stroke="#eee" vertical={false} />
+                    {/* ✅ X축 dataKey 도 index 로 변경 */}
                     <XAxis
-                      dataKey="day"
+                      dataKey="index"
                       tick={{ fill: "#555", fontSize: 12 }}
                     />
                     <YAxis
@@ -278,7 +384,7 @@ export default function Profile() {
                 내용, 단어로 말하고 있는 듯 합니다!!
               </S.LearningText>
 
-            <S.Divider />
+              <S.Divider />
 
               <S.LearningHeader>개선 정도</S.LearningHeader>
               <S.LearningText>
