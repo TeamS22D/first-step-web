@@ -64,7 +64,7 @@ export default function Profile() {
             ? "week"
             : "month";
 
-        const res = await axiosInstance.get<HistoryResponse>("user/profile/graph", {
+        const res = await axiosInstance.get<HistoryResponse>("/user/profile/graph", {
           params: { range },
         });
 
@@ -84,7 +84,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchPercent = async () => {
       try {
-        const res = await axiosInstance.get<PercentResponse>("user/profile/percent");
+        const res = await axiosInstance.get<PercentResponse>("/user/profile/percent");
         setPercent(res.data.percent);
       } catch (err) {
         console.error("상위 퍼센트 불러오기 오류:", err);
