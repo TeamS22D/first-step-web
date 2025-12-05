@@ -16,17 +16,14 @@ import axiosInstance from "../../axioslnstance";
 import attendanceImg from "/assets/Profile/attendance.png";
 import percentImg from "/assets/Profile/percent.png";
 
-// ===== 서버/목업 스위치 =====
-const USE_MOCK = true; // 서버 완성되면 false 로만 바꾸면 됨
+const USE_MOCK = true; 
 
-// ===== API Endpoints =====
 const ATTENDANCE_ENDPOINT = "/user/attendance";
 const GRAPH_ENDPOINT = "/profile/graph";
 const PERCENT_ENDPOINT = "/profile/percent";
 
-// ===== 타입 정의 (day -> index 로 변경) =====
 type HistoryPoint = {
-  index: string;  // <--- 기존 day: string 에서 이름만 변경
+  index: string;  
   document: number;
   chat: number;
   mail: number;
@@ -46,7 +43,6 @@ type AttendanceResponse = {
   streak: number;
 };
 
-// ===== 목업 데이터 (day -> index) =====
 const MOCK_HISTORY_MONTH: HistoryPoint[] = [
   { index: "0일", document: 100, chat: 55, mail: 27 },
   { index: "5일", document: 100, chat: 55, mail: 27 },
@@ -98,7 +94,6 @@ export default function Profile() {
     setOpen(false);
   };
 
-  // ===== 출석체크 / 목업 =====
   useEffect(() => {
     const checkAttendance = async () => {
       if (USE_MOCK) {
@@ -128,7 +123,6 @@ export default function Profile() {
     checkAttendance();
   }, []);
 
-  // ===== 히스토리 그래프 / 목업 =====
   useEffect(() => {
     const fetchHistory = async () => {
       if (USE_MOCK) {
@@ -173,11 +167,10 @@ export default function Profile() {
     fetchHistory();
   }, [selected]);
 
-  // ===== 상위 퍼센트 / 목업 =====
   useEffect(() => {
     const fetchPercent = async () => {
       if (USE_MOCK) {
-        setPercent(75);
+        setPercent(70);
         return;
       }
 
@@ -280,7 +273,6 @@ export default function Profile() {
                     margin={{ top: 10, left: 0, right: 10, bottom: 0 }}
                   >
                     <CartesianGrid stroke="#eee" vertical={false} />
-                    {/* ✅ X축 dataKey 도 index 로 변경 */}
                     <XAxis
                       dataKey="index"
                       tick={{ fill: "#555", fontSize: 12 }}
