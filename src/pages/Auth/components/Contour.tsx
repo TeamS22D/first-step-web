@@ -22,7 +22,7 @@ const ContourContainer = styled.div`
             font-size: 12px;
             text-align: center;
         }
-        & > dic {
+        & > div {
             width: 80%;
         }
     }
