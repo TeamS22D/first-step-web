@@ -58,6 +58,7 @@ function Introduction() {
     )
 }
 
+// map 함수로 서버에서 전달한 데이터 만큼
 function Atr() {
     return(
     <S.atr>
@@ -80,9 +81,12 @@ function ChatBox() {
     >([]);
 
     const [input, setInput] = useState("");
-    const chatUrl = `wss://5cb80eb4eb1b.ngrok-free.app/chat/mission1`;
+    const chatUrl = `wss://f81e3c545c4b.ngrok-free.app/chat/mission1`;
 
     useEffect(() => {
+
+
+
         ws.current = new WebSocket(chatUrl);
 
         ws.current.onopen = () => {
@@ -143,6 +147,7 @@ function ChatBox() {
             console.log("WebSocket not open");
         }
     };
+
 
     return (
         <S.Container>
