@@ -46,7 +46,7 @@ const RegisterForm = () => {
           if (error.status === 404 || error.status === 500) {
             alert("서버 에러, 잠시 후 다시 시도해주세요.")
           } else {
-            alert(error.message)
+            alert("회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.")
           }
         });
       } else {
