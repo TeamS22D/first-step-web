@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
     width: 100%;
-    height: 100vh;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,6 +13,9 @@ export const Image = styled.img.attrs({
     width: 50%;
     height: 100%;
     object-fit: cover;
+    @media screen and (max-width: 1300px) {
+        display: none;
+    }
 `;
 
 export const Body = styled.div`
@@ -24,4 +27,7 @@ export const Body = styled.div`
     gap: 35px;
     width: 50%;
     height: 100%;
+    @media screen and (max-width: 1300px) {
+        width: 100%;
+    }
 `;
