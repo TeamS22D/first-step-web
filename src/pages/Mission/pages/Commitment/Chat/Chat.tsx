@@ -1,8 +1,10 @@
 import * as S from './Chat.style'
 import ImageFirm from '@/assets/Mission/ChatFirm.png'
 import ImageSend from '@/assets/Mission/Send.png'
-import { useRef, useState} from 'react';
+import { useContext, useRef, useState} from 'react';
 import { useEffect } from 'react'
+import { MissionFeedbackContext } from '@/components/MissionLayout/MissionLayout';
+import { useNavigate } from 'react-router';
 
 
 interface ImageProps {
@@ -81,11 +83,27 @@ function ChatBox() {
     >([]);
 
     const [input, setInput] = useState("");
+    const stop = useRef(0)
     const chatUrl = `wss://f81e3c545c4b.ngrok-free.app/chat/mission1`;
+
+    const navigate = useNavigate();
+    const ctx = useContext(MissionFeedbackContext);
+    const afterExitBuffer = useRef<string[]>([]);
+    
+    if (!ctx) throw new Error("MissionStep1 must be used inside MissionFeedbackLayout");
+  
 
     useEffect(() => {
 
-
+        ctx.setButtonAction(() => async () => {
+            stop.current = 1;
+            afterExitBuffer.current = [];
+        
+            if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+                ws.current.send("exit");
+            }
+        });
+           
 
         ws.current = new WebSocket(chatUrl);
 
@@ -95,28 +113,50 @@ function ChatBox() {
 
         ws.current.onmessage = (event) => {
             const chunk = event.data;
+        
             console.log("RECEIVED:", chunk);
+        
+            // 평가
+            if (stop.current === 1) {
+        
+                // '[EVAL_END]'면 페이지 이동
+                if (chunk === "[EVAL_END]") {
+                    const feedbackData = afterExitBuffer.current.join("");
+                    console.log("Collected feedback:", feedbackData);
+        
+                    navigate("/missionfeedback", {
+                        state: { feedback: feedbackData }
+                    });
+                    return;
+                }
+        
+                // 아니면 버퍼에 계속 쌓기
+                afterExitBuffer.current.push(chunk);
+                return;
+            }
+        
 
+            // 일반 채팅
             if (chunk === "[END_OF_STREAM]") return;
-
+        
+            // 일반 메시지 처리
             setMessages((prev) => {
                 const last = prev[prev.length - 1];
-
-                // 이미 ai가 말하는 중이면 이어 붙이기
+        
                 if (last && last.sender === "ai") {
                     return [
                         ...prev.slice(0, -1),
                         { ...last, text: last.text + chunk }
                     ];
                 }
-
-                // 새로운 ai 메시지 시작
+        
                 return [
                     ...prev,
                     { id: Date.now(), sender: "ai", text: chunk }
                 ];
             });
         };
+        
 
         ws.current.onerror = () => {
             console.log("Chat WebSocket ERROR");
@@ -129,6 +169,7 @@ function ChatBox() {
         return () => {
             ws.current?.readyState === 1 && ws.current.close();
         };
+
     }, []);
 
     // 메시지 전송

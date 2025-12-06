@@ -4,6 +4,28 @@ import { lightTheme } from "../../../../theme/theme";
 import * as S from './MissionFeedback.style.ts';
 import Graph from "../../components/Graph";
 import StepsComponent from '../../../../components/Step/StepsComponent.tsx'
+import { useLocation } from "react-router";
+import { useEffect } from "react";
+
+export interface EvaluationDetail {
+  good_points: string;
+  improvement_points: string;
+  suggested_fix: string;
+}
+
+export interface EvaluationItem {
+  item: string;
+  score: number;
+  feedback: EvaluationDetail;
+}
+
+export interface FeedbackData {
+  evaluations: EvaluationItem[];
+  total_score: number;
+  grade: string;
+  general_feedback: string;
+}
+
 
 const titleInfo = {
   mainTitle: "[보고서] 업무 보고서 작성",
@@ -120,6 +142,15 @@ export function BottomBox() {
 }
 
 export default function MissionFeedback() {
+
+  const location = useLocation();
+  const feedback = location.state?.feedback as FeedbackData | undefined;
+
+  useEffect(() => {
+      console.log("feedback:", feedback);
+  }, [feedback]);
+
+
   return (
 
     <ThemeProvider theme={lightTheme}>
@@ -138,7 +169,6 @@ export default function MissionFeedback() {
                 </S.Body>
           </S.Container>
           <S.gongback/> 
-          {/* 공백 왜 안될까 ㅜㅜ */}
     </ThemeProvider>
   )
 }
