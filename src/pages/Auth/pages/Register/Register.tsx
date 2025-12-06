@@ -5,7 +5,7 @@ import Input from "../../components/Input";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import * as S from "./Register.style"
 import { useState } from "react";
-import { publicInstance } from "@/hooks/axioslnstance";
+import { publicInstance } from "@/hooks/axiosInstance";
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
@@ -28,6 +28,7 @@ const RegisterForm = () => {
     setError,
     clearErrors,
     watch,
+    trigger,
   } = useForm<RegisterInputs>()
 
   const handleRegister: SubmitHandler<RegisterInputs> = (data) => {
@@ -53,8 +54,12 @@ const RegisterForm = () => {
       }
   }
 
-  const handleEmailVerify = () => {
+  const handleEmailVerify = async () => {
     const email = watch("email")
+    const isVaild = await trigger("email")
+
+    if (!isVaild) return;
+
     publicInstance.post(`${SERVER_URL}/user/check-email`, {
       email: email,
     })
@@ -88,7 +93,7 @@ const RegisterForm = () => {
             {errors.name ? <S.Error>{errors.name.message}</S.Error> : null}
           </Form.InputContainer>
           <Form.InputContainer>
-            <Input.EmailInput label="이메일" type="email" placeholder="이메일을 입력하세요" {...register("email", { 
+            <Input.EmailInput label="이메일" type="text" placeholder="이메일을 입력하세요" {...register("email", { 
               required: "이 필드는 필수 입력 필드입니다.", 
               pattern: {
                 value: emailRegex,

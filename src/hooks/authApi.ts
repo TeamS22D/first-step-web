@@ -1,5 +1,5 @@
 import { deleteCookie, setAccessToken } from "./cookies";
-import { publicInstance } from "./axioslnstance";
+import { publicInstance } from "./axiosInstance";
 
 const SERVER_URL = import.meta.env.VITE_BASE_URL;
 

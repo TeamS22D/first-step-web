@@ -8,7 +8,7 @@ import Input from "../../components/Input";
 import * as Form from "../../components/Form.style";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
-import { publicInstance } from "@/hooks/axioslnstance";
+import { publicInstance } from "@/hooks/axiosInstance";
 import { setAccessToken, setEmail, setRefreshToken, setUserId } from "@/hooks/cookies";
 
 const SERVER_URL = import.meta.env.VITE_BASE_URL;
