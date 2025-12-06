@@ -2,7 +2,7 @@ import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./Occupation.style";
 
-import axiosInstance from "../../axioslnstance"; 
+import axiosInstance from "../../axioslnstance";
 
 import itPng from "../../assets/Dictionary/it.png";
 import videoPng from "../../assets/Dictionary/video.png";
@@ -46,7 +46,6 @@ export default function Occupation() {
     let occupationCode = selected;
 
     setLoading(true);
-
     try {
       const res = await axiosInstance.post<OccupationResponse>("user/occupation", {
         email,
