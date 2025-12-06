@@ -175,8 +175,9 @@ export const BottomHelf = styled.div`
     border-radius: 10px;
     background: #EAF8F2;
 
+
     .TitleContainer{
-        width: 80px;
+        width: 82px;
         height: 25px;
     }
     
@@ -212,14 +213,19 @@ export const BottomRightArea = styled(MiddleGraph)`
     width: 566px;
     height: 344px;
     padding: 36px 34px;
+
+
 `
 
 export const BottomRightAreaContainer = styled.div`
     display: flex;
+    height: 100%;
     width: 498px;
     flex-direction: column;
-    align-items: flex-start;
     gap: 16px;
+
+    max-height: 100%;
+    overflow-y: auto;
 `
 
 export const BottomRightAreaItem = styled.div`
@@ -227,8 +233,8 @@ export const BottomRightAreaItem = styled.div`
     width: 100%;
     height: 80px;
     padding: 5px 1px;
-    align-items: center;
     gap: 17px;
+
 `
 
 export const Bar = styled.div`

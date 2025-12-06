@@ -88,6 +88,7 @@ interface BottomHelpProps {
 }
 export function BottomHelp({ title, content }: BottomHelpProps) {
   return (
+    // 잘한 점 | 보완할 점
     <S.BottomHelf>
       <div className="TitleContainer">
         <div className="Title">{title}</div>
@@ -103,6 +104,7 @@ interface BottomRightAreaItemProps {
 }
 function BottomRightAreaItem({ title, sub }: BottomRightAreaItemProps) {
   return (
+    // 세부 영역별 피드백
     <S.BottomRightAreaItem>
       <S.Bar />
       <S.ItemContent>
@@ -117,19 +119,28 @@ export function BottomBox({ data }: { data?: FeedbackData }) {
   return (
     <S.BottomContainer>
       <S.BottomLeftContainer>
-        {bottomLeftHelps.map((_item, idx) => (
-          <BottomHelp key={idx} title={data?.evaluations[idx].item} content={data?.evaluations[idx].feedback.good_points} />
+        {data?.evaluations.map((ev, idx) => (
+          <BottomHelp
+            key={idx}
+            title={ev.item}
+            content={ev.feedback.good_points}
+          />
         ))}
       </S.BottomLeftContainer>
+
       <S.BottomRightArea>
         <S.BottomRightAreaContainer>
-          {bottomRightItems.map((_item, idx) => (
-            <BottomRightAreaItem key={idx} title={data?.evaluations[idx].item} sub={data?.evaluations[idx].feedback.improvement_points} />
+          {data?.evaluations.map((ev, idx) => (
+            <BottomRightAreaItem
+              key={idx}
+              title={ev.item}
+              sub={ev.feedback.improvement_points}
+            />
           ))}
         </S.BottomRightAreaContainer>
       </S.BottomRightArea>
     </S.BottomContainer>
-  )
+  );
 }
 
 export default function MissionFeedback() {
