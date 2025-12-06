@@ -7,7 +7,7 @@ import * as S from "./Register.style"
 import { useState } from "react";
 import { publicInstance } from "@/hooks/axiosInstance";
 
-const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+const SERVER_URL = import.meta.env.VITE_BASE_URL;
 
 type RegisterInputs = {
   name: string;
