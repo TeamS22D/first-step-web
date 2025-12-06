@@ -116,30 +116,40 @@ function ChatBox() {
         
             console.log("RECEIVED:", chunk);
         
-            // 평가
+            // 평가 모드
             if (stop.current === 1) {
         
-                // '[EVAL_END]'면 페이지 이동
-                if (chunk === "[EVAL_END]") {
-                    const feedbackData = afterExitBuffer.current.join("");
-                    console.log("Collected feedback:", feedbackData);
-        
-                    navigate("/missionfeedback", {
-                        state: { feedback: feedbackData }
-                    });
+                // EVAL_START 버퍼 비우기
+                if (chunk === "[EVAL_START]") {
+                    afterExitBuffer.current = [];
                     return;
                 }
         
-                // 아니면 버퍼에 계속 쌓기
+                // EVAL_END JSON 파싱하고 이동
+                if (chunk === "[EVAL_END]") {
+                    try {
+                        const jsonText = afterExitBuffer.current.join("");
+                        const feedbackData = JSON.parse(jsonText);
+        
+                        console.log("Collected feedback:", feedbackData);
+        
+                        navigate("/missionfeedback", {
+                            state: { feedback: feedbackData }
+                        });
+                    } catch (err) {
+                        console.error("JSON parse error:", err);
+                    }
+                    return;
+                }
+        
+                // JSON 문자열만 
                 afterExitBuffer.current.push(chunk);
                 return;
             }
         
-
-            // 일반 채팅
+            // 일반 채팅 처리
             if (chunk === "[END_OF_STREAM]") return;
         
-            // 일반 메시지 처리
             setMessages((prev) => {
                 const last = prev[prev.length - 1];
         
@@ -156,6 +166,7 @@ function ChatBox() {
                 ];
             });
         };
+        
         
 
         ws.current.onerror = () => {

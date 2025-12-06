@@ -8,24 +8,24 @@ import { useLocation } from "react-router";
 import { useEffect } from "react";
 
 export interface EvaluationDetail {
-  good_points: string;
-  improvement_points: string;
-  suggested_fix: string;
+    good_points: string;
+    improvement_points: string;
+    suggested_fix: string;
 }
 
 export interface EvaluationItem {
-  item: string;
-  score: number;
-  feedback: EvaluationDetail;
+    item: string;
+    score: number;
+    feedback: EvaluationDetail;
+
 }
 
 export interface FeedbackData {
-  evaluations: EvaluationItem[];
-  total_score: number;
-  grade: string;
-  general_feedback: string;
+    evaluations: EvaluationItem[];
+    total_score: number;
+    grade: string;
+    general_feedback: string;
 }
-
 
 const titleInfo = {
   mainTitle: "[보고서] 업무 보고서 작성",
@@ -33,11 +33,6 @@ const titleInfo = {
   date: "2024-11-04",
   target: "다른 회사로부터 외주 개발 프로젝트를 더 예의있게 보내는 실습"
 };
-
-const feedbackText = `양식 확인 부분과 구조 명확성 부분이 100점으로 만점을 받았습니다. 
-하지만 내용 충족이나 단어, 언어 표현 부분에서 비교적 낮은 점수를 받았습니다.
-
-지난 미션보다 2% 상승하였습니다. 부족한 부분의 역량을 조금 더 키워나가면 더 좋은 직원이 되실 수 있으실 것입니다~! 만점을 받기 위하여 아자아자!!`;
 
 const bottomLeftHelps = [
   {
@@ -73,11 +68,7 @@ export function TitleBox() {
   )
 }
 
-interface MiddleBoxProps {
-  feedback: string;
-}
-
-export function MiddleBox({ feedback }: MiddleBoxProps) {
+export function MiddleBox({ data }: { data?: FeedbackData }) {
   return (
     <S.MiddleContainer>
       <S.MiddleGraph>
@@ -85,15 +76,15 @@ export function MiddleBox({ feedback }: MiddleBoxProps) {
       </S.MiddleGraph>
       <S.MiddleEvaluation>
         <S.MiddleRatingContainer />
-        <S.MiddleRatingTextarea>{feedback}</S.MiddleRatingTextarea>
+        <S.MiddleRatingTextarea>{data?.general_feedback}</S.MiddleRatingTextarea>
       </S.MiddleEvaluation>
     </S.MiddleContainer>
   )
 }
 
 interface BottomHelpProps {
-  title: string;
-  content: string;
+  title: string | undefined;
+  content: string | undefined;
 }
 export function BottomHelp({ title, content }: BottomHelpProps) {
   return (
@@ -107,8 +98,8 @@ export function BottomHelp({ title, content }: BottomHelpProps) {
 }
 
 interface BottomRightAreaItemProps {
-  title: string;
-  sub: string;
+  title: string | undefined;
+  sub: string | undefined;
 }
 function BottomRightAreaItem({ title, sub }: BottomRightAreaItemProps) {
   return (
@@ -122,18 +113,18 @@ function BottomRightAreaItem({ title, sub }: BottomRightAreaItemProps) {
   )
 }
 
-export function BottomBox() {
+export function BottomBox({ data }: { data?: FeedbackData }) {
   return (
     <S.BottomContainer>
       <S.BottomLeftContainer>
-        {bottomLeftHelps.map((item, idx) => (
-          <BottomHelp key={idx} title={item.title} content={item.content} />
+        {bottomLeftHelps.map((_item, idx) => (
+          <BottomHelp key={idx} title={data?.evaluations[idx].item} content={data?.evaluations[idx].feedback.good_points} />
         ))}
       </S.BottomLeftContainer>
       <S.BottomRightArea>
         <S.BottomRightAreaContainer>
-          {bottomRightItems.map((item, idx) => (
-            <BottomRightAreaItem key={idx} title={item.title} sub={item.sub} />
+          {bottomRightItems.map((_item, idx) => (
+            <BottomRightAreaItem key={idx} title={data?.evaluations[idx].item} sub={data?.evaluations[idx].feedback.improvement_points} />
           ))}
         </S.BottomRightAreaContainer>
       </S.BottomRightArea>
@@ -161,8 +152,8 @@ export default function MissionFeedback() {
               </S.TopContainer>
                 <S.Body>
                   <TitleBox />
-                  <MiddleBox feedback={feedbackText} />
-                  <BottomBox />
+                  <MiddleBox data={feedback} />
+                  <BottomBox data={feedback} />
                   <S.buttoncontainer>
                     <S.backButton>돌아가기</S.backButton>
                   </S.buttoncontainer>

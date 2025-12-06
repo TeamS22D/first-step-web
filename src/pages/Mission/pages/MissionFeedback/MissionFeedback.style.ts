@@ -162,6 +162,7 @@ export const BottomLeftContainer = styled.div`
     height: 100%;
     flex-direction: column;
     gap: 34px;
+    overflow-y: scroll;
 `
 export const BottomHelf = styled.div`
     width: 100%;
