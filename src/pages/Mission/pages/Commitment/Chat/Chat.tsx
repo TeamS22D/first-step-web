@@ -90,6 +90,14 @@ function ChatBox() {
     const ctx = useContext(MissionFeedbackContext);
     const afterExitBuffer = useRef<string[]>([]);
     
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.nativeEvent.isComposing) return;
+
+        if (e.key === "Enter") {
+          sendMessage();
+        }
+      };
+
     if (!ctx) throw new Error("MissionStep1 must be used inside MissionFeedbackLayout");
   
 
@@ -240,6 +248,7 @@ function ChatBox() {
                     placeholder="내용을 입력해주세요."
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={handleKeyPress}
                 />
                 <S.SendButton onClick={sendMessage}>
                     <Send src={ImageSend} alt="" />
