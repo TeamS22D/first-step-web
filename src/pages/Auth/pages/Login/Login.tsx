@@ -30,7 +30,7 @@ const LoginForm = () => {
   const [error, setError] = useState("");
 
   const onSubmit:SubmitHandler<LoginInputs> = (data) => {
-    publicInstance.post(`${SERVER_URL}/auth/signin`, {
+    publicInstance.post(`/auth/signin`, {
       email: data.email,
       password: data.password
     })
