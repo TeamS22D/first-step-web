@@ -45,7 +45,7 @@ const LoginForm = () => {
       navigator("/");
     })
     .catch(function (error) {
-      if (error.status === 401) {
+      if (error.status === 401 || error.status === 400) {
         setError("이메일 또는 비밀번호를 확인해 주십시오.")
       } else {
         if (error.status === 500) {
