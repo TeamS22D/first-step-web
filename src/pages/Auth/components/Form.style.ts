@@ -17,3 +17,9 @@ export const FormContainer = styled.div`
     flex-direction: column;
     gap: 16px;
 `;
+
+export const InputContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 4pz;
+`

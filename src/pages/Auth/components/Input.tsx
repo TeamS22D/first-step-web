@@ -1,5 +1,6 @@
 import type { ChangeEvent } from "react";
 import styled from "styled-components";
+import { forwardRef } from "react";
 
 const InputContainer = styled.div`
     display: flex;
@@ -55,35 +56,46 @@ const VerifyButton = styled.button`
 
 interface InputProps {
     label: string;
-    type: string;
+    type?: string;
     placeholder: string;
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
     onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
-function Input(props: InputProps) {
+
+const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     return (
         <InputContainer>
             <Label>{props.label}</Label>
             <InputBox>
-                <InputTag type={props.type} onChange={props.onChange} placeholder={props.placeholder}/>
+                <InputTag 
+                    ref={ref} 
+                    {...props} 
+                />
             </InputBox>
         </InputContainer>
-    )
-};
+    );
+});
 
-function EmailInput(props: InputProps) {
+const EmailInput = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+    const { onClick, label, ...rest } = props;
+
     return (
         <InputContainer>
-            <Label>{props.label}</Label>
+            <Label>{label}</Label>
             <VerifyBox>
                 <InputBox>
-                    <InputTag type={props.type} onChange={props.onChange} placeholder={props.placeholder}/>
+                    <InputTag 
+                        ref={ref} 
+                        {...rest}
+                    />
                 </InputBox>
-                <VerifyButton onClick={props.onClick} type="button">중복확인</VerifyButton>
+                <VerifyButton onClick={onClick} type="button">
+                    중복확인
+                </VerifyButton>
             </VerifyBox>
         </InputContainer>
-    )
-}
+    );
+});
 
 export default {Input, EmailInput};
