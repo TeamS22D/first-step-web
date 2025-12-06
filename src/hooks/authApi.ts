@@ -1,8 +1,6 @@
 import { deleteCookie, setAccessToken } from "./cookies";
 import { publicInstance } from "./axiosInstance";
 
-const SERVER_URL = import.meta.env.VITE_BASE_URL;
-
 export const tokenRefresh = async (token: string, userId: string) => { //refreshToken으로 accessToken 재발급
   try {
     const response = await publicInstance.post(`/auth/refresh`, {

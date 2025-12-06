@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { tokenRefresh } from "@/hooks/authApi";
 
 function Layout() {
-    const navigator = useNavigate();
+    const navigate = useNavigate();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const checkLogin = async () => {
@@ -34,12 +34,12 @@ function Layout() {
             setIsAuthenticated(isLoggedIn);
 
             if (!isLoggedIn) {
-                navigator("/auth/login");
+                navigate("/auth/login");
             }
         }
 
         verify();
-    }, [navigator])
+    }, [navigate])
 
     if(!isAuthenticated) {
         return (
