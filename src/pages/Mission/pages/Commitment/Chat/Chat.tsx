@@ -84,7 +84,7 @@ function ChatBox() {
 
     const [input, setInput] = useState("");
     const stop = useRef(0)
-    const chatUrl = `wss://f81e3c545c4b.ngrok-free.app/chat/mission1`;
+    const chatUrl = `wss://13183468b110.ngrok-free.app/chat/mission1`;
 
     const navigate = useNavigate();
     const ctx = useContext(MissionFeedbackContext);
@@ -114,18 +114,16 @@ function ChatBox() {
         ws.current.onmessage = (event) => {
             const chunk = event.data;
         
-            console.log("RECEIVED:", chunk);
-        
-            // 평가 모드
+            // 평가
             if (stop.current === 1) {
         
-                // EVAL_START 버퍼 비우기
+                // 버퍼 초기화
                 if (chunk === "[EVAL_START]") {
                     afterExitBuffer.current = [];
                     return;
                 }
         
-                // EVAL_END JSON 파싱하고 이동
+                //  "[EVAL_END]"이면 JSON 파싱 및 페이지 이동
                 if (chunk === "[EVAL_END]") {
                     try {
                         const jsonText = afterExitBuffer.current.join("");
@@ -139,15 +137,26 @@ function ChatBox() {
                     } catch (err) {
                         console.error("JSON parse error:", err);
                     }
+        
+                    afterExitBuffer.current = [];
+                    return; 
+                }
+        
+                // JSON chunk만 push
+                try {
+                    JSON.parse(chunk);
+                    afterExitBuffer.current.push(chunk);
+                } catch {
+                    // JSON 아니면 무시
                     return;
                 }
         
-                // JSON 문자열만 
-                afterExitBuffer.current.push(chunk);
-                return;
+                return; 
             }
         
-            // 일반 채팅 처리
+            
+            // 일반 채팅 
+        
             if (chunk === "[END_OF_STREAM]") return;
         
             setMessages((prev) => {
@@ -166,7 +175,7 @@ function ChatBox() {
                 ];
             });
         };
-        
+                
         
 
         ws.current.onerror = () => {
