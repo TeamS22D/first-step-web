@@ -11,7 +11,8 @@ import {
   CartesianGrid,
 } from "recharts";
 
-import axiosInstance from "../../axioslnstance";
+import axiosInstance from "../../hooks/axiosInstance";
+import { getCookie } from "../../hooks/cookies";
 
 import attendanceImg from "/assets/Profile/attendance.png";
 import percentImg from "/assets/Profile/percent.png";
@@ -23,7 +24,7 @@ const GRAPH_ENDPOINT = "/profile/graph";
 const PERCENT_ENDPOINT = "/profile/percent";
 
 type HistoryPoint = {
-  index: string;  
+  index: string;
   document: number;
   chat: number;
   mail: number;
@@ -101,10 +102,18 @@ export default function Profile() {
         return;
       }
 
+      const email = getCookie("email");
+      if (!email) {
+        console.error("attendance: email 쿠키가 없습니다.");
+        setStreak(null);
+        return;
+      }
+
       setLoadingAttendance(true);
       try {
         const res = await axiosInstance.post<AttendanceResponse>(
-          ATTENDANCE_ENDPOINT
+          ATTENDANCE_ENDPOINT,
+          { email }
         );
         if (typeof res.data.streak === "number") {
           setStreak(res.data.streak);
@@ -136,6 +145,13 @@ export default function Profile() {
         return;
       }
 
+      const email = getCookie("email");
+      if (!email) {
+        console.error("graph: email 쿠키가 없습니다.");
+        setHistoryData([]);
+        return;
+      }
+
       setLoadingHistory(true);
       try {
         const range =
@@ -146,7 +162,7 @@ export default function Profile() {
             : "month";
 
         const res = await axiosInstance.get<HistoryResponse>(GRAPH_ENDPOINT, {
-          params: { range },
+          params: { range, email },
         });
 
         if (Array.isArray(res.data.history)) {
@@ -157,7 +173,10 @@ export default function Profile() {
         }
         setClickedData(null);
       } catch (err: any) {
-        console.error("히스토리 데이터 불러오기 오류:", err?.response?.data ?? err);
+        console.error(
+          "히스토리 데이터 불러오기 오류:",
+          err?.response?.data ?? err
+        );
         setHistoryData([]);
       } finally {
         setLoadingHistory(false);
@@ -174,8 +193,17 @@ export default function Profile() {
         return;
       }
 
+      const email = getCookie("email");
+      if (!email) {
+        console.error("percent: email 쿠키가 없습니다.");
+        setPercent(null);
+        return;
+      }
+
       try {
-        const res = await axiosInstance.get<PercentResponse>(PERCENT_ENDPOINT);
+        const res = await axiosInstance.get<PercentResponse>(PERCENT_ENDPOINT, {
+          params: { email }, 
+        });
         if (typeof res.data.percent === "number") {
           setPercent(res.data.percent);
         } else {
@@ -183,7 +211,10 @@ export default function Profile() {
           console.warn("percent 응답에 percent 필드가 없습니다:", res.data);
         }
       } catch (err: any) {
-        console.error("상위 퍼센트 불러오기 오류:", err?.response?.data ?? err);
+        console.error(
+          "상위 퍼센트 불러오기 오류:",
+          err?.response?.data ?? err
+        );
         setPercent(null);
       }
     };

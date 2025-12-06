@@ -1,7 +1,9 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./Job.style";
+
 import axiosInstance from "../../hooks/axiosInstance";
+import { getCookie } from "../../hooks/cookies";
 
 import selectPng from "../../assets/Dictionary/select.png";
 import LongButton from "../../components/Buttons/LongButton";
@@ -46,19 +48,20 @@ export default function Job() {
   const handleSubmit = async () => {
     if (!selected || loading) return;
 
-    const email = localStorage.getItem("email") ?? "test@example.com";
-    let jobCode = selected;
+    const emailFromCookie = getCookie("email");
+    const email = emailFromCookie ?? "test@example.com";
 
+    let jobCode = selected;
     setLoading(true);
 
     try {
-      const res = await axiosInstance.post(`/user/job`, {
+      const res = await axiosInstance.post<JobResponse>("/user/job", {
         email,
         job: selected,
       });
 
       if (res.status === 200) {
-        const data: JobResponse = await res.data;
+        const data = res.data;
         jobCode = data.selectedJob?.code ?? selected;
       } else {
         console.error("직업 선택 API 실패:", res.status);
@@ -68,9 +71,7 @@ export default function Job() {
     }
 
     localStorage.setItem("job", jobCode);
-
     navigate("/Home");
-    
     setLoading(false);
   };
 

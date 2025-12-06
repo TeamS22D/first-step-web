@@ -2,7 +2,8 @@ import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./Occupation.style";
 
-import axiosInstance from "../../axioslnstance";
+import axiosInstance from "../../hooks/axiosInstance";
+import { getCookie } from "../../hooks/cookies";
 
 import itPng from "../../assets/Dictionary/it.png";
 import videoPng from "../../assets/Dictionary/video.png";
@@ -42,15 +43,20 @@ export default function Occupation() {
   const handleSubmit = async () => {
     if (!selected || loading) return;
 
-    const email = localStorage.getItem("email") ?? "test@example.com";
+    const emailFromCookie = getCookie("email");
+    const email = emailFromCookie ?? "test@example.com";
+
     let occupationCode = selected;
 
     setLoading(true);
     try {
-      const res = await axiosInstance.post<OccupationResponse>("user/occupation", {
-        email,
-        occupation: selected,
-      });
+      const res = await axiosInstance.post<OccupationResponse>(
+        "/user/occupation",
+        {
+          email,
+          occupation: selected,
+        }
+      );
 
       if (res.status === 200) {
         const data = res.data;
