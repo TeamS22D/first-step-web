@@ -56,9 +56,9 @@ const RegisterForm = () => {
 
   const handleEmailVerify = async () => {
     const email = watch("email")
-    const isVaild = await trigger("email")
+    const isValid = await trigger("email")
 
-    if (!isVaild) return;
+    if (!isValid) return;
 
     publicInstance.post(`/user/check-email`, {
       email: email,
