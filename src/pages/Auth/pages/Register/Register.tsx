@@ -2,10 +2,10 @@ import Title from "../../components/Title";
 import * as Form from "../../components/Form.style";
 import SubmitButton from "../../components/SubmitButton";
 import Input from "../../components/Input";
-import axios from "axios";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import * as S from "./Register.style"
 import { useState } from "react";
+import { publicInstance } from "@/hooks/axioslnstance";
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
@@ -31,39 +31,45 @@ const RegisterForm = () => {
   } = useForm<RegisterInputs>()
 
   const handleRegister: SubmitHandler<RegisterInputs> = (data) => {
-    axios.post(`${SERVER_URL}/user/signup`, {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      checkPassword: data.passwordConfirm,
-    })
-      .then(function (response) {
-        console.log(response)
+    if (isEmailVerified) {
+      publicInstance.post(`${SERVER_URL}/user/signup`, {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        checkPassword: data.passwordConfirm,
       })
-      .catch(function (error) {
-        console.log(error)
-      });
+        .then(() => {
+          window.location.replace("/auth/login")
+        })
+        .catch((error) => {
+          if (error.status === 404 || error.status === 500) {
+            alert("서버 에러, 잠시 후 다시 시도해주세요.")
+          } else {
+            alert(error.message)
+          }
+        });
+      } else {
+        alert("이메일 중복 확인을 진행해주세요.")
+      }
   }
 
   const handleEmailVerify = () => {
     const email = watch("email")
-    axios.post(`${SERVER_URL}/user/check-email`, {
+    publicInstance.post(`${SERVER_URL}/user/check-email`, {
       email: email,
     })
-      .then(function (response) {
+      .then((response) => {
         if (response.status === 200) {
           clearErrors("email");
           setIsEmailVeryfied(true);
-          console.log(response)
         }
       })
-      .catch(function (error) {
-        if (error.status --- 409 || error.response.status) {
+      .catch((error) => {
+        if (error.status === 409) {
           setError("email", {type: "custom", message: "이미 사용중인 이메일입니다."})
         } else {
-          setError("email", {type: "custom", message: "이메일 확인에 실패했습니다. 점사 후 다시 시도하세요."})
+          setError("email", {type: "custom", message: "이메일 확인에 실패했습니다. 잠시 후 다시 시도하세요."})
         }
-        console.log(error)
       });
   }
 

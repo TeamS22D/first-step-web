@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./Job.style";
-import axiosInstance from "../../axioslnstance";
+import axiosInstance from "../../hooks/axioslnstance";
 
 import selectPng from "../../assets/Dictionary/select.png";
 import LongButton from "../../components/Buttons/LongButton";

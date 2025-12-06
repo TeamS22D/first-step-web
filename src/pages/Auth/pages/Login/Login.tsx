@@ -1,17 +1,17 @@
 import * as S from "./Login.style";
 import { useState } from "react";
-import axios from "axios";
 import Title from "../../components/Title";
 import SubmitButton from "../../components/SubmitButton";
 import Social from "../../components/Social";
 import Contour from "../../components/Contour";
 import Input from "../../components/Input";
 import * as Form from "../../components/Form.style";
-import { UserApi } from "@/hooks/Auth/AuthAPI";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { publicInstance } from "@/hooks/axioslnstance";
+import { setAccessToken, setEmail, setRefreshToken, setUserId } from "@/hooks/cookies";
 
-const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+const SERVER_URL = import.meta.env.VITE_BASE_URL;
 
 type LoginInputs = {
   email: string,
@@ -19,6 +19,8 @@ type LoginInputs = {
 }
 
 const LoginForm = () => {
+  const navigator = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -28,36 +30,43 @@ const LoginForm = () => {
   const [error, setError] = useState("");
 
   const onSubmit:SubmitHandler<LoginInputs> = (data) => {
-    UserApi.post(`${SERVER_URL}/auth/signin`, {
+    publicInstance.post(`${SERVER_URL}/auth/signin`, {
       email: data.email,
       password: data.password
     })
     .then(function (response) {
-      console.log(response);
+      setAccessToken(response.data.accessToken);
+      setRefreshToken(response.data.refreshToken);
+      setEmail(response.data.email);
+      setUserId(response.data.userId)
+      navigator("/");
     })
     .catch(function (error) {
       if (error.status === 401) {
         setError("이메일 또는 비밀번호를 확인해 주십시오.")
+      } else {
+        if (error.status === 500) {
+          alert("서버 에러, 잠시 후 다시 시도해주세요.")
+        } else {
+          alert(`${error.status}, 잠시 후 다시 시도해주세요.`)
+        }
       }
-      console.log("error", error);
     });
   }
-
-  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
   return (
     <Form.Form onSubmit={handleSubmit(onSubmit)}>
       <Form.ElementContainer>
         <Form.FormContainer>
           <Form.InputContainer>
-            <Input.Input label="이메일" placeholder="이메일을 입력하세요" {...register("email", {required: true, pattern: emailRegex})} />
-            {errors.email?.type === "required" ? <S.Error>이메일을 입력해주세요.</S.Error> : null}
-            {errors.email?.type === "pattern" ? <S.Error>유효한 이메일을 입력해주세요.</S.Error> : null}
+            <Input.Input label="이메일" placeholder="이메일을 입력하세요" {...register("email", {required: "이메일을 입력해주세요."})} />
+            {errors.email ? <S.Error>{errors.email.message}</S.Error> : null}
           </Form.InputContainer>
           <Form.InputContainer>
-            <Input.Input label="비밀번호" type="password" placeholder="비밀번호를 입력하세요" {...register("password", {required: true})} />
-            {error ? <S.Error>{error}</S.Error> : null}
+            <Input.Input label="비밀번호" type="password" placeholder="비밀번호를 입력하세요" {...register("password", {required: "비밀번호를 입력해주세요."})} />
+            {errors.password ? <S.Error>{errors.password.message}</S.Error> : null}
           </Form.InputContainer>
+          {error ? <S.Error>{error}</S.Error> : null}
         </Form.FormContainer>
         <S.Helper>
           <Link to="/auth/register">회원가입</Link>
