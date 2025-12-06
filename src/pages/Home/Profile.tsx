@@ -2,6 +2,7 @@ import { Label } from "@/components/Text/Text.style";
 import * as S from "./styles/Profile.style";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { logout } from "@/hooks/authApi";
 
 interface IProfileProps {
     name: string;
@@ -39,7 +40,7 @@ function Profile() {
                     </S.PersonalInfo>
                 </S.Info>
             </S.Profile>
-            <S.LogoutBtn>로그아웃</S.LogoutBtn>
+            <S.LogoutBtn onClick={logout}>로그아웃</S.LogoutBtn>
         </S.ProfileContainer>
     )
 }

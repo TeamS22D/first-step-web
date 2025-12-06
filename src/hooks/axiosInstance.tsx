@@ -1,6 +1,6 @@
 import axios from "axios";
 import { deleteCookie, getCookie } from "./cookies";
-import { tokenRefresh } from "./authApi";
+import { logout, tokenRefresh } from "./authApi";
 
 
 export const publicInstance = axios.create({ //로그인 등 토큰 필요 없는 경우
@@ -40,11 +40,7 @@ axiosInstance.interceptors.request.use( //axios 인스턴스 설정
           config.headers["Authorization"] = `Bearer ${newToken}`;
         }
       } else { //로그인 페이지로 이동
-        deleteCookie("accessToken");
-        deleteCookie("refreshToken");
-        deleteCookie("email")
-        deleteCookie("userId")
-        window.location.replace("/auth/login");
+        logout();
       }
     }
     return config;

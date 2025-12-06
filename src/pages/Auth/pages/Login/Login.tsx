@@ -1,5 +1,5 @@
 import * as S from "./Login.style";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Title from "../../components/Title";
 import SubmitButton from "../../components/SubmitButton";
 import Social from "../../components/Social";
@@ -10,6 +10,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { publicInstance } from "@/hooks/axiosInstance";
 import { setAccessToken, setEmail, setRefreshToken, setUserId } from "@/hooks/cookies";
+import { loggedInUserRedirect } from "@/hooks/authApi";
 
 type LoginInputs = {
   email: string,
@@ -18,6 +19,10 @@ type LoginInputs = {
 
 const LoginForm = () => {
   const navigator = useNavigate();
+
+  useEffect(() => {
+    loggedInUserRedirect();
+  }, [])
 
   const {
     register,
@@ -51,6 +56,7 @@ const LoginForm = () => {
       }
     });
   }
+
 
   return (
     <Form.Form onSubmit={handleSubmit(onSubmit)}>

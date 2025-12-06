@@ -4,8 +4,9 @@ import SubmitButton from "../../components/SubmitButton";
 import Input from "../../components/Input";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import * as S from "./Register.style"
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { publicInstance } from "@/hooks/axiosInstance";
+import { loggedInUserRedirect } from "@/hooks/authApi";
 
 type RegisterInputs = {
   name: string;
@@ -19,6 +20,10 @@ const RegisterForm = () => {
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{7,20}$/;
   const [isEmailVerified, setIsEmailVerified] = useState(false)
   const [verifiedEmail, setVerifiedEmail] = useState("");
+  
+  useEffect(() => {
+    loggedInUserRedirect()
+  }, [])
 
   const {
     register,
@@ -78,6 +83,7 @@ const RegisterForm = () => {
         }
       });
   }
+
 
   return (
     <Form.Form onSubmit={handleSubmit(handleRegister)}>
