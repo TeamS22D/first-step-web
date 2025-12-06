@@ -171,6 +171,7 @@ function ChatBox() {
 
         ws.current.onerror = () => {
             console.log("Chat WebSocket ERROR");
+            alert('WebSocket Error')
         };
 
         ws.current.onclose = () => {
