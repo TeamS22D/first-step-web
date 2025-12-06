@@ -33,7 +33,7 @@ const RegisterForm = () => {
 
   const handleRegister: SubmitHandler<RegisterInputs> = (data) => {
     if (isEmailVerified) {
-      publicInstance.post(`${SERVER_URL}/user/signup`, {
+      publicInstance.post(`/user/signup`, {
         name: data.name,
         email: data.email,
         password: data.password,
@@ -60,7 +60,7 @@ const RegisterForm = () => {
 
     if (!isVaild) return;
 
-    publicInstance.post(`${SERVER_URL}/user/check-email`, {
+    publicInstance.post(`/user/check-email`, {
       email: email,
     })
       .then((response) => {
