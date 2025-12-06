@@ -20,5 +20,9 @@ export const Helper = styled.div`
 `;
 
 export const Error = styled.span`
-    color: ${(props) => props.theme.error}
+    color: ${(props) => props.theme.error};
+    width: 440px;
+    @media (max-width: 425px) {
+        width: 250px;
+    }
 `

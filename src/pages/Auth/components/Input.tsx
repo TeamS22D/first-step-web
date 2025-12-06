@@ -1,6 +1,7 @@
 import type { ChangeEvent } from "react";
 import styled from "styled-components";
 import { forwardRef } from "react";
+import React from "react";
 
 const InputContainer = styled.div`
     display: flex;
@@ -22,6 +23,9 @@ const InputBox = styled.div`
     padding: 0px 16px;
     border-radius: 12px;
     border: 1.5px solid #F2F2F2;
+    @media (max-width: 425px) {
+        width: 250px;
+    }
 `;
 
 const VerifyBox = styled.div`
@@ -29,6 +33,9 @@ const VerifyBox = styled.div`
     height: 48px;
     display: flex;
     gap: 4px;
+    @media (max-width: 425px) {
+        width: 250px;
+    }
 `
 
 const InputTag = styled.input.attrs(props => ({type: props.type || "text"}))`
@@ -98,4 +105,7 @@ const EmailInput = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     );
 });
 
-export default {Input, EmailInput};
+const MemoizedInput = React.memo(Input);
+const MemoizedEmailInput = React.memo(EmailInput);
+
+export default {Input: MemoizedInput, EmailInput: MemoizedEmailInput};

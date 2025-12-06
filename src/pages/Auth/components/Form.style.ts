@@ -4,6 +4,9 @@ export const Form = styled.form`
     display: flex;
     flex-direction: column;
     gap: 36px;
+    @media (max-width: 425px) {
+        gap: 48px;
+    }
 `;
 
 export const ElementContainer = styled.div`
@@ -21,5 +24,5 @@ export const FormContainer = styled.div`
 export const InputContainer = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 4pz;
+    gap: 4px;
 `

@@ -2,12 +2,11 @@ import Title from "../../components/Title";
 import * as Form from "../../components/Form.style";
 import SubmitButton from "../../components/SubmitButton";
 import Input from "../../components/Input";
-import axios from "axios";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import * as S from "./Register.style"
-import { useState } from "react";
-
-const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+import { useCallback, useEffect, useState } from "react";
+import { publicInstance } from "@/hooks/axiosInstance";
+import { loggedInUserRedirect } from "@/hooks/authApi";
 
 type RegisterInputs = {
   name: string;
@@ -19,7 +18,12 @@ type RegisterInputs = {
 const RegisterForm = () => {
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{7,20}$/;
-  const [isEmailVerified, setIsEmailVeryfied] = useState(false)
+  const [isEmailVerified, setIsEmailVerified] = useState(false)
+  const [verifiedEmail, setVerifiedEmail] = useState("");
+  
+  useEffect(() => {
+    loggedInUserRedirect()
+  }, [])
 
   const {
     register,
@@ -28,44 +32,58 @@ const RegisterForm = () => {
     setError,
     clearErrors,
     watch,
+    trigger,
+    setValue,
   } = useForm<RegisterInputs>()
 
-  const handleRegister: SubmitHandler<RegisterInputs> = (data) => {
-    axios.post(`${SERVER_URL}/user/signup`, {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      checkPassword: data.passwordConfirm,
-    })
-      .then(function (response) {
-        console.log(response)
+  const handleRegister: SubmitHandler<RegisterInputs> = useCallback((data) => {
+    if (isEmailVerified) {
+      publicInstance.post(`/user/signup`, {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        checkPassword: data.passwordConfirm,
       })
-      .catch(function (error) {
-        console.log(error)
+        .then(() => {
+          window.location.replace("/auth/login")
+        })
+        .catch((error) => {
+          if (error.status === 404 || error.status === 500) {
+            alert("서버 에러, 잠시 후 다시 시도해주세요.")
+          } else {
+            alert("회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.")
+          }
+        });
+      } else {
+        alert("이메일 중복 확인을 진행해주세요.")
+      }
+  }, [isEmailVerified]);
+
+  const handleEmailVerify = async () => {
+    const email = watch("email")
+    const isValid = await trigger("email")
+
+    if (!isValid) return;
+
+    publicInstance.post(`/user/check-email`, {
+      email: email,
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          clearErrors("email");
+          setIsEmailVerified(true);
+          setVerifiedEmail(email);
+        }
+      })
+      .catch((error) => {
+        if (error.status === 409) {
+          setError("email", {type: "custom", message: "이미 사용중인 이메일입니다."})
+        } else {
+          setError("email", {type: "custom", message: "이메일 확인에 실패했습니다. 잠시 후 다시 시도하세요."})
+        }
       });
   }
 
-  const handleEmailVerify = () => {
-    const email = watch("email")
-    axios.post(`${SERVER_URL}/user/check-email`, {
-      email: email,
-    })
-      .then(function (response) {
-        if (response.status === 200) {
-          clearErrors("email");
-          setIsEmailVeryfied(true);
-          console.log(response)
-        }
-      })
-      .catch(function (error) {
-        if (error.status --- 409 || error.response.status) {
-          setError("email", {type: "custom", message: "이미 사용중인 이메일입니다."})
-        } else {
-          setError("email", {type: "custom", message: "이메일 확인에 실패했습니다. 점사 후 다시 시도하세요."})
-        }
-        console.log(error)
-      });
-  }
 
   return (
     <Form.Form onSubmit={handleSubmit(handleRegister)}>
@@ -82,12 +100,19 @@ const RegisterForm = () => {
             {errors.name ? <S.Error>{errors.name.message}</S.Error> : null}
           </Form.InputContainer>
           <Form.InputContainer>
-            <Input.EmailInput label="이메일" type="email" placeholder="이메일을 입력하세요" {...register("email", { 
+            <Input.EmailInput label="이메일" type="text" placeholder="이메일을 입력하세요" {...register("email", { 
               required: "이 필드는 필수 입력 필드입니다.", 
               pattern: {
                 value: emailRegex,
                 message: "유효한 이메일을 입력해 주세요."
-              } 
+              },
+              onChange(event) {
+                if (!isEmailVerified) {
+                  setValue("email", event.target.value);
+                } else {
+                  setValue("email", verifiedEmail);
+                }
+              },
             })} onClick={handleEmailVerify} />
             {errors.email ? <S.Error>{errors.email.message}</S.Error> : null}
             {isEmailVerified ? <S.Success>사용 가능한 이메일입니다.</S.Success> : null}
