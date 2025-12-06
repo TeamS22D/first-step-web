@@ -19,7 +19,7 @@ type RegisterInputs = {
 const RegisterForm = () => {
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{7,20}$/;
-  const [isEmailVerified, setIsEmailVeryfied] = useState(false)
+  const [isEmailVerified, setIsEmailVerified] = useState(false)
 
   const {
     register,
@@ -66,7 +66,7 @@ const RegisterForm = () => {
       .then((response) => {
         if (response.status === 200) {
           clearErrors("email");
-          setIsEmailVeryfied(true);
+          setIsEmailVerified(true);
         }
       })
       .catch((error) => {
