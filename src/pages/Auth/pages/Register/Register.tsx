@@ -4,10 +4,8 @@ import SubmitButton from "../../components/SubmitButton";
 import Input from "../../components/Input";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import * as S from "./Register.style"
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { publicInstance } from "@/hooks/axiosInstance";
-
-const SERVER_URL = import.meta.env.VITE_BASE_URL;
 
 type RegisterInputs = {
   name: string;
@@ -20,6 +18,7 @@ const RegisterForm = () => {
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{7,20}$/;
   const [isEmailVerified, setIsEmailVerified] = useState(false)
+  const [verifiedEmail, setVerifiedEmail] = useState("");
 
   const {
     register,
@@ -29,9 +28,10 @@ const RegisterForm = () => {
     clearErrors,
     watch,
     trigger,
+    setValue,
   } = useForm<RegisterInputs>()
 
-  const handleRegister: SubmitHandler<RegisterInputs> = (data) => {
+  const handleRegister: SubmitHandler<RegisterInputs> = useCallback((data) => {
     if (isEmailVerified) {
       publicInstance.post(`/user/signup`, {
         name: data.name,
@@ -52,7 +52,7 @@ const RegisterForm = () => {
       } else {
         alert("이메일 중복 확인을 진행해주세요.")
       }
-  }
+  }, [isEmailVerified]);
 
   const handleEmailVerify = async () => {
     const email = watch("email")
@@ -67,6 +67,7 @@ const RegisterForm = () => {
         if (response.status === 200) {
           clearErrors("email");
           setIsEmailVerified(true);
+          setVerifiedEmail(email);
         }
       })
       .catch((error) => {
@@ -98,7 +99,14 @@ const RegisterForm = () => {
               pattern: {
                 value: emailRegex,
                 message: "유효한 이메일을 입력해 주세요."
-              } 
+              },
+              onChange(event) {
+                if (!isEmailVerified) {
+                  setValue("email", event.target.value);
+                } else {
+                  setValue("email", verifiedEmail);
+                }
+              },
             })} onClick={handleEmailVerify} />
             {errors.email ? <S.Error>{errors.email.message}</S.Error> : null}
             {isEmailVerified ? <S.Success>사용 가능한 이메일입니다.</S.Success> : null}

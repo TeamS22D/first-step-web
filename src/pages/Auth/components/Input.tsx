@@ -1,6 +1,7 @@
 import type { ChangeEvent } from "react";
 import styled from "styled-components";
 import { forwardRef } from "react";
+import React from "react";
 
 const InputContainer = styled.div`
     display: flex;
@@ -104,4 +105,7 @@ const EmailInput = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     );
 });
 
-export default {Input, EmailInput};
+const MemoizedInput = React.memo(Input);
+const MemoizedEmailInput = React.memo(EmailInput);
+
+export default {Input: MemoizedInput, EmailInput: MemoizedEmailInput};

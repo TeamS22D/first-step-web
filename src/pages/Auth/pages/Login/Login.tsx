@@ -11,8 +11,6 @@ import { Link, useNavigate } from "react-router";
 import { publicInstance } from "@/hooks/axiosInstance";
 import { setAccessToken, setEmail, setRefreshToken, setUserId } from "@/hooks/cookies";
 
-const SERVER_URL = import.meta.env.VITE_BASE_URL;
-
 type LoginInputs = {
   email: string,
   password: string,
