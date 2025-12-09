@@ -18,7 +18,7 @@ type LoginInputs = {
 }
 
 const LoginForm = () => {
-  const navigator = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     loggedInUserRedirect();
@@ -42,17 +42,25 @@ const LoginForm = () => {
       setRefreshToken(response.data.refreshToken);
       setEmail(response.data.email);
       setUserId(response.data.userId)
-      navigator("/");
+      navigate("/");
     })
     .catch(function (error) {
-      if (error.status === 401 || error.status === 400) {
-        setError("이메일 또는 비밀번호를 확인해 주십시오.")
-      } else {
-        if (error.status === 500) {
-          alert("서버 에러, 잠시 후 다시 시도해주세요.")
-        } else {
-          alert(`${error.status}, 잠시 후 다시 시도해주세요.`)
-        }
+      switch(error.response.status) {
+        case (400):
+          sessionStorage.clear();
+          navigate("/verify", {
+            state: data.email
+          })
+          break;
+        case (401):
+          setError("이메일 또는 비밀번호를 확인해 주십시오.");
+          break;
+        case (500):
+          alert("서버 에러, 잠시 후 다시 시도해주세요.");
+          break;
+        default:
+          alert(`${error.status}, 잠시 후 다시 시도해주세요.`);
+          break;
       }
     });
   }

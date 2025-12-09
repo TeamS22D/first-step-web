@@ -17,6 +17,7 @@ import Feedback from "./pages/Feedback/Feedback";
 import Occupation from "./pages/Occupation/Occupation";
 import Job from "./pages/Job/Job";
 import Profile from "./pages/Profile/Profile";
+import Verify from "./pages/Auth/pages/Verify/Verify";
 
 const router = createBrowserRouter([
   {
@@ -106,6 +107,8 @@ const router = createBrowserRouter([
       { path: "register", element: <Register /> },
     ],
   },
+
+  { path: "/verify", element: <Verify /> },
 
   { path: "/occupation", element: <Occupation /> },
   { path: "/job", element: <Job /> },
