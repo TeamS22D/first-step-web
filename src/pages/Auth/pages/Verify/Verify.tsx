@@ -28,7 +28,6 @@ function Verify() {
 
   useEffect(() => {
     const isVisited = sessionStorage.getItem("isEmailSend")
-    console.log(isVisited)
     if (!isVisited) {
       publicInstance.post(`/mail/${email}`)
       .then((response) => {
@@ -56,7 +55,7 @@ function Verify() {
     } else {
       alert("이메일이 이미 전송되었습니다.")
     }
-  }, [])
+  }, [email])
 
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCode(e.target.value);
