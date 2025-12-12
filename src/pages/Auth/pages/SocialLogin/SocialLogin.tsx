@@ -33,7 +33,7 @@ function SocialLogin() {
     }
 
     handleLogin();
-  })
+  }, [])
   
   return (
     <ThemeProvider theme={lightTheme}>
