@@ -21,18 +21,14 @@ function SocialLogin() {
       setUserId(userId);
       setEmail(email);
     } else {
-      alert("로그인 중 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.")
+      alert("로그인 중 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.");
       logout();
     }
   }
 
   useEffect(() => {
-    const handleLogin = async () => {
-      await handleToken();
-      navigate("/")
-    }
-
-    handleLogin();
+    handleToken();
+    navigate("/")
   }, [])
   
   return (
