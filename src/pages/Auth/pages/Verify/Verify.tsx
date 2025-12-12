@@ -1,7 +1,7 @@
 import { ThemeProvider } from "styled-components"
 import * as S from "./Verify.style"
 import { lightTheme } from "@/theme/theme"
-import { useLocation, useNavigate } from "react-router"
+import { useLocation } from "react-router"
 import WarningIcon from "@assets/Verify/warning.svg?react"
 import { GlobalStyle } from "@/styles/GlobalStyle"
 import { useEffect, useState } from "react"

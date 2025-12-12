@@ -18,6 +18,7 @@ import Occupation from "./pages/Occupation/Occupation";
 import Job from "./pages/Job/Job";
 import Profile from "./pages/Profile/Profile";
 import Verify from "./pages/Auth/pages/Verify/Verify";
+import EmailSucceed from "./pages/Auth/pages/SocialLogin/SocialLogin";
 
 const router = createBrowserRouter([
   {
@@ -109,6 +110,8 @@ const router = createBrowserRouter([
   },
 
   { path: "/verify", element: <Verify /> },
+
+  { path: "/login-success", element: <EmailSucceed /> },
 
   { path: "/occupation", element: <Occupation /> },
   { path: "/job", element: <Job /> },
