@@ -42,13 +42,17 @@ function Verify() {
         }
       })
       .catch((error) => {
-        switch (error.response.status) {
-          case 500:
-            alert("인증번호 전송에 실패했습니다.");
-            break;
-          case 400:
-            alert("존재하지 않는 이메일입니다.");
-            break;
+        if (error.response && error.response.status) {
+          switch (error.response.status) {
+            case 500:
+              alert("인증번호 전송에 실패했습니다.");
+              break;
+            case 400:
+              alert("존재하지 않는 이메일입니다.");
+              break;
+          }
+        } else {
+          alert("네트워크 오류가 발생헀습니다. 잠시 후 다시 시도해주세요.");
         }
         navigate("/");
       })
