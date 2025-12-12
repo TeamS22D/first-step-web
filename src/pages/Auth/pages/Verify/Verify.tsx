@@ -58,7 +58,7 @@ function Verify() {
     }
   }, [])
 
-  const handleEmail = (e) => {
+  const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCode(e.target.value);
   }
 
