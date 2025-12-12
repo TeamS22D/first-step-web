@@ -1,7 +1,7 @@
 import { ThemeProvider } from "styled-components"
 import * as S from "./Verify.style"
 import { lightTheme } from "@/theme/theme"
-import { useLocation } from "react-router"
+import { useLocation, useNavigate } from "react-router"
 import WarningIcon from "@assets/Verify/warning.svg?react"
 import { GlobalStyle } from "@/styles/GlobalStyle"
 import { useEffect, useState } from "react"
@@ -12,6 +12,7 @@ function Verify() {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const email = location.state;
+  const navigate = useNavigate();
 
 
   const handleVerify = () => {
@@ -50,6 +51,7 @@ function Verify() {
             alert("존재하지 않는 이메일입니다.");
             break;
         }
+        navigate("/");
       })
     } else {
       alert("이메일이 이미 전송되었습니다.")
@@ -68,7 +70,7 @@ function Verify() {
           <h1>이메일 주소 인증</h1>
           <p>
             안녕하세요. 사용자님.<br />
-            첫걸음 서비스 이용을 위해 {email}주소로 이메일 주소 인증을 요청하셨습니다.<br />
+            첫걸음 서비스 이용을 위해 <strong>{email}</strong> 주소로 이메일 주소 인증을 요청하셨습니다.<br />
             이메일 주소 인증을 완료하신 후 아래 버튼을 클릭하면, 서비스를 이용하실 수 있습니다.
           </p>
           <S.EmailContainer>
