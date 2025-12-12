@@ -84,7 +84,7 @@ function Verify() {
               <p>인증확인은 1시간 이내 완료해주세요.</p>
             </S.DeadlineMessage>
           </S.EmailContainer>
-          <S.SubmitButton onClick={handleVerify}>인증완료</S.SubmitButton>
+          <S.SubmitButton onClick={handleVerify} disabled={!code}>인증완료</S.SubmitButton>
         </S.Body>
         <S.WarningContainer>
           <h5>유의사항</h5>

@@ -45,22 +45,26 @@ const LoginForm = () => {
       navigate("/");
     })
     .catch(function (error) {
-      switch(error.response.status) {
-        case (400):
-          sessionStorage.clear();
-          navigate("/verify", {
-            state: data.email
-          })
-          break;
-        case (401):
-          setError("이메일 또는 비밀번호를 확인해 주십시오.");
-          break;
-        case (500):
-          alert("서버 에러, 잠시 후 다시 시도해주세요.");
-          break;
-        default:
-          alert(`${error.status}, 잠시 후 다시 시도해주세요.`);
-          break;
+      if (error.response && error.response.status) {
+        switch(error.response.status) {
+          case (400):
+            sessionStorage.clear();
+            navigate("/verify", {
+              state: data.email
+            })
+            break;
+          case (401):
+            setError("이메일 또는 비밀번호를 확인해 주십시오.");
+            break;
+          case (500):
+            alert("서버 에러, 잠시 후 다시 시도해주세요.");
+            break;
+          default:
+            alert(`${error.status}, 잠시 후 다시 시도해주세요.`);
+            break;
+        }
+      } else {
+          alert("네트워크 오류가 발생헀습니다. 잠시 후 다시 시도해주세요.");
       }
     });
   }
