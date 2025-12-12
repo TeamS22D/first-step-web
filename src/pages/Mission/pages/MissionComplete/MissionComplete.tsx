@@ -3,6 +3,7 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme } from "../../../../theme/theme";
 import StepsComponent from '../../../../components/Step/StepsComponent';
 import * as S from './MissionComplete.style';
+import { useNavigate } from 'react-router';
 
 interface ImageProps {
     src: string;
@@ -19,6 +20,13 @@ const Image = ({src, alt}:ImageProps) => {
 const firm: string = '수고 하셨습니다!! \n다른 미션에서도 능력을 발휘해 주시길~'
 
 export default function MissionComplete() {
+
+    const navigate = useNavigate();
+
+    const pageMove = () => {
+        navigate("/home")
+    }
+
     return (
         <ThemeProvider theme={lightTheme}>
             <GlobalStyle/>
@@ -35,7 +43,7 @@ export default function MissionComplete() {
                         <S.Button1>
                             로그인하기
                         </S.Button1>
-                        <S.Button2>
+                        <S.Button2 onClick={pageMove}>
                             홈으로 돌아가기
                         </S.Button2>
                     </S.buttoncontainer>

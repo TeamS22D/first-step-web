@@ -277,16 +277,17 @@ export const buttoncontainer = styled.div`
     align-items: center;
 `
 
-export const backButton = styled.div`
+export const backButton = styled.button`
     display: flex;
-    width: 117px;
-    height: 39px;
+    width: auto;
+    height: auto;
     padding: 8px 32px;
     justify-content: center;
     align-items: center;
     gap: 8px;
     border-radius: 5px;
     background: #3FB98A;
+    border: none;
 
     color: #FFF;
 

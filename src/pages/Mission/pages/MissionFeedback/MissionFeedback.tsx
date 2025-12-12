@@ -4,7 +4,7 @@ import { lightTheme } from "../../../../theme/theme";
 import * as S from './MissionFeedback.style.ts';
 import Graph from "../../components/Graph";
 import StepsComponent from '../../../../components/Step/StepsComponent.tsx'
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useEffect } from "react";
 
 export interface EvaluationDetail {
@@ -145,6 +145,12 @@ export function BottomBox({ data }: { data?: FeedbackData }) {
 
 export default function MissionFeedback() {
 
+  const navigate = useNavigate()
+
+  const pageMove = () => {
+    navigate('/missioncomplete')
+  }
+
   const location = useLocation();
   const feedback = location.state?.feedback as FeedbackData | undefined;
 
@@ -166,7 +172,7 @@ export default function MissionFeedback() {
                   <MiddleBox data={feedback} />
                   <BottomBox data={feedback} />
                   <S.buttoncontainer>
-                    <S.backButton>돌아가기</S.backButton>
+                    <S.backButton onClick={pageMove} >돌아가기</S.backButton>
                   </S.buttoncontainer>
                 </S.Body>
           </S.Container>
