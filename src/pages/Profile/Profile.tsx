@@ -11,7 +11,10 @@ import {
   CartesianGrid,
 } from "recharts";
 
+import axiosInstance from "../../hooks/axiosInstance";
+
 import attendanceImg from "/assets/Profile/attendance.png";
+import percentImg from "/assets/Profile/percent.png";
 
 type HistoryPoint = {
   day: string;
@@ -21,122 +24,17 @@ type HistoryPoint = {
 };
 
 type GraphResponse = {
-  range: string;
   history: HistoryPoint[];
-};
-
-type RangeKey = "week" | "month" | "year";
-
-type PercentResponse = {
-  percent: number;
-};
-
-type AttendanceResponse = {
-  message: string;
-  streak: number;
-};
-
-const rangeLabelToKey: Record<string, RangeKey> = {
-  "최근 일주일간": "week",
-  "최근 한 달간": "month",
-  "최근 일 년간": "year",
-};
-
-const fallbackMonth: HistoryPoint[] = [
-  { day: "0일", document: 100, chat: 55, mail: 27 },
-  { day: "5일", document: 100, chat: 55, mail: 27 },
-  { day: "10일", document: 90, chat: 45, mail: 35 },
-  { day: "15일", document: 73, chat: 61, mail: 27 },
-  { day: "20일", document: 85, chat: 45, mail: 30 },
-  { day: "25일", document: 95, chat: 52, mail: 37 },
-  { day: "30일", document: 98, chat: 58, mail: 30 },
-];
-
-const fallbackYear: HistoryPoint[] = [
-  { day: "2월", document: 65, chat: 40, mail: 30 },
-  { day: "4월", document: 70, chat: 45, mail: 35 },
-  { day: "6월", document: 75, chat: 50, mail: 40 },
-  { day: "8월", document: 80, chat: 55, mail: 45 },
-  { day: "10월", document: 85, chat: 60, mail: 50 },
-  { day: "12월", document: 90, chat: 65, mail: 55 },
-];
-
-const fallbackWeek: HistoryPoint[] = [
-  { day: "월", document: 60, chat: 30, mail: 20 },
-  { day: "화", document: 65, chat: 35, mail: 25 },
-  { day: "수", document: 70, chat: 40, mail: 30 },
-  { day: "목", document: 75, chat: 45, mail: 35 },
-  { day: "금", document: 80, chat: 50, mail: 40 },
-  { day: "토", document: 85, chat: 55, mail: 45 },
-  { day: "일", document: 90, chat: 60, mail: 50 },
-];
-
-const getFallbackData = (label: string): HistoryPoint[] => {
-  if (label === "최근 일 년간") return fallbackYear;
-  if (label === "최근 일주일간") return fallbackWeek;
-  return fallbackMonth;
-};
-
-const PercentDonut = ({
-  percent,
-  dimmed,
-}: {
-  percent: number;
-  dimmed?: boolean;
-}) => {
-  const safePercent = Math.max(0, Math.min(100, Math.round(percent)));
-
-  const size = 56;
-  const strokeWidth = 6;
-  const radius = (size - strokeWidth) / 2;
-  const center = size / 2;
-  const circumference = 2 * Math.PI * radius;
-
-  const progress = (safePercent / 100) * circumference;
-
-  const trackColor = "#E0E0E0";
-  const progressColor = dimmed ? "#BDBDBD" : "#3FB98A";
-
-  return (
-    <svg width={size} height={size} style={{ marginRight: 16 }}>
-      <circle
-        cx={center}
-        cy={center}
-        r={radius}
-        fill="none"
-        stroke={trackColor}
-        strokeWidth={strokeWidth}
-      />
-      <circle
-        cx={center}
-        cy={center}
-        r={radius}
-        fill="none"
-        stroke={progressColor}
-        strokeWidth={strokeWidth}
-        strokeLinecap="round"
-        strokeDasharray={`${progress} ${circumference - progress}`}
-        transform={`rotate(-90 ${center} ${center})`}
-      />
-    </svg>
-  );
 };
 
 export default function Profile() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("최근 한 달간");
+  const [activeTab, setActiveTab] = useState("전체");
 
   const [clickedData, setClickedData] = useState<HistoryPoint | null>(null);
-
-  const [historyData, setHistoryData] = useState<HistoryPoint[]>(
-    getFallbackData("최근 한 달간")
-  );
+  const [chartData, setChartData] = useState<HistoryPoint[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
-
-  const [streak, setStreak] = useState<number>(0);
-
-  const [topPercent, setTopPercent] = useState<number | null>(null);
-  const [percentError, setPercentError] = useState(false);
 
   const options = ["최근 한 달간", "최근 일 년간", "최근 일주일간"];
 
@@ -146,143 +44,40 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    const rangeKey = rangeLabelToKey[selected];
-    if (!rangeKey) return;
-
-    const controller = new AbortController();
-
     const fetchGraph = async () => {
       setLoadingHistory(true);
-      setClickedData(null);
+
+      const range =
+        selected === "최근 일 년간"
+          ? "year"
+          : selected === "최근 일주일간"
+          ? "week"
+          : "month";
 
       try {
-        const res = await fetch("/profile/graph", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            range: rangeKey,
-          }),
-          signal: controller.signal,
-        });
+        const res = await axiosInstance.get<GraphResponse>(
+          "/user-mission/graph",
+          { params: { range } }
+        );
 
-        if (!res.ok) {
-          console.error("히스토리 데이터 요청 실패", res.status);
-          setHistoryData(getFallbackData(selected));
-          return;
-        }
-
-        const data: GraphResponse = await res.json();
-        if (Array.isArray(data.history) && data.history.length > 0) {
-          setHistoryData(data.history);
+        if (Array.isArray(res.data.history)) {
+          setChartData(res.data.history);
         } else {
-          setHistoryData(getFallbackData(selected));
+          setChartData([]);
+          console.warn("graph 응답에 history 배열이 없습니다:", res.data);
         }
-      } catch (err: any) {
-        if (err.name !== "AbortError") {
-          console.error("히스토리 데이터 요청 오류", err);
-          setHistoryData(getFallbackData(selected));
-        }
+        setClickedData(null);
+      } catch (err) {
+        console.error("그래프 데이터 불러오기 오류:", err);
+        setChartData([]);
+        setClickedData(null);
       } finally {
         setLoadingHistory(false);
       }
     };
 
     fetchGraph();
-
-    return () => controller.abort();
   }, [selected]);
-
-  useEffect(() => {
-    const email = localStorage.getItem("email") ?? "test@example.com";
-    const controller = new AbortController();
-
-    const fetchPercent = async () => {
-      try {
-        setPercentError(false);
-
-        const res = await fetch("/profile/percent", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email }),
-          signal: controller.signal,
-        });
-
-        if (!res.ok) {
-          console.error("상위 퍼센트 API 실패", res.status);
-          setTopPercent(0);
-          setPercentError(true);
-          return;
-        }
-
-        const data: PercentResponse = await res.json();
-        if (typeof data.percent === "number") {
-          setTopPercent(data.percent);
-        } else {
-          setTopPercent(0);
-          setPercentError(true);
-        }
-      } catch (err: any) {
-        if (err.name !== "AbortError") {
-          console.error("상위 퍼센트 요청 오류", err);
-          setTopPercent(0);
-          setPercentError(true);
-        }
-      }
-    };
-
-    fetchPercent();
-
-    return () => controller.abort();
-  }, []);
-
-  useEffect(() => {
-    const email = localStorage.getItem("email") ?? "test@example.com";
-    const controller = new AbortController();
-
-    const fetchAttendance = async () => {
-      try {
-        const res = await fetch("/user/attendance", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email }),
-          signal: controller.signal,
-        });
-
-        if (!res.ok) {
-          console.error("출석 데이터 요청 실패", res.status);
-          setStreak(0);
-          return;
-        }
-
-        const data: AttendanceResponse = await res.json();
-        if (typeof data.streak === "number") {
-          setStreak(data.streak);
-        } else {
-          setStreak(0);
-        }
-      } catch (err: any) {
-        if (err.name !== "AbortError") {
-          console.error("출석 데이터 요청 오류", err);
-          setStreak(0);
-        }
-      }
-    };
-
-    fetchAttendance();
-
-    return () => controller.abort();
-  }, []);
-
-  const chartData: HistoryPoint[] =
-    historyData && historyData.length > 0
-      ? historyData
-      : getFallbackData(selected);
 
   const handleLineClick = (e: any) => {
     if (!e || !e.payload) return;
@@ -297,11 +92,8 @@ export default function Profile() {
   };
 
   const defaultPoint =
-    chartData[chartData.length - 1] ?? (null as any as HistoryPoint | null);
+    chartData.length > 0 ? chartData[chartData.length - 1] : null;
   const current = clickedData ?? defaultPoint;
-
-  const isZeroStreak = streak === 0;
-  const displayPercent = topPercent ?? 0;
 
   return (
     <S.Container>
@@ -340,28 +132,12 @@ export default function Profile() {
           </S.LeftControls>
 
           <S.SmallCard>
-            <img
-              src={attendanceImg}
-              alt="attendance"
-              style={
-                isZeroStreak
-                  ? { filter: "grayscale(1)", opacity: 0.4 }
-                  : undefined
-              }
-            />
+            <img src={attendanceImg} alt="attendance" />
             <div>
               <S.SmallCardTitle>연속 학습일</S.SmallCardTitle>
               <S.ValueRow>
-                <S.ValueNumber
-                  style={isZeroStreak ? { color: "#BDBDBD" } : undefined}
-                >
-                  {streak}
-                </S.ValueNumber>
-                <S.ValueUnit
-                  style={isZeroStreak ? { color: "#BDBDBD" } : undefined}
-                >
-                  일
-                </S.ValueUnit>
+                <S.ValueNumber>1</S.ValueNumber>
+                <S.ValueUnit>일</S.ValueUnit>
               </S.ValueRow>
             </div>
           </S.SmallCard>
@@ -372,73 +148,72 @@ export default function Profile() {
             <S.GraphCard>
               <S.CardTitle>기간별 히스토리</S.CardTitle>
 
-              {loadingHistory && (
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: "#999",
-                    marginBottom: 8,
-                  }}
-                >
-                  데이터 불러오는 중...
-                </div>
+              {loadingHistory && <div>히스토리 불러오는 중...</div>}
+
+              {!loadingHistory && chartData.length > 0 && (
+                <ResponsiveContainer width="100%" height={280}>
+                  <LineChart
+                    data={chartData}
+                    margin={{ top: 10, left: 0, right: 10, bottom: 0 }}
+                  >
+                    <CartesianGrid stroke="#eee" vertical={false} />
+                    <XAxis
+                      dataKey="day"
+                      tick={{ fill: "#555", fontSize: 12 }}
+                    />
+                    <YAxis
+                      tick={{ fill: "#555", fontSize: 12 }}
+                      domain={[0, 100]}
+                    />
+
+                    <Tooltip
+                      cursor={false}
+                      formatter={(value: any, name: any) => [
+                        `${value}점`,
+                        name,
+                      ]}
+                    />
+
+                    <Line
+                      dataKey="document"
+                      name="문서형"
+                      type="monotone"
+                      stroke="#0ACF83"
+                      strokeWidth={3}
+                      dot={{ r: 4 }}
+                      activeDot={{ r: 6 }}
+                      isAnimationActive={false}
+                      onClick={handleLineClick}
+                    />
+                    <Line
+                      dataKey="chat"
+                      name="채팅형"
+                      type="monotone"
+                      stroke="#AF5EFF"
+                      strokeWidth={3}
+                      dot={{ r: 4 }}
+                      activeDot={{ r: 6 }}
+                      isAnimationActive={false}
+                      onClick={handleLineClick}
+                    />
+                    <Line
+                      dataKey="mail"
+                      name="메일형"
+                      type="monotone"
+                      stroke="#0099FF"
+                      strokeWidth={3}
+                      dot={{ r: 4 }}
+                      activeDot={{ r: 6 }}
+                      isAnimationActive={false}
+                      onClick={handleLineClick}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
               )}
 
-              <ResponsiveContainer width="100%" height={280}>
-                <LineChart
-                  data={chartData}
-                  margin={{ top: 10, left: 0, right: 10, bottom: 0 }}
-                >
-                  <CartesianGrid stroke="#eee" vertical={false} />
-                  <XAxis dataKey="day" tick={{ fill: "#555", fontSize: 12 }} />
-                  <YAxis
-                    tick={{ fill: "#555", fontSize: 12 }}
-                    domain={[0, 100]}
-                  />
-
-                  <Tooltip
-                    cursor={false}
-                    formatter={(value: any, name: any) => [
-                      `${value}점`,
-                      name,
-                    ]}
-                  />
-
-                  <Line
-                    dataKey="document"
-                    name="문서형"
-                    type="monotone"
-                    stroke="#0ACF83"
-                    strokeWidth={3}
-                    dot={{ r: 4 }}
-                    activeDot={{ r: 6 }}
-                    isAnimationActive={false}
-                    onClick={handleLineClick}
-                  />
-                  <Line
-                    dataKey="chat"
-                    name="채팅형"
-                    type="monotone"
-                    stroke="#AF5EFF"
-                    strokeWidth={3}
-                    dot={{ r: 4 }}
-                    activeDot={{ r: 6 }}
-                    isAnimationActive={false}
-                    onClick={handleLineClick}
-                  />
-                  <Line
-                    dataKey="mail"
-                    name="메일형"
-                    type="monotone"
-                    stroke="#0099FF"
-                    strokeWidth={3}
-                    dot={{ r: 4 }}
-                    activeDot={{ r: 6 }}
-                    isAnimationActive={false}
-                    onClick={handleLineClick}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+              {!loadingHistory && chartData.length === 0 && (
+                <div>표시할 히스토리 데이터가 없습니다.</div>
+              )}
             </S.GraphCard>
 
             <S.StatsBox>
@@ -467,20 +242,12 @@ export default function Profile() {
 
           <S.SideInfo>
             <S.SmallCard>
-              <PercentDonut percent={displayPercent} dimmed={percentError} />
+              <img src={percentImg} alt="percent" />
               <div>
                 <S.SmallCardTitle>상위</S.SmallCardTitle>
                 <S.ValueRow>
-                  <S.ValueNumber
-                    style={percentError ? { color: "#BDBDBD" } : undefined}
-                  >
-                    {displayPercent}
-                  </S.ValueNumber>
-                  <S.ValueUnit
-                    style={percentError ? { color: "#BDBDBD" } : undefined}
-                  >
-                    %
-                  </S.ValueUnit>
+                  <S.ValueNumber>75</S.ValueNumber>
+                  <S.ValueUnit>%</S.ValueUnit>
                 </S.ValueRow>
               </div>
             </S.SmallCard>
