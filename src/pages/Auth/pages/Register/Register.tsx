@@ -7,8 +7,9 @@ import * as S from "./Register.style"
 import { useCallback, useEffect, useState } from "react";
 import { publicInstance } from "@/hooks/axiosInstance";
 import { loggedInUserRedirect } from "@/hooks/authApi";
+import { useNavigate } from "react-router";
 
-type RegisterInputs = {
+export type RegisterInputs = {
   name: string;
   email: string;
   password: string;
@@ -20,6 +21,7 @@ const RegisterForm = () => {
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{7,20}$/;
   const [isEmailVerified, setIsEmailVerified] = useState(false)
   const [verifiedEmail, setVerifiedEmail] = useState("");
+  const navigate = useNavigate();
   
   useEffect(() => {
     loggedInUserRedirect()
@@ -44,19 +46,22 @@ const RegisterForm = () => {
         password: data.password,
         checkPassword: data.passwordConfirm,
       })
-        .then(() => {
-          window.location.replace("/auth/login")
+      .then(() => {
+        sessionStorage.clear();
+        navigate("/verify", {
+          state: data.email
         })
-        .catch((error) => {
-          if (error.status === 404 || error.status === 500) {
-            alert("서버 에러, 잠시 후 다시 시도해주세요.")
-          } else {
-            alert("회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.")
-          }
-        });
-      } else {
-        alert("이메일 중복 확인을 진행해주세요.")
-      }
+      })
+      .catch((error) => {
+        if (error.status === 404 || error.status === 500) {
+          alert("서버 에러, 잠시 후 다시 시도해주세요.")
+        } else {
+          alert("회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.")
+        }
+      });
+    } else {
+      alert("이메일 중복 확인을 진행해주세요.")
+    }
   }, [isEmailVerified]);
 
   const handleEmailVerify = async () => {
