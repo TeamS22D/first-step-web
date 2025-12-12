@@ -34,24 +34,6 @@ const titleInfo = {
   target: "다른 회사로부터 외주 개발 프로젝트를 더 예의있게 보내는 실습"
 };
 
-const bottomLeftHelps = [
-  {
-    title: "잘한 점",
-    content: "주어진 문제 상황의 내용을 올바르게 해결하였는지, 주어진 내용이 모두 있는지를 잘 검사하였습니다!"
-  },
-  {
-    title: "잘한 점",
-    content: "다른 내용 예시를 넣을 수 있습니다."
-  }
-];
-
-const bottomRightItems = [
-  { title: "맞춤법", sub: "위 상황에서는 어떡게가 아닌 어떻게의 표현이 더 적절한 표현입니다! 어떡게라는 표현은 존재하지 않습니다." },
-  { title: "단어", sub: "좀 더 예의와 격식을 차리고 싶으시면 ‘진지’라는 단어도 추천드려요~!!" },
-  { title: "구조 명확성", sub: "문서의 구조와 흐름이 명확하지 않아요.. 상대방이 좀 더 잘 알 수 있게 적어보아요!" }
-];
-
-
 export function TitleBox() {
   return (
     <S.TitleBox>
@@ -69,14 +51,17 @@ export function TitleBox() {
 }
 
 export function MiddleBox({ data }: { data?: FeedbackData }) {
+
   return (
     <S.MiddleContainer>
       <S.MiddleGraph>
-        <Graph />
+        <Graph dataProps={data} />
       </S.MiddleGraph>
       <S.MiddleEvaluation>
         <S.MiddleRatingContainer />
-        <S.MiddleRatingTextarea>{data?.general_feedback}</S.MiddleRatingTextarea>
+        <S.MiddleRatingTextareaContainer>
+          <S.MiddleRatingTextarea>{data?.general_feedback}</S.MiddleRatingTextarea>
+        </S.MiddleRatingTextareaContainer>
       </S.MiddleEvaluation>
     </S.MiddleContainer>
   )
@@ -101,12 +86,13 @@ export function BottomHelp({ title, content }: BottomHelpProps) {
 interface BottomRightAreaItemProps {
   title: string | undefined;
   sub: string | undefined;
+  color: string | undefined;
 }
-function BottomRightAreaItem({ title, sub }: BottomRightAreaItemProps) {
+function BottomRightAreaItem({ title, sub, color }: BottomRightAreaItemProps) {
   return (
     // 세부 영역별 피드백
     <S.BottomRightAreaItem>
-      <S.Bar />
+      <S.Bar color= {color} />
       <S.ItemContent>
         <S.Title>{title}</S.Title>
         <S.Sub>{sub}</S.Sub>
@@ -118,30 +104,51 @@ function BottomRightAreaItem({ title, sub }: BottomRightAreaItemProps) {
 export function BottomBox({ data }: { data?: FeedbackData }) {
   return (
     <S.BottomContainer>
+
       <S.BottomLeftContainer>
-        {data?.evaluations.map((ev, idx) => (
-          <BottomHelp
-            key={idx}
-            title={ev.item}
-            content={ev.feedback.good_points}
-          />
-        ))}
+        <BottomHelp
+          title='잘한 점'
+          content=
+            {data?.evaluations.map((ev, idx) => (
+              <>
+                <span key={idx}>
+                  - {ev.feedback.good_points}
+                </span>
+                <br/>
+              </>
+            ))} />
+
+       <BottomHelp
+          title='보완할 점'
+          content=
+            {data?.evaluations.map((ev, idx) => (
+              <>
+                <span key={idx}>
+                  - {ev.feedback.suggested_fix}
+                </span>
+                <br/>
+              </>
+            ))} />
+
       </S.BottomLeftContainer>
 
+      {/* 세부 항목별 피드백 */}
       <S.BottomRightArea>
-        <S.BottomRightAreaContainer>
-          {data?.evaluations.map((ev, idx) => (
-            <BottomRightAreaItem
-              key={idx}
-              title={ev.item}
-              sub={ev.feedback.improvement_points}
-            />
-          ))}
-        </S.BottomRightAreaContainer>
+      <S.BottomRightAreaContainer>
+        {data?.evaluations.map((ev, idx) => (
+          <BottomRightAreaItem
+            key={idx}
+            title={ev.item}
+            sub={ev.feedback.improvement_points}
+            color= {String(idx)}
+          />
+        ))}
+      </S.BottomRightAreaContainer>
       </S.BottomRightArea>
     </S.BottomContainer>
   );
 }
+
 
 export default function MissionFeedback() {
 

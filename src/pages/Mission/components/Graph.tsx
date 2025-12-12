@@ -10,6 +10,11 @@ import {
   type ChartOptions,
 } from 'chart.js';
 import * as S from '../styles/Graph';
+import type { FeedbackData } from "../pages/MissionFeedback/MissionFeedback";
+
+interface GraphProps {
+    dataProps?: FeedbackData;
+  }
 
 ChartJS.register(
   RadialLinearScale,
@@ -20,21 +25,26 @@ ChartJS.register(
   Legend,
 );
 
-export default function Graph() {
-  const data = [
-    { year: '명료성', count: 100 },
-    { year: '단어', count: 70 },
-    { year: '언어 표현', count: 70 },
-    { year: '비지니스 예절', count: 100 },
-    { year: '내용 충족', count: 70 },
-  ];
+export default function Graph({ dataProps }: GraphProps) {
+
+    const splitLabel = (label: string) => {
+        if (label.length <= 5) return label;
+        
+        const mid = Math.floor(label.length / 2);
+        return [label.slice(0, mid), label.slice(mid)];
+      };
+
+    const data = dataProps?.evaluations.map((ev: { item: any; score: any; }) => ({
+        year: ev.item,
+        count: ev.score,
+      })) || [];
 
   const chartData = {
-    labels: data.map((row) => row.year),
+    labels: data.map((row: { year: any; }) => splitLabel(row.year)),
     datasets: [
       {
         label: '',
-        data: data.map((row) => row.count),
+        data: data.map((row: { count: any; }) => row.count),
         backgroundColor: 'rgba(75, 192, 192, 0.4)',
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,

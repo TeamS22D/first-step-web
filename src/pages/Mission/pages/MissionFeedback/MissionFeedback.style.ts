@@ -118,12 +118,11 @@ export const MiddleEvaluation = styled.div`
     height: 315px;
     display: flex;
     flex-direction: column;
-    gap: 38.77px;
     padding: 44px 51px;
     border-radius: 10px;
     background: #FFF;
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.10);
-
+    gap: 32px;
 `
 
 export const MiddleRatingContainer = styled.div`
@@ -134,17 +133,20 @@ export const MiddleRatingContainer = styled.div`
     background-color:rgb(47, 198, 115);
 `
 
-export const MiddleRatingTextarea = styled.div`
+export const MiddleRatingTextareaContainer = styled.div`
     width: 100%;
-    height: 145px;
+    height: auto;
     display: flex;
     align-items: center;
+`
 
+export const MiddleRatingTextarea = styled.span`
     color: #6A6A6A;
     font-family: "Pretendard Variable";
     font-size: 24px;
     font-weight: 400;
     letter-spacing: -1.2px;
+    line-height: 26px;
 
     white-space: pre-wrap; /* 줄바꿈(\n) 적용 오옹 */
 `
@@ -166,7 +168,7 @@ export const BottomLeftContainer = styled.div`
 `
 export const BottomHelf = styled.div`
     width: 100%;
-    height: 155px;
+    height: auto;
     padding: 22px 29px;
     display: flex;
     gap: 20px;
@@ -177,15 +179,14 @@ export const BottomHelf = styled.div`
 
 
     .TitleContainer{
-        width: 82px;
+        width: auto;
         height: 25px;
     }
     
     .Title{
-        display: flex;
+        display: inline-block;
         flex-direction: row;
-        padding: 3px 18px;
-        justify-content: center;
+        padding: 4px 18px;
         align-items: center;
         border-radius: 5px;
         background: #3FB98A;
@@ -205,6 +206,7 @@ export const BottomHelf = styled.div`
         font-size: 18px;
         font-weight: 400;
         letter-spacing: -0.9px;
+        line-height: 24px;
     }
 
 `
@@ -241,8 +243,20 @@ export const Bar = styled.div`
     width: 6px;
     height: 70px;
     border-radius: 10px;
-    background: #3FB98A;
-`
+    background: ${({ color }) =>
+        color === '0' // green
+            ? "#3FB98A"
+        : color === '1' // blue
+            ? "#09F"
+        : color === '2' // purple
+            ? "#AF5EFF"
+        :color === '3' // green
+            ? "#3FB98A"
+        : color === '4' // blue
+            ? "#09F"
+        : "#3FB98A"  // 기본값
+        };
+    `
 
 export const ItemContent = styled.div`
     display: flex;
@@ -267,6 +281,7 @@ export const Sub = styled.span`
     font-weight: 400;
     color: #6A6A6A;
     letter-spacing: -0.75px;
+    line-height: 17px;
 `
 
 export const buttoncontainer = styled.div`

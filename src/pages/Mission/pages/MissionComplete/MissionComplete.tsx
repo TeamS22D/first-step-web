@@ -41,7 +41,7 @@ export default function MissionComplete() {
                     </S.container>
                     <S.buttoncontainer>
                         <S.Button1>
-                            로그인하기
+                            다른 미션하러 가기
                         </S.Button1>
                         <S.Button2 onClick={pageMove}>
                             홈으로 돌아가기
