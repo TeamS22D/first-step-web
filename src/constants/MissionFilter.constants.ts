@@ -13,21 +13,21 @@ export const CategoryList = [
   {
     id: 1,
     value: "전체",
-    to: "all",
+    to: "/mission/all",
   },
   {
     id: 2,
     value: "문서",
-    to: "document",
+    to: "/mission/document",
   },
   {
     id: 3,
     value: "채팅",
-    to: "chat",
+    to: "/mission/chat",
   },
   {
     id: 4,
     value: "메일",
-    to: "mail",
+    to: "/mission/mail",
   },
 ]

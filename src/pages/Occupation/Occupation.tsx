@@ -1,4 +1,3 @@
-// src/pages/Occupation/Occupation.tsx
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./Occupation.style";
