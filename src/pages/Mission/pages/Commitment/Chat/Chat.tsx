@@ -91,6 +91,11 @@ function ChatBox() {
     const afterExitBuffer = useRef<string[]>([]);
 
     const [isLoadingAI, setIsLoadingAI] = useState(false);
+    const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.nativeEvent.isComposing) return;
@@ -102,6 +107,9 @@ function ChatBox() {
 
     if (!ctx) throw new Error("MissionStep1 must be used inside MissionFeedbackLayout");
   
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);  // messages가 업데이트될 때마다 실행
 
     useEffect(() => {
 
@@ -255,6 +263,7 @@ function ChatBox() {
                         </S.messageWrapper>
                     );
                 })}
+                <div ref={messagesEndRef} />
             </S.Contant>
 
             <S.InputBox>
