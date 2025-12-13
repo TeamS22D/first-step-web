@@ -30,13 +30,13 @@ export const Mission = styled.div`
   box-shadow: ${(props) => props.theme.shadowLight};
 `
 
-export const StatusBadge = styled.div`
+export const StatusBadge = styled.div<{isNew?: boolean, isEndSoon?: boolean}>`
   display: flex;
   width: 50px;
   padding: 6px 0px;
   justify-content: center;
   align-items: center;
-  background-color: #ED6833;
+  background-color: ${(props) => props.isNew ? "#ED6833" : props.isEndSoon ? "#F1414C" : "#595959"};
   font-size: 12.4px;
   border-radius: 100px;
   color: #fff;
