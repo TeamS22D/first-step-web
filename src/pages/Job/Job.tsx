@@ -2,6 +2,8 @@ import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./Job.style";
 
+import axiosInstance from "../../hooks/axiosInstance";
+
 import selectPng from "../../assets/Dictionary/select.png";
 import LongButton from "../../components/Buttons/LongButton";
 
@@ -52,31 +54,22 @@ export default function Job() {
 
     setLoading(true);
     try {
-      try {
-        const res = await fetch("/job", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            job: selected,
-          }),
-        });
+      const res = await axiosInstance.post<JobResponse>("/user/job", {
+        email,
+        job: selected,
+      });
 
-        if (res.ok) {
-          const data: JobResponse = await res.json();
-          jobCode = data.selectedJob?.code ?? selected;
-        } else {
-          console.error("직업 선택 API 실패", res.status);
-        }
-      } catch (err) {
-        console.error("직업 선택 요청 오류", err);
+      if (res.status >= 200 && res.status < 300) {
+        const data = res.data;
+        jobCode = data.selectedJob?.code ?? selected;
+
+        localStorage.setItem("job", jobCode);
+        navigate("/Home");
+      } else {
+        console.error("직업 선택 API 실패:", res.status, res.data);
       }
-
-      localStorage.setItem("job", jobCode);
-
-      navigate("/Home");
+    } catch (err) {
+      console.error("직업 선택 요청 오류:", err);
     } finally {
       setLoading(false);
     }

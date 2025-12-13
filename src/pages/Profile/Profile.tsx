@@ -27,6 +27,10 @@ type GraphResponse = {
   history: HistoryPoint[];
 };
 
+type AttendanceStreakResponse = {
+  streak: number;
+};
+
 export default function Profile() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("최근 한 달간");
@@ -36,12 +40,43 @@ export default function Profile() {
   const [chartData, setChartData] = useState<HistoryPoint[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
 
+  const [streak, setStreak] = useState<number | null>(null);
+  const [loadingStreak, setLoadingStreak] = useState(false);
+
   const options = ["최근 한 달간", "최근 일 년간", "최근 일주일간"];
 
   const handleSelect = (v: string) => {
     setSelected(v);
     setOpen(false);
   };
+
+  useEffect(() => {
+    const fetchAttendanceStreak = async () => {
+      setLoadingStreak(true);
+      try {
+        const res = await axiosInstance.get<AttendanceStreakResponse>(
+          "/user/attendanceStreak"
+        );
+
+        if (typeof res.data.streak === "number") {
+          setStreak(res.data.streak);
+        } else {
+          console.warn(
+            "attendanceStreak 응답에 streak 필드가 없습니다:",
+            res.data
+          );
+          setStreak(null);
+        }
+      } catch (err) {
+        console.error("연속 학습일 불러오기 오류:", err);
+        setStreak(null);
+      } finally {
+        setLoadingStreak(false);
+      }
+    };
+
+    fetchAttendanceStreak();
+  }, []);
 
   useEffect(() => {
     const fetchGraph = async () => {
@@ -136,7 +171,9 @@ export default function Profile() {
             <div>
               <S.SmallCardTitle>연속 학습일</S.SmallCardTitle>
               <S.ValueRow>
-                <S.ValueNumber>1</S.ValueNumber>
+                <S.ValueNumber>
+                  {loadingStreak ? "-" : streak ?? "-"}
+                </S.ValueNumber>
                 <S.ValueUnit>일</S.ValueUnit>
               </S.ValueRow>
             </div>
@@ -224,7 +261,7 @@ export default function Profile() {
                 <S.StatValue>채팅형</S.StatValue>
               </S.StatItem>
 
-              <S.StatItem>
+            <S.StatItem>
                 <S.StatPercent $document>
                   {current ? `${current.document}점` : "-"}
                 </S.StatPercent>
