@@ -1,50 +1,88 @@
+import { useEffect, useState } from "react"
 import * as S from "../styles/Status.style"
+import axiosInstance from "@/hooks/axiosInstance"
+const SERVER_URL = import.meta.env.VITE_BASE_URL
+
+interface IStatus {
+  mission: {
+    completed: number,
+    total: number,
+    remaining: number,
+    rate: number,
+  },
+  document: {
+    completed: number,
+    total: number,
+    rate: number
+  },
+  email: {
+    completed: number,
+    total: number,
+    rate: number
+  },
+  chat: {
+    completed: number,
+    total: number,
+    rate: number
+  },
+}
 
 function Status() {
+  const [data, setData] = useState<IStatus>();
+  useEffect(() => {
+    axiosInstance.get(`${SERVER_URL}/user-mission`)
+    .then((response) => {
+      setData(response.data);
+    })
+    .catch((error) => {
+      alert(error);
+    })
+  }, [])
+
   return (
     <S.Status>
       <S.StatusBar>
         <S.TextContainer>
-          <S.CountOfMission>{"7"}</S.CountOfMission>
+          <S.CountOfMission>{data?.mission.completed}</S.CountOfMission>
           <S.CountSuffix>개</S.CountSuffix>
-          <S.RestMission>남은 개수 {"7"}개</S.RestMission>
+          <S.RestMission>남은 개수 {data?.mission.remaining}개</S.RestMission>
         </S.TextContainer>
         <S.BarEmpty>
-          <S.BarFilled size="30" />
+          <S.BarFilled size={String(data?.mission.rate) || "0"} />
         </S.BarEmpty>
       </S.StatusBar>
         <S.Stat>
           <S.StatRow>
             <S.Box>
-              테스트
+              문서
             </S.Box>
             <S.StatText>
               <S.StatHighlight>
-                7
+                {data?.document.completed}
               </S.StatHighlight>
-               / 10개
+               / {data?.document.total}
             </S.StatText>
           </S.StatRow>
           <S.StatRow>
             <S.Box>
-              테스트
+              채팅
             </S.Box>
             <S.StatText>
               <S.StatHighlight>
-                7
+                {data?.chat.completed}
               </S.StatHighlight>
-               / 10개
+               / {data?.chat.total}
             </S.StatText>
           </S.StatRow>
           <S.StatRow>
             <S.Box>
-              테스트
+              메일
             </S.Box>
             <S.StatText>
               <S.StatHighlight>
-                7
+                {data?.email.completed}
               </S.StatHighlight>
-               / 10개
+               / {data?.email.total}
             </S.StatText>
           </S.StatRow>
         </S.Stat>
