@@ -1,15 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as S from "../styles/MissionList.style"
 import Timer from "@assets/Home/Timer.png"
-import axios from "axios";
+import axiosInstance from "@/hooks/axiosInstance";
+const SERVER_URL = import.meta.env.VITE_BASE_URL;
 
-const Mission = () => {
+const Mission = (props: IMissions) => {
   return (
     <S.MissionBox>
       <S.Mission>
         <S.StatusBadge>{"NEW"}</S.StatusBadge>
-        <S.MissionTitle>{"Mission Title"}</S.MissionTitle>
-        <S.Deadline><img src={Timer} />{"2025-04-01"}</S.Deadline>
+        <S.MissionTitle>{props.missionName}</S.MissionTitle>
+        <S.Deadline><img src={Timer} />{props.endDate}</S.Deadline>
         <S.Buttons>
           <S.Button>시작하기</S.Button>
         </S.Buttons>
@@ -18,30 +19,45 @@ const Mission = () => {
   )
 }
 
+interface IMissions {
+  userMissionId: number,
+  missionName: string,
+  missionTheme: "email" | "chat" | "document",
+  startDate: string,
+  endDate: string
+}
+
 function MissionList({category}: {category: string;}) {
+  const[missions, setMissions] = useState<IMissions[]>([]);
+  var isRendered = false;
 
   useEffect(() => {
-    axios.get(`fetching${category}`)
+    axiosInstance.get(`${SERVER_URL}/user-mission/missions`)
     .then((response) => {
-      console.log(response.data);
+      setMissions(response.data);
+    })
+    .catch((error) => {
+      if (error.response.status === 400) {
+        alert("미션이 없습니다.");
+      } else {
+        alert("미션을 불러오는데 실패했습니다. 잠시 후 다시 시도해주세요.");
+      }
     })
   }, [category])
 
   return (
     <S.Container>
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
+      {missions.length !== 0 ? missions.map((elem) => {
+        switch(category) {
+          case "all":
+          case elem.missionTheme:
+            isRendered = true;
+            return (<Mission {...elem} />);
+          default:
+            return null;
+        }
+      }) : <div>미션이 없습니다.</div>}
+      {!isRendered ? <div>미션이 없습니다.</div> : null}
     </S.Container>
   )
 }
