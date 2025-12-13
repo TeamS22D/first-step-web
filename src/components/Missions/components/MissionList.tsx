@@ -19,13 +19,13 @@ const getDaysDiff = (dateStr: string): number => {
 const Mission = (props: IMissions) => {
   const diffDayFromStart = getDaysDiff(props.startDate);
   const diffDayToDeadLine = getDaysDiff(props.endDate);
-  
+
   return (
     <S.MissionBox>
       <S.Mission>
         {diffDayToDeadLine < 3 ? <S.StatusBadge isEndSoon>D-{diffDayToDeadLine}</S.StatusBadge> : diffDayFromStart < 2 ? <S.StatusBadge isNew>{"NEW"}</S.StatusBadge> : <S.StatusBadge>D-{diffDayToDeadLine}</S.StatusBadge>}
         <S.MissionTitle>{props.missionName}</S.MissionTitle>
-        <S.Deadline><img src={Timer} />{props.endDate.slice(0,10)}</S.Deadline>
+        <S.Deadline><img src={Timer} />{props.endDate.slice(0, 10)}</S.Deadline>
         <S.Buttons>
           <S.Button>시작하기</S.Button>
         </S.Buttons>
@@ -42,28 +42,13 @@ interface IMissions {
   endDate: string
 }
 
-function MissionList({category}: {category: string;}) {
-  const[missions, setMissions] = useState<IMissions[]>([]);
+function MissionList({ category, missions }: { category: string; missions: IMissions[]; }) {
   var isRendered = false;
-
-  useEffect(() => {
-    axiosInstance.get(`${SERVER_URL}/user-mission/missions`)
-    .then((response) => {
-      setMissions(response.data);
-    })
-    .catch((error) => {
-      if (error.response.status === 400) {
-        alert("미션이 없습니다.");
-      } else {
-        alert("미션을 불러오는데 실패했습니다. 잠시 후 다시 시도해주세요.");
-      }
-    })
-  }, [category])
 
   return (
     <S.Container>
       {missions.length !== 0 ? missions.map((elem) => {
-        switch(category) {
+        switch (category) {
           case "all":
           case elem.missionTheme:
             isRendered = true;

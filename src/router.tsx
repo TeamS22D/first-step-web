@@ -41,56 +41,20 @@ const router = createBrowserRouter([
 
       {
         path: "mission",
+        element: <Navigate to="all" replace />,
+      },
+      {
+        path: "mission/:category",
         element: <Missions />,
-        children: [
-          {
-            index: true,
-            element: <Navigate to="all" replace />,
-          },
-          {
-            path: "all",
-            element: <MissionList category="all" />,
-          },
-          {
-            path: "document",
-            element: <MissionList category="document" />,
-          },
-          {
-            path: "chat",
-            element: <MissionList category="chat" />,
-          },
-          {
-            path: "mail",
-            element: <MissionList category="mail" />,
-          },
-        ],
       },
 
       {
         path: "feedback",
+        element: <Navigate to="all" replace />,
+      },
+      {
+        path: "feedback/:category",
         element: <Feedback />,
-        children: [
-          {
-            index: true,
-            element: <Navigate to="all" replace />,
-          },
-          {
-            path: "all",
-            element: <MissionList category="all" />,
-          },
-          {
-            path: "document",
-            element: <MissionList category="document" />,
-          },
-          {
-            path: "chat",
-            element: <MissionList category="chat" />,
-          },
-          {
-            path: "mail",
-            element: <MissionList category="mail" />,
-          },
-        ],
       },
 
       {
