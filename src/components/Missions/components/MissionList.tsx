@@ -40,7 +40,7 @@ interface IMissions {
 }
 
 function MissionList({ category, missions }: { category: string; missions: IMissions[]; }) {
-  var isRendered = false;
+  let isRendered = false;
 
   return (
     <S.Container>
