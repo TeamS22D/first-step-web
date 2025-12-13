@@ -4,7 +4,8 @@ import Searchbar from "@/components/Searchbar/Searchbar"
 import { useCallback, useEffect, useState } from "react";
 import React from "react";
 import * as I from "./types/Words.type"
-import axios from "axios";
+import axiosInstance from "@/hooks/axiosInstance";
+const SERVER_URL = import.meta.env.VITE_BASE_URL;
 
 const Word = ({word, desc, example}:I.ISearchResultProps) => {
     return (
@@ -45,13 +46,12 @@ function Words() {
 
     //TODO: API 호출
     useEffect(() => {
-        axios.get("http://10.80.161.41:3000/bizwords")
+        axiosInstance.get(`${SERVER_URL}/bizwords`)
             .then(function (response) {
                 setRawWords(response.data); setWords(response.data);
             }).catch(function (error) {
                 alert("단어를 불러오지 못하였습니다 : " + error.message);
         })
-        // setRawWords(Data); setWords(Data);
     }, [])
 
     const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

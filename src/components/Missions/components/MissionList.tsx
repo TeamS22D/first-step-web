@@ -4,13 +4,28 @@ import Timer from "@assets/Home/Timer.png"
 import axiosInstance from "@/hooks/axiosInstance";
 const SERVER_URL = import.meta.env.VITE_BASE_URL;
 
+const getDaysDiff = (dateStr: string): number => {
+  const today = new Date();
+  const target = new Date(dateStr);
+
+  today.setHours(0, 0, 0, 0);
+  target.setHours(0, 0, 0, 0);
+
+  const diffMs = Math.abs(today.getTime() - target.getTime());
+
+  return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+};
+
 const Mission = (props: IMissions) => {
+  const diffDayFromStart = getDaysDiff(props.startDate);
+  const diffDayToDeadLine = getDaysDiff(props.endDate);
+  
   return (
     <S.MissionBox>
       <S.Mission>
-        <S.StatusBadge>{"NEW"}</S.StatusBadge>
+        {diffDayToDeadLine < 3 ? <S.StatusBadge isEndSoon>D-{diffDayToDeadLine}</S.StatusBadge> : diffDayFromStart < 2 ? <S.StatusBadge isNew>{"NEW"}</S.StatusBadge> : <S.StatusBadge>D-{diffDayToDeadLine}</S.StatusBadge>}
         <S.MissionTitle>{props.missionName}</S.MissionTitle>
-        <S.Deadline><img src={Timer} />{props.endDate}</S.Deadline>
+        <S.Deadline><img src={Timer} />{props.endDate.slice(0,10)}</S.Deadline>
         <S.Buttons>
           <S.Button>시작하기</S.Button>
         </S.Buttons>
