@@ -92,6 +92,7 @@ function ChatBox() {
 
     const [isLoadingAI, setIsLoadingAI] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     // 메시지 업데이트 시 자동 스크롤
     const scrollToBottom = () => {
@@ -109,6 +110,12 @@ function ChatBox() {
 
     if (!ctx) throw new Error("MissionStep1 must be used inside MissionFeedbackLayout");
   
+    useEffect(() => {
+        if (!isLoadingAI) {
+            inputRef.current?.focus();
+        }
+    }, [isLoadingAI]);  // isLoadingAI가 false로 바뀔 때 포커스
+
     useEffect(() => {
         scrollToBottom();
     }, [messages]);  // messages가 업데이트될 때마다 실행
@@ -277,6 +284,7 @@ function ChatBox() {
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyPress}
                     disabled={isLoadingAI}
+                    ref={inputRef}
                 />
                 <S.SendButton 
                     onClick={sendMessage}
