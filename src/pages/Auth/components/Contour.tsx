@@ -15,6 +15,17 @@ const ContourContainer = styled.div`
         height: 1px;
         background-color: ${(props) => props.theme.textSecondary};
     }
+
+    @media (max-width: 425px) {
+        width: 250px;
+        & > span {
+            font-size: 12px;
+            text-align: center;
+        }
+        & > div {
+            width: 80%;
+        }
+    }
 `;
 
 interface ContourProps {

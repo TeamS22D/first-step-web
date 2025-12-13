@@ -8,8 +8,11 @@ const SocialLogin = styled.div`
     display: flex;
     justify-content: center;
     gap: 60px;
-    width: 440px;
+    width: 100%;
     height: 64px;
+    @media (max-width: 425px) {
+        gap: 32px;
+    }
 `;
 
 const SocialIcon = styled.a<{img?: string}>`
@@ -17,14 +20,23 @@ const SocialIcon = styled.a<{img?: string}>`
     border-radius: 32px;
     background-image: url(${(props) => props.img});
     background-size: cover;
+
+    @media (max-width: 425px) {
+        width: 48px;
+        height: 48px;
+    }
 `;
+
+const onSocialClick = (platform: string) => {
+    window.location.replace(`${import.meta.env.VITE_BASE_URL}/auth/${platform}`);
+}
 
 function Social() {
     return (
         <SocialLogin>
-            <SocialIcon img={NaverIcon}/>
-            <SocialIcon img={GoogleIcon}/>
-            <SocialIcon img={KakaoIcon}/>
+            <SocialIcon img={NaverIcon} onClick={() => {onSocialClick('naver')}}/>
+            <SocialIcon img={GoogleIcon} onClick={() => (onSocialClick('google'))}/>
+            <SocialIcon img={KakaoIcon} onClick={() => {onSocialClick('kakao')}}/>
         </SocialLogin>
     )
 }

@@ -17,12 +17,18 @@ import Feedback from "./pages/Feedback/Feedback";
 import Occupation from "./pages/Occupation/Occupation";
 import Job from "./pages/Job/Job";
 import Profile from "./pages/Profile/Profile";
+import Verify from "./pages/Auth/pages/Verify/Verify";
+import SocialLogin from "./pages/Auth/pages/SocialLogin/SocialLogin";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
+      {
+        index: true,
+        element: <Navigate to="/home" />
+      },
       {
         path: "home",
         element: <Home />,
@@ -102,6 +108,10 @@ const router = createBrowserRouter([
       { path: "register", element: <Register /> },
     ],
   },
+
+  { path: "/verify", element: <Verify /> },
+
+  { path: "/login-success", element: <SocialLogin /> },
 
   { path: "/occupation", element: <Occupation /> },
   { path: "/job", element: <Job /> },

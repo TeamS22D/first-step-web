@@ -1,7 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./Job.style";
-
 import axiosInstance from "../../hooks/axiosInstance";
 
 import selectPng from "../../assets/Dictionary/select.png";
@@ -40,9 +39,7 @@ export default function Job() {
     {
       id: "dataAnaly",
       label: "데이터 분석가",
-      node: (
-        <img src="/assets/Dictionary/dataAnalyst.png" alt="데이터 분석가" />
-      ),
+      node: <img src="/assets/Dictionary/dataAnalyst.png" alt="데이터 분석가" />,
     },
   ];
 
@@ -53,8 +50,10 @@ export default function Job() {
     let jobCode = selected;
 
     setLoading(true);
+
     try {
-      const res = await axiosInstance.post<JobResponse>("/user/job", {
+      const res = await axiosInstance.post(`/user/job`, {
+        main
         email,
         job: selected,
       });
@@ -73,6 +72,12 @@ export default function Job() {
     } finally {
       setLoading(false);
     }
+
+    localStorage.setItem("job", jobCode);
+
+    navigate("/Home");
+    
+    setLoading(false);
   };
 
   return (
@@ -82,7 +87,7 @@ export default function Job() {
       <S.Description>
         <p>안녕하세요. 민선영님.</p>
         <p>
-          첫걸음 서비스 이용을 위해 직업을 선택해주세요. 선택 직군에 맞는
+          첫걸음 서비스 이용을 위해 분야를 선택해주세요. 선택 직군에 맞는
           미션으로 더 나은 서비스를
         </p>
         <p>지원하겠습니다. 저희는 당신의 첫걸음을 응원하고 지지하겠습니다.</p>
@@ -108,8 +113,6 @@ export default function Job() {
           );
         })}
       </S.TopRow>
-
-      <S.BottomRow />
 
       <LongButton onClick={handleSubmit} disabled={!selected || loading}>
         {loading ? "저장 중..." : "선택 완료"}
