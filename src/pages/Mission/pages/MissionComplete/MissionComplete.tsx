@@ -23,9 +23,14 @@ export default function MissionComplete() {
 
     const navigate = useNavigate();
 
-    const pageMove = () => {
+    const pageMoveHome = () => {
         navigate("/home")
     }
+
+    const pageMoveMissionList = () => {
+        navigate("/mission/all")
+    }
+
 
     return (
         <ThemeProvider theme={lightTheme}>
@@ -40,10 +45,10 @@ export default function MissionComplete() {
                         <Image src='/assets/Mission/firm.png' alt=''/>
                     </S.container>
                     <S.buttoncontainer>
-                        <S.Button1>
+                        <S.Button1 onClick = {pageMoveMissionList}>
                             다른 미션하러 가기
                         </S.Button1>
-                        <S.Button2 onClick={pageMove}>
+                        <S.Button2 onClick={pageMoveHome}>
                             홈으로 돌아가기
                         </S.Button2>
                     </S.buttoncontainer>

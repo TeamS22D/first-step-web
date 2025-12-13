@@ -5,7 +5,22 @@ import * as S from './MissionFeedback.style.ts';
 import Graph from "../../components/Graph";
 import StepsComponent from '../../../../components/Step/StepsComponent.tsx'
 import { useLocation, useNavigate } from "react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import StarOff from '@assets/Mission/StarOff.png';
+import StarOn from '@assets/Mission/StarOn.png';
+
+
+interface ImageProps {
+    src: string;
+    alt: string;
+}
+
+
+const Image = ({src, alt}:ImageProps) => {
+    return (
+        <S.Image src = {src} alt={alt} />
+    )
+}
 
 export interface EvaluationDetail {
     good_points: string;
@@ -50,7 +65,21 @@ export function TitleBox() {
   )
 }
 
+
+
 export function MiddleBox({ data }: { data?: FeedbackData }) {
+
+  const [grade, setGrade] = useState<number>(0);
+
+  useEffect(() => {
+    if (data?.grade === 'A') setGrade(5);
+    else if (data?.grade === 'B') setGrade(4);
+    else if (data?.grade === 'C') setGrade(3);
+    else if (data?.grade === 'D') setGrade(2);
+    else if (data?.grade === 'E') setGrade(1);
+    else setGrade(0);
+  }, [data]);
+  
 
   return (
     <S.MiddleContainer>
@@ -58,7 +87,20 @@ export function MiddleBox({ data }: { data?: FeedbackData }) {
         <Graph dataProps={data} />
       </S.MiddleGraph>
       <S.MiddleEvaluation>
-        <S.MiddleRatingContainer />
+        <S.MiddleRatingContainer>
+          <S.MiddleRatingContainerStars>
+          {Array.from({ length: 5 }).map((_, idx) => (
+            <Image
+              key={idx}
+              src={idx < grade ? StarOn : StarOff}
+              alt=""
+            />
+          ))}
+          </S.MiddleRatingContainerStars>
+          <S.MiddleRatingContainerScore>
+          {`${data?.total_score}점`}
+          </S.MiddleRatingContainerScore>
+        </S.MiddleRatingContainer>
         <S.MiddleRatingTextareaContainer>
           <S.MiddleRatingTextarea>{data?.general_feedback}</S.MiddleRatingTextarea>
         </S.MiddleRatingTextareaContainer>

@@ -130,7 +130,29 @@ export const MiddleRatingContainer = styled.div`
     height: 24px;
     display: flex;
     gap: 15px;
-    background-color:rgb(47, 198, 115);
+`
+
+export const MiddleRatingContainerStars = styled.div`
+    display: flex;
+    width: 133px;
+    align-items: center;
+    gap: 4px;
+`
+
+export const Image = styled.img`
+    width: 24px;
+    height: 23.226px;
+`
+
+export const MiddleRatingContainerScore = styled.span`
+    display: inline-block;
+    color: #595959;
+    font-family: "Pretendard Variable";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -1px;
 `
 
 export const MiddleRatingTextareaContainer = styled.div`
