@@ -44,7 +44,7 @@ export const Textarea = styled.div`
     border-bottom: 2px solid #F2F2F2;
     display: flex;
     align-items: center;
-    padding-left: 17px;
+    padding: 0px 17px;
     gap: 24px;
 `
 
@@ -76,6 +76,11 @@ export const Content = styled.textarea`
     font-size: 16px;
     color: #777;
     padding: 0;          
+`
+
+export const ContentBig = styled(Content)`
+    height: 100%;   
+    line-height: 20px;       
 `
 
 export const TopContent = styled.div`

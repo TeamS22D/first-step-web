@@ -36,3 +36,8 @@ export const Step = styled.div<StepProps>`
     font-weight: 500;
   
 `
+
+export const gongback = styled.div`
+    width: 8px;
+    height: 100%;
+`

@@ -6,8 +6,8 @@ import Graph from "../../components/Graph";
 import StepsComponent from '../../../../components/Step/StepsComponent.tsx'
 import { useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import StarOff from '@assets/Mission/StarOff.png';
-import StarOn from '@assets/Mission/StarOn.png';
+import StarOff from '@assets/Mission/Feedback/StarOff.png';
+import StarOn from '@assets/Mission/Feedback/StarOn.png';
 
 
 interface ImageProps {
@@ -43,10 +43,10 @@ export interface FeedbackData {
 }
 
 const titleInfo = {
-  mainTitle: "[보고서] 업무 보고서 작성",
+  mainTitle: "[채팅] 연차 요청을 해 보세요!",
   period: "9일 전",
   date: "2024-11-04",
-  target: "다른 회사로부터 외주 개발 프로젝트를 더 예의있게 보내는 실습"
+  target: "실제 실무 상황을 가정한 연차 요청 및 업무 조율 커뮤니케이션 연습"
 };
 
 export function TitleBox() {
@@ -72,11 +72,11 @@ export function MiddleBox({ data }: { data?: FeedbackData }) {
   const [grade, setGrade] = useState<number>(0);
 
   useEffect(() => {
-    if (data?.grade === 'A') setGrade(5);
-    else if (data?.grade === 'B') setGrade(4);
-    else if (data?.grade === 'C') setGrade(3);
-    else if (data?.grade === 'D') setGrade(2);
-    else if (data?.grade === 'E') setGrade(1);
+    if (data?.grade.startsWith('A')) setGrade(5);
+    else if (data?.grade.startsWith('B')) setGrade(4);
+    else if (data?.grade.startsWith('C')) setGrade(3);
+    else if (data?.grade.startsWith('D')) setGrade(2);
+    else if (data?.grade.startsWith('E')) setGrade(1);
     else setGrade(0);
   }, [data]);
   

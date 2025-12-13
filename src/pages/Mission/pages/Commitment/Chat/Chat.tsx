@@ -1,6 +1,6 @@
 import * as S from './Chat.style'
-import ImageFirm from '@/assets/Mission/ChatFirm.png'
-import ImageSend from '@/assets/Mission/Send.png'
+import ImageFirm from '@/assets/Mission/Firm/woman1.png'
+import ImageSend from '@/assets/Mission/ChatInput/Send.png'
 import { useContext, useRef, useState} from 'react';
 import { useEffect } from 'react'
 import { MissionFeedbackContext } from '@/components/MissionLayout/MissionLayout';
@@ -46,7 +46,7 @@ function Introduction() {
                         <Image src={ImageFirm} alt=''/>
                     </S.InpormationWrapper>
                     <S.InpormationWrapper>
-                        <S.name>김부장</S.name>
+                        <S.name>민팀장</S.name>
                         <S.slash>|</S.slash>
                         <S.age>52세</S.age>
                     </S.InpormationWrapper>
@@ -54,7 +54,13 @@ function Introduction() {
             </S.TopWrapper>
             <S.BottomWrapper>
                 <Atr/>
-                <Atr/>
+                <S.atr>
+                    <S.bar/>
+                    <S.FontWrapper>
+                        <S.atrTitle>특징</S.atrTitle>
+                        <S.atrSub>일정 관리와 책임 있는 대안을 중시함</S.atrSub>
+                    </S.FontWrapper>
+                </S.atr>
             </S.BottomWrapper>
         </S.Introduction>
     )
@@ -67,7 +73,7 @@ function Atr() {
         <S.bar/>
         <S.FontWrapper>
             <S.atrTitle>성격</S.atrTitle>
-            <S.atrSub>꼰대같음</S.atrSub>
+            <S.atrSub>배려심 있음, 합리적이고 침착함</S.atrSub>
         </S.FontWrapper>
     </S.atr>
     )

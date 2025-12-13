@@ -16,7 +16,7 @@ export function TopTextarea({ title, placeholder }: TopTextareaProps) {
     );
 }
 
-export default function Chat() {
+export default function Mail() {
     return (
         <S.Body>
             <S.Container>
@@ -28,7 +28,7 @@ export default function Chat() {
                         <TopTextarea title = '받는 사람' placeholder = '받는 이를 입력하세요.'/>
                         <TopTextarea title = '제목' placeholder = '제목을 입력하세요.'/>
                         <S.BottomTextarea>
-                            <S.Content
+                            <S.ContentBig
                                 placeholder="내용을 입력하세요."
                             />
                         </S.BottomTextarea>

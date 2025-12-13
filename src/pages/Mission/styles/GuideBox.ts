@@ -94,8 +94,8 @@ export const Word = styled.div`
     background: #F2F2F2;
     display:flex;
     justify-content: center;
-    align-items: center;
     padding: 24px;
+    overflow-y: auto;
 
     color: #6A6A6A;
     font-family: "Pretendard Variable";

@@ -14,7 +14,7 @@ const Icon = ({ src, alt }: IconProps) => {
     return <S.Icon src={src} alt={alt} />;
 };
 
-const stepLabels = ["보고서 실습", "AI 피드백", "미션 완료"];
+const stepLabels = ["채팅 실습", "AI 피드백", "미션 완료"];
 
 export default function StepsComponent({ step }: StepsComponentProps) {
     return (
@@ -25,7 +25,10 @@ export default function StepsComponent({ step }: StepsComponentProps) {
                     <span key={i} style={{ display: "flex", alignItems: "center" }}>
                         <S.Step on={step === i}>{label}</S.Step>
                         {i < stepLabels.length - 1 && (
-                            <Icon src="/assets/Mission/Step.png" alt="IconStep" />
+                            <>
+                                <S.gongback/>
+                                <Icon src="/assets/Mission/Step.png" alt="IconStep" />
+                            </>
                         )}
                     </span>
                 ))}
