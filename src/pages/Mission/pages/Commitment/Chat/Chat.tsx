@@ -93,10 +93,12 @@ function ChatBox() {
     const [isLoadingAI, setIsLoadingAI] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
+    // 메시지 업데이트 시 자동 스크롤
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
+    // input focus 중 enter 키 누를 시 sendMessge 실행
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.nativeEvent.isComposing) return;
 
@@ -174,8 +176,10 @@ function ChatBox() {
         
             
         
-            if (chunk === "[END_OF_STREAM]") return;
-        
+            if (chunk === "[END_OF_STREAM]") {
+                setIsLoadingAI(false);
+                return;
+            }
 
             // 일반 채팅 
             setMessages((prev) => {
@@ -218,7 +222,7 @@ function ChatBox() {
 
     // 메시지 전송
     const sendMessage = () => {
-        if (!input.trim()) return;
+        if (!input.trim() || isLoadingAI) return;
         if (ws.current && ws.current.readyState === WebSocket.OPEN) {
             ws.current.send(input);
 
@@ -272,8 +276,12 @@ function ChatBox() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyPress}
+                    disabled={isLoadingAI}
                 />
-                <S.SendButton onClick={sendMessage}>
+                <S.SendButton 
+                    onClick={sendMessage}
+                    disabled={isLoadingAI}
+                >
                     <Send src={ImageSend} alt="" />
                 </S.SendButton>
             </S.InputBox>
