@@ -45,40 +45,32 @@ export default function Job() {
 
   const handleSubmit = async () => {
     if (!selected || loading) return;
-
+  
     const email = localStorage.getItem("email") ?? "test@example.com";
     let jobCode = selected;
-
+  
     setLoading(true);
-
     try {
-      const res = await axiosInstance.post(`/user/job`, {
-        main
+      const res = await axiosInstance.post<JobResponse>("/user/job", {
         email,
         job: selected,
       });
-
-      if (res.status >= 200 && res.status < 300) {
+  
+      if (res.status === 200) {
         const data = res.data;
         jobCode = data.selectedJob?.code ?? selected;
-
-        localStorage.setItem("job", jobCode);
-        navigate("/Home");
       } else {
-        console.error("직업 선택 API 실패:", res.status, res.data);
+        console.error("직업 선택 API 실패:", res.status);
       }
+  
+      localStorage.setItem("job", jobCode);
+      navigate("/Home");
     } catch (err) {
       console.error("직업 선택 요청 오류:", err);
     } finally {
       setLoading(false);
     }
-
-    localStorage.setItem("job", jobCode);
-
-    navigate("/Home");
-    
-    setLoading(false);
-  };
+  };  
 
   return (
     <S.Container>
