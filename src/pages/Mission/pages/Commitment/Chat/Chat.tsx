@@ -89,7 +89,9 @@ function ChatBox() {
     const navigate = useNavigate();
     const ctx = useContext(MissionFeedbackContext);
     const afterExitBuffer = useRef<string[]>([]);
-    
+
+    const [isLoadingAI, setIsLoadingAI] = useState(false);
+
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.nativeEvent.isComposing) return;
 
@@ -163,20 +165,25 @@ function ChatBox() {
             }
         
             
-            // 일반 채팅 
         
             if (chunk === "[END_OF_STREAM]") return;
         
+
+            // 일반 채팅 
             setMessages((prev) => {
                 const last = prev[prev.length - 1];
-        
+            
                 if (last && last.sender === "ai") {
+                    // 로딩 메시지면 chunk로 교체
+                    // 아니면 추가
+                    const newText = last.text === "답장 중..." ? chunk : last.text + chunk;
+                    
                     return [
                         ...prev.slice(0, -1),
-                        { ...last, text: last.text + chunk }
+                        { ...last, text: newText }
                     ];
                 }
-        
+            
                 return [
                     ...prev,
                     { id: Date.now(), sender: "ai", text: chunk }
@@ -209,9 +216,15 @@ function ChatBox() {
 
             setMessages((prev) => [
                 ...prev,
-                { id: Date.now(), sender: "user", text: input }
+                { id: Date.now(), sender: "user", text: input },
+                {
+                    id: Date.now() + 1,
+                    sender: "ai",
+                    text: "답장 중..." 
+                }
             ]);
 
+            setIsLoadingAI(true);
             setInput("");
         } else {
             console.log("WebSocket not open");
@@ -223,6 +236,7 @@ function ChatBox() {
         <S.Container>
             <S.Contant>
                 {messages.map((msg) => {
+
                     if (msg.sender === "user") {
                         return (
                             <S.messageWrapper key={msg.id}>
