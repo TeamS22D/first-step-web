@@ -1,8 +1,5 @@
-import { useEffect, useState } from "react";
 import * as S from "../styles/MissionList.style"
 import Timer from "@assets/Home/Timer.png"
-import axiosInstance from "@/hooks/axiosInstance";
-const SERVER_URL = import.meta.env.VITE_BASE_URL;
 
 const getDaysDiff = (dateStr: string): number => {
   const today = new Date();
