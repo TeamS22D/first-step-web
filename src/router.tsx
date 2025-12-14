@@ -66,7 +66,7 @@ const router = createBrowserRouter([
             element: <Document />,
           },
           {
-            path: 'mail',
+            path: 'email-mission/:emailMissionId',
             element: <Mail/>,
           },
           {

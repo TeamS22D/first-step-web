@@ -90,7 +90,7 @@ function ChatBox() {
 
     const [input, setInput] = useState("");
     const stop = useRef(0)
-    const chatUrl = `wss://d3a8eeb8afa3.ngrok-free.app/chat/mission1`;
+    const chatUrl = `wss://812802b2b13a.ngrok-free.app/chat/mission1`;
 
     const navigate = useNavigate();
     const ctx = useContext(MissionFeedbackContext);

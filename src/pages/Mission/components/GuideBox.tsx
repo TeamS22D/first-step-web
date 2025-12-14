@@ -33,7 +33,10 @@ const Image = ({src, alt}:ImageProps) => {
 
 const stepLabels = ["상황설명", "보고서", "상사의 말"];
 
-const talk: string = '당신은 지금 3개월차 백엔드 개발자로서, ‘소셜 로그인 기능 개발’을 맡고 있습니다. 현재 진척도는 60%입니다. 다음 주 수요일, 도저히 미룰 수 없는 종합 건강검진 때문에 하루 연차가 필요합니다. 문제는 당신의 작업이 끝나야 동료 ‘이서준’이 후속 작업을 시작할 수 있자는 점입니다. 팀장 ‘민팀장’님께 연차 승인을 받으면서도, 팀의 스프린트 일정에 차질이 없도록 하겠다는 구체적인 계획을 제시하여 신뢰를 보여주세요!'
+const talk1: string = '상황설명'
+const talk2: string = '상황설명'
+const talk3: string = '상황설명'
+
 const firm: string = '처음 써보는 거라 잘 모르겠지? 필요하다면 힌트를 줄게요.'
 
 export function CategoryBox({category}: CategoryProps ) {
@@ -59,7 +62,7 @@ export default function GuideBox() {
                 </S.TitleBox>
                 <S.MiddleContainer>
                     <CategoryBox category={0}/>
-                    <S.Word>{talk}</S.Word>
+                    <S.Word>{talk1}</S.Word>
                 </S.MiddleContainer>
                 <S.BottomBox>
                     <S.BottomBoxTitle>

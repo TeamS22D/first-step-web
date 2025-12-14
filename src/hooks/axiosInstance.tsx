@@ -39,9 +39,10 @@ axiosInstance.interceptors.request.use( //axios 인스턴스 설정
         if(newToken) {
           config.headers["Authorization"] = `Bearer ${newToken}`;
         }
-      } else { //로그인 페이지로 이동
-        logout();
-      }
+      } 
+      // else { //로그인 페이지로 이동
+      //   logout();
+      // }
     }
     return config;
   },

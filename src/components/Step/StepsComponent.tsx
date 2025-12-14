@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { GlobalStyle } from "../../styles/GlobalStyle";
 import * as S from "./StepsComponent.style";
 
@@ -14,9 +15,19 @@ const Icon = ({ src, alt }: IconProps) => {
     return <S.Icon src={src} alt={alt} />;
 };
 
-const stepLabels = ["채팅 실습", "AI 피드백", "미션 완료"];
 
 export default function StepsComponent({ step }: StepsComponentProps) {
+
+    const categoryList = ["문서", "메일", "채팅"];
+    const [category, setCategory] = useState(categoryList[0]);
+
+    const [stepLabels, setStepLabels] = useState([
+    `${category} 실습`,
+    "AI 피드백",
+    "미션 완료",
+    ]);
+
+
     return (
         <>
             <GlobalStyle />
