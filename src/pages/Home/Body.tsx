@@ -171,7 +171,7 @@ const Sidebar = () => {
             setTodo(normalized);
 
             //테스트용 데이터
-            setTodo([{title: "업무 보고서 작성", time: "20:00"}, {title: "업무 보고서 작성", time: "24:00"}])
+            // setTodo([{title: "업무 보고서 작성", time: "20:00"}, {title: "업무 보고서 작성", time: "24:00"}])
         })
         .catch((error) => {
             alert("일정을 불러오는데 실패했습니다." + error.response.status);
@@ -235,7 +235,7 @@ function Body() {
             }
 
             //테스트용 데이터
-            setMissions([{title: "업무 보고서 작성", to: "", createdAt: "2025-11-05"},{title: "거래처 메일 전송", to: "", createdAt: "2025-11-05"},{title: "팀장님꼐 보고서 전달", to: "", createdAt: "2025-11-05"}]);
+            // setMissions([{title: "업무 보고서 작성", to: "", createdAt: "2025-11-05"},{title: "거래처 메일 전송", to: "", createdAt: "2025-11-05"},{title: "팀장님꼐 보고서 전달", to: "", createdAt: "2025-11-05"}]);
         })
         .catch((error) => {
             alert("미션 목록을 불러오는데 실패했습니다." + error.response.status)
