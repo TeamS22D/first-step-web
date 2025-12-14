@@ -44,6 +44,7 @@ export const Card = styled.div<{ $selected: boolean }>`
   box-shadow: 0 0px 4px #bfbfbf;
   transition: all 0.2s ease;
   border: 2px solid transparent;
+  margin-bottom: 126.5px;
 
   img {
     width: 100px;

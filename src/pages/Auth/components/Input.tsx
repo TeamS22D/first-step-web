@@ -1,5 +1,7 @@
 import type { ChangeEvent } from "react";
 import styled from "styled-components";
+import { forwardRef } from "react";
+import React from "react";
 
 const InputContainer = styled.div`
     display: flex;
@@ -21,6 +23,9 @@ const InputBox = styled.div`
     padding: 0px 16px;
     border-radius: 12px;
     border: 1.5px solid #F2F2F2;
+    @media (max-width: 425px) {
+        width: 250px;
+    }
 `;
 
 const VerifyBox = styled.div`
@@ -28,6 +33,9 @@ const VerifyBox = styled.div`
     height: 48px;
     display: flex;
     gap: 4px;
+    @media (max-width: 425px) {
+        width: 250px;
+    }
 `
 
 const InputTag = styled.input.attrs(props => ({type: props.type || "text"}))`
@@ -55,35 +63,49 @@ const VerifyButton = styled.button`
 
 interface InputProps {
     label: string;
-    type: string;
+    type?: string;
     placeholder: string;
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
     onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
-function Input(props: InputProps) {
+
+const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     return (
         <InputContainer>
             <Label>{props.label}</Label>
             <InputBox>
-                <InputTag type={props.type} onChange={props.onChange} placeholder={props.placeholder}/>
+                <InputTag 
+                    ref={ref} 
+                    {...props} 
+                />
             </InputBox>
         </InputContainer>
-    )
-};
+    );
+});
 
-function EmailInput(props: InputProps) {
+const EmailInput = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+    const { onClick, label, ...rest } = props;
+
     return (
         <InputContainer>
-            <Label>{props.label}</Label>
+            <Label>{label}</Label>
             <VerifyBox>
                 <InputBox>
-                    <InputTag type={props.type} onChange={props.onChange} placeholder={props.placeholder}/>
+                    <InputTag 
+                        ref={ref} 
+                        {...rest}
+                    />
                 </InputBox>
-                <VerifyButton onClick={props.onClick} type="button">중복확인</VerifyButton>
+                <VerifyButton onClick={onClick} type="button">
+                    중복확인
+                </VerifyButton>
             </VerifyBox>
         </InputContainer>
-    )
-}
+    );
+});
 
-export default {Input, EmailInput};
+const MemoizedInput = React.memo(Input);
+const MemoizedEmailInput = React.memo(EmailInput);
+
+export default {Input: MemoizedInput, EmailInput: MemoizedEmailInput};
