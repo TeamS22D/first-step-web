@@ -1,5 +1,5 @@
 import Body from "./Body";
-import Profile from "./Profile";
+import Profile from "../../components/Profile/Profile";
 import * as S from "./styles/Home.style";
 
 function Home() {
