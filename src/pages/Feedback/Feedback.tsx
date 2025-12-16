@@ -25,7 +25,7 @@ function Feedback() {
   }, [])
 
   useEffect(() => {
-    axiosInstance.get(`${SERVER_URL}/user-mission/missions`)
+    axiosInstance.get(`${SERVER_URL}/user-mission/missions/feedback`)
       .then((response) => {
         setMissions(response.data);
       })
