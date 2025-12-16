@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import MissionList from "@/components/Missions/components/MissionList";
 import { useParams } from "react-router-dom";
 import axiosInstance from "@/hooks/axiosInstance";
+import FeedbackCategory from "@constants/FeedbackCategory.constants"
 const SERVER_URL = import.meta.env.VITE_BASE_URL;
 
 interface IMissions {
@@ -25,9 +26,16 @@ function Feedback() {
   }, [])
 
   useEffect(() => {
-    axiosInstance.get(`${SERVER_URL}/user-mission/missions`)
+    axiosInstance.get(`${SERVER_URL}/user-mission/missions/feedback`, 
+      {
+        params: {
+          missionTheme: category
+        }
+      }
+    )
       .then((response) => {
         setMissions(response.data);
+        console.log(response.data)
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -58,7 +66,7 @@ function Feedback() {
   return (
     <S.Container>
       <Search onChange={onChange} keyword={keyword} />
-      <Category />
+      <Category categoryList={FeedbackCategory} />
       <MissionList category={category || "all"} missions={missions} />
     </S.Container>
   )

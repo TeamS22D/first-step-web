@@ -5,13 +5,19 @@ import axios from "axios";
 import Timer from "@assets/Home/Timer.png"
 import Circle from "@assets/Home/Circle.png"
 import Fire from "@assets/Home/FireImg.png"
+import axiosInstance from "@/hooks/axiosInstance";
+const SERVER_URL = import.meta.env.VITE_BASE_URL;
 
+function daysFromToday(dateString: string | undefined | null): number {
+  // 1. 데이터가 아예 없는 경우 방어
+  if (!dateString) return 0;
 
-function daysFromToday(dateString: string): number {
   const targetDate = new Date(dateString);
 
+  // 2. 날짜 형식이 이상한 경우 (에러 던지지 말고 0 리턴)
   if (isNaN(targetDate.getTime())) {
-    throw new Error("Invalid date format. Expected YYYY-MM-DD.");
+    console.warn("Invalid date format:", dateString); // 디버깅용 로그
+    return 0; 
   }
 
   const today = new Date();
@@ -41,30 +47,29 @@ const NewBadge = () => {
 
 
 
-const Todo = (props: {time:string; title: string;}) => {
+const Todo = (props: {title: string; completed: boolean;}) => {
     const date = new Date();
     const nowTime = date.getHours();
 
     return (
         <S.Todo>
-            {nowTime < parseInt(props.time.slice(0, 2)) ? <S.Dot active /> : <S.Dot />}
-            <span>{props.time}</span>
+            {!props.completed ? <S.Dot active /> : <S.Dot />}
             <span>{props.title}</span>
         </S.Todo>
     )
 }
 
 interface IMissionProps {
-    title: string; 
-    to: string;
-    createdAt: string;
+    missionName: string; 
+    userMissionId: string;
+    endDate: string;
 }
 
 const Mission = (props: IMissionProps) => {
     return (
-        <S.Mission to={props.to}>
-            <S.Title>{props.title}{daysFromToday(props.createdAt) <= 3 ? <NewBadge /> : null}</S.Title>
-            <S.Info><img src={Timer} alt="모래시계 이미지" />{props.createdAt}</S.Info>
+        <S.Mission to={props.userMissionId}>
+            <S.Title>{props.missionName}{daysFromToday(props.endDate) <= 3 ? <NewBadge /> : null}</S.Title>
+            <S.Info><img src={Timer} alt="모래시계 이미지" />{props.endDate}</S.Info>
         </S.Mission>
     )
 }
@@ -99,10 +104,10 @@ const MissionList = (props: {missions: IMissionProps[]}) => {
         <S.MissionList>
             {props.missions.map((m, i) => (
             <Mission
-                key={`${m.title}-${m.createdAt}-${i}`}
-                title={m.title}
-                to={m.to}
-                createdAt={m.createdAt}
+                key={`${m.missionName}-${m.endDate}-${i}`}
+                missionName={m.missionName}
+                userMissionId={m.userMissionId}
+                endDate={m.endDate}
             />
             ))}
         </S.MissionList>
@@ -111,15 +116,18 @@ const MissionList = (props: {missions: IMissionProps[]}) => {
 };
 
 interface IData {
-    studyStreak: string;
-    topPercent: string
+    name: string,
+    streak: number,
+    rank: number,
+    totalUsers: number,
+    percentile: number
 }
 
 const Cheering = () => {
     const [data, setData] = useState<IData>()
 
     useEffect(() => {
-        axios.get("api")
+        axiosInstance.get(`${SERVER_URL}/user/profile/percent`)
         .then((response) => {
             setData(response.data);
         })
@@ -134,14 +142,14 @@ const Cheering = () => {
                 <img src={Fire} alt="불 이미지" />
                 <S.CheeringTextContainer>
                     <S.CheeringTitle>연속 학습일</S.CheeringTitle>
-                    <S.CheeringMessage><span>{data?.studyStreak}</span>일</S.CheeringMessage>
+                    <S.CheeringMessage><span>{data?.streak}</span>일</S.CheeringMessage>
                 </S.CheeringTextContainer>
             </S.Cheering>
             <S.Cheering>
                 <img src={Circle} alt="원형 그래프 이미지" />
                 <S.CheeringTextContainer>
                     <S.CheeringTitle>상위</S.CheeringTitle>
-                    <S.CheeringMessage><span>{data?.topPercent}</span>%</S.CheeringMessage>
+                    <S.CheeringMessage><span>{data?.percentile}</span>%</S.CheeringMessage>
                 </S.CheeringTextContainer>
             </S.Cheering>
         </S.CheeringContainer>
@@ -149,8 +157,9 @@ const Cheering = () => {
 }
 
 interface ISidebarProps {
-    title: string;
-    time: string;
+    userMissionId: number;
+    missionName: string;
+    completed: boolean;
 }
 
 const Sidebar = () => {
@@ -158,7 +167,7 @@ const Sidebar = () => {
     const [selDay, setSelDay] = useState('');
 
     useEffect(() => {
-        axios.get("/api", {
+        axiosInstance.get(`${SERVER_URL}/user/timeLine`, {
             params: {selDay}
         })
         .then((response) => {
@@ -209,7 +218,7 @@ const Sidebar = () => {
                 <S.TodoList>
                     {todo.length > 0 ? (todo.map((elem) => {
                         return (
-                            <Todo key={elem.time + elem.title} time={elem.time} title={elem.title} />
+                            <Todo key={elem.missionName + elem.userMissionId} title={elem.missionName} completed={elem.completed} />
                         )
                     })) : null}
                 </S.TodoList>
@@ -228,10 +237,13 @@ function Body() {
     const [recommend, setRecommend] = useState<IRecommendProps[]>([])
 
     useEffect(() => {
-        axios.get("/Missionsapi")
+        axiosInstance.get(`${SERVER_URL}/user/todaysMission`)
         .then((response) => {
             if (Array.isArray(response.data)) {
-                setMissions(response.data);
+                setMissions(response.data.map((item: IMissionProps) => ({
+                    ...item,
+                    endDate: item.endDate.slice(0, 10)
+                })));
             }
 
             //테스트용 데이터

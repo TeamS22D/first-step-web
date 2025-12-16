@@ -45,7 +45,7 @@ const router = createBrowserRouter([
 
       {
         path: "feedback",
-        element: <Navigate to="all" replace />,
+        element: <Feedback />,
       },
       {
         path: "feedback/:category",
