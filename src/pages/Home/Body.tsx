@@ -48,9 +48,6 @@ const NewBadge = () => {
 
 
 const Todo = (props: {title: string; completed: boolean;}) => {
-    const date = new Date();
-    const nowTime = date.getHours();
-
     return (
         <S.Todo>
             {!props.completed ? <S.Dot active /> : <S.Dot />}
