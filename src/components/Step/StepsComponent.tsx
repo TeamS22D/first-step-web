@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GlobalStyle } from "../../styles/GlobalStyle";
 import * as S from "./StepsComponent.style";
+import { useParams } from 'react-router-dom';
 
 interface StepsComponentProps {
     step: number;  
@@ -27,6 +28,11 @@ export default function StepsComponent({ step }: StepsComponentProps) {
     "미션 완료",
     ]);
 
+    const { userParams } = useParams();
+
+    // useEffect(() => {
+    //     scrollToBottom();
+    // }, [userParams]);
 
     return (
         <>

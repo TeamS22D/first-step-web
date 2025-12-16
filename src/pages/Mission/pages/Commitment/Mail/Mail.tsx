@@ -43,6 +43,7 @@ export default function Mail() {
     const [mission, setMission] = useState<EmailMissionResponse | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    
   
     useEffect(() => {
       if (!emailMissionId) return;
@@ -92,5 +93,9 @@ export default function Mail() {
             </S.Container>
         </S.Body>
     )
+}
+
+function gatUserMissin(arg0: number) {
+  throw new Error('Function not implemented.');
 }
 

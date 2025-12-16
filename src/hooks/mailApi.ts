@@ -16,14 +16,14 @@ export const getEmailMission = async (
   return res.data;
 };
 
-// export const getUserMission = async (
-//   UserMissionId: number
-// ): Promise<EmailMissionResponse> => {
-//   const res = await axiosInstance.get(
-//     `/email-mission/${UserMissionId}`
-//   );
-//   return res.data;
-// };
+export const getUserMission = async (
+  UserMissionId: number
+): Promise<EmailMissionResponse> => {
+  const res = await axiosInstance.get(
+    `/email-mission/${UserMissionId}`
+  );
+  return res.data;
+};
 
 // export const getMission = async (
 //   missionId: number
