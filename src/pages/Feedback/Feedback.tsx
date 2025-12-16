@@ -35,7 +35,6 @@ function Feedback() {
     )
       .then((response) => {
         setMissions(response.data);
-        console.log(response.data)
       })
       .catch((error) => {
         if (error.response.status === 400) {
