@@ -90,7 +90,7 @@ function ChatBox() {
 
     const [input, setInput] = useState("");
     const stop = useRef(0)
-    const chatUrl = `wss://812802b2b13a.ngrok-free.app/chat/mission1`;
+    const chatUrl = `wss://30510e4f7bf9.ngrok-free.app/chat/mission3`;
 
     const navigate = useNavigate();
     const ctx = useContext(MissionFeedbackContext);
@@ -133,7 +133,7 @@ function ChatBox() {
             afterExitBuffer.current = [];
         
             if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-                ws.current.send("exit");
+                ws.current.send("[COMPLETE]");
             }
         });
            

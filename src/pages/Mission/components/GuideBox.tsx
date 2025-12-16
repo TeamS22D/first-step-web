@@ -31,7 +31,7 @@ const Image = ({src, alt}:ImageProps) => {
     )
 }
 
-const stepLabels = ["상황설명", "보고서", "상사의 말"];
+const stepLabels = ["상황설명", "요청사항", "상사의 말"];
 
 const talk1: string = '상황설명'
 const talk2: string = '상황설명'

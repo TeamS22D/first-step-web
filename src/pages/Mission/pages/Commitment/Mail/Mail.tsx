@@ -48,16 +48,24 @@ export default function Mail() {
       if (!emailMissionId) return;
   
       getEmailMission(Number(emailMissionId))
-        .then((data) => setMission(data))
+        .then((data) => {setMission(data)
+          console.log(data)
+          // mission.usermissionID
+        }
+      )
         .catch(() => {
           setError("이메일 미션을 찾을 수 없습니다.");
         })
         .finally(() => setLoading(false));
     }, [emailMissionId]);
+
+    
   
     if (loading) return <div>불러오는 중...</div>;
     if (error) return <div>{error}</div>;
     if (!mission) return null;
+
+    
 
     return (
         <S.Body>
