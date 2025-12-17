@@ -93,7 +93,6 @@ export const Word = styled.div`
     border-radius: 10px;
     background: #F2F2F2;
     display:flex;
-    justify-content: center;
     padding: 24px;
     overflow-y: auto;
 

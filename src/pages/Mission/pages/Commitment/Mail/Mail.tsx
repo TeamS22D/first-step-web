@@ -43,7 +43,7 @@ export default function Mail() {
     const [mission, setMission] = useState<EmailMissionResponse | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    
+
   
     useEffect(() => {
       if (!emailMissionId) return;
@@ -66,6 +66,10 @@ export default function Mail() {
     if (error) return <div>{error}</div>;
     if (!mission) return null;
 
+    const [receiver, setReceiver] = useState(mission.receiver);
+    const [title, setTitle] = useState(mission.title);
+    const [emailContent, setEmailContent] = useState(mission.emailContent);
+
     
 
     return (
@@ -76,16 +80,16 @@ export default function Mail() {
                         새 메일
                     </S.Topbar>
                     <form>
-                        <TopTextarea title = '받는 사람' placeholder = '받는 이를 입력하세요.'/>
+                        <TopTextarea title = '받는 사람' placeholder = '받는 이를 입력하세요.'
+                        value={mission.receiver}
+                        />
                         <TopTextarea title = '제목' placeholder = '제목을 입력하세요.'
                             value={mission.title}
-                            readOnly={!!mission.sendAt}
                         />
                         <S.BottomTextarea>
                             <S.ContentBig
                                 placeholder="내용을 입력하세요."
                                 value={mission.emailContent}
-                                readOnly={!!mission.sendAt}
                             />
                         </S.BottomTextarea>
                     </form>
@@ -95,7 +99,5 @@ export default function Mail() {
     )
 }
 
-function gatUserMissin(arg0: number) {
-  throw new Error('Function not implemented.');
-}
+
 

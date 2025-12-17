@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { GlobalStyle } from "../../styles/GlobalStyle";
 import * as S from "./StepsComponent.style";
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 interface StepsComponentProps {
     step: number;  
@@ -18,21 +18,28 @@ const Icon = ({ src, alt }: IconProps) => {
 
 
 export default function StepsComponent({ step }: StepsComponentProps) {
-
+    const location = useLocation();
+  
     const categoryList = ["문서", "메일", "채팅"];
     const [category, setCategory] = useState(categoryList[0]);
-
-    const [stepLabels, setStepLabels] = useState([
-    `${category} 실습`,
-    "AI 피드백",
-    "미션 완료",
-    ]);
-
-    const { userParams } = useParams();
-
-    // useEffect(() => {
-    //     scrollToBottom();
-    // }, [userParams]);
+  
+    const stepLabels = [
+      `${category} 실습`,
+      "AI 피드백",
+      "미션 완료",
+    ];
+  
+    useEffect(() => {
+      const path = location.pathname;
+  
+      if (path.includes("/performance/document")) {
+        setCategory("문서");
+      } else if (path.includes("/performance/email-mission")) {
+        setCategory("메일");
+      } else if (path.includes("/performance/chat")) {
+        setCategory("채팅");
+      }
+    }, [location.pathname]); 
 
     return (
         <>
