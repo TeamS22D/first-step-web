@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import axiosInstance from "./axiosInstance";
 
-export interface EmailMissionResponse {
-  emailMissionId: number;
-  title: string;
-  emailContent: string;
-  sendAt: string | null;
-  receiver?: string;
-  userMissionId: number;
+export interface DocumentMissionResponse {
+    documentMissionId: number,
+    documentContent: string,
+    sendAt: Date,
+    isSend: boolean,
+    userMissionId: number
 }
 
 export interface UserMissionResponse {
@@ -33,9 +32,9 @@ export interface MissionResponse {
 }
 
 // api
-export const getEmailMission = async (emailMissionId: number) => {
-  const res = await axiosInstance.get(`/email-mission/${emailMissionId}`);
-  console.log("email", res);
+export const getDocumentlMission = async (documentMissionId: number) => {
+  const res = await axiosInstance.get(`/document-mission/${documentMissionId}`);
+  console.log("document", res);
   return res.data;
 };
 
@@ -54,10 +53,10 @@ export const getMission = async (missionId: number) => {
 
 // hook
 export const useMission = () => {
-  const { emailMissionId } = useParams();
+  const { documentMissionId } = useParams();
 
-  const [emailMission, setEmailMission] =
-    useState<EmailMissionResponse | null>(null);
+  const [documentMission, setDocumentMission] =
+    useState<DocumentMissionResponse | null>(null);
   const [userMission, setUserMission] =
     useState<UserMissionResponse | null>(null);
   const [mission, setMission] =
@@ -67,15 +66,15 @@ export const useMission = () => {
 
   useEffect(() => {
     const fetchAll = async () => {
-      if (!emailMissionId) return;
+      if (!documentMissionId) return;
 
       try {
         setLoading(true);
 
-        const email = await getEmailMission(Number(emailMissionId));
-        setEmailMission(email);
+        const document = await getDocumentlMission(Number(documentMissionId));
+        setDocumentMission(document);
 
-        const userMission = await getUserMission(Number(email.userMissionId));
+        const userMission = await getUserMission(Number(document.userMissionId));
         setUserMission(userMission);
 
         const mission = await getMission(Number(userMission.mission.missionId));
@@ -86,10 +85,10 @@ export const useMission = () => {
     };
 
     fetchAll();
-  }, [emailMissionId]);
+  }, [documentMissionId]);
 
   return {
-    emailMission,
+    documentMission,
     userMission,
     mission,
     loading,

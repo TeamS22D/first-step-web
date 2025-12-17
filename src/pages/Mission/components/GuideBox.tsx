@@ -70,8 +70,8 @@ export default function GuideBox() {
       category === 0
         ? missions.situation
         : category === 1
-        ? missions.description
-        : missions.referenceAnswer;
+        ? missions.requirement
+        : missions.tip;
     
     const theme:string = 
      missions.missionTheme === 'chat'
@@ -90,7 +90,7 @@ export default function GuideBox() {
           <S.TitleBox>
             <span className="Title">{`[${theme}] ${missions.missionName}`}</span>
             <span className="SubTitle">
-              실제 실무 상황을 가정한 연차 요청 및 업무 조율 커뮤니케이션 연습
+            {missions.description}
             </span>
           </S.TitleBox>
   
