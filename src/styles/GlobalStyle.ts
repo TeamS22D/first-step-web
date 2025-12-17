@@ -65,4 +65,8 @@ export const GlobalStyle = createGlobalStyle`
     button {
     cursor: pointer;
     }
+
+    html, body, #root {
+        height: 100%;   
+    }
 `

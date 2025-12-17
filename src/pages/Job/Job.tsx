@@ -1,6 +1,7 @@
 import { useState, useEffect, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./Job.style";
+import axiosInstance from "../../hooks/axiosInstance";
 
 import { getCookie } from "../../hooks/cookies";
 
@@ -26,8 +27,6 @@ export default function Job() {
   const [loading, setLoading] = useState(false);
   const [userName, setUserName] = useState<string>("사용자"); 
   const navigate = useNavigate();
-
-  const serverUrl = import.meta.env.VITE_SERVER_URL;
 
   const fields: Field[] = [
     {
@@ -83,19 +82,13 @@ export default function Job() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${serverUrl}/user/job`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`, 
-        },
-        body: JSON.stringify({
-          job: selected,
-        }),
+      const res = await axiosInstance.post(`/user/job`, {
+        email,
+        job: selected,
       });
 
-      if (res.ok) {
-        const data: JobResponse = await res.json();
+      if (res.status === 200) {
+        const data: JobResponse = await res.data;
         jobCode = data.selectedJob?.code ?? selected;
       } else {
         console.error("직업 선택 API 실패:", res.status);
@@ -109,6 +102,11 @@ export default function Job() {
       navigate("/Home");
       setLoading(false);
     }
+    localStorage.setItem("job", jobCode);
+
+    navigate("/Home");
+    
+    setLoading(false);
   };
 
   return (

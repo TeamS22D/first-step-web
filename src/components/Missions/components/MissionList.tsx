@@ -1,15 +1,28 @@
-import { useEffect } from "react";
 import * as S from "../styles/MissionList.style"
 import Timer from "@assets/Home/Timer.png"
-import axios from "axios";
 
-const Mission = () => {
+const getDaysDiff = (dateStr: string): number => {
+  const today = new Date();
+  const target = new Date(dateStr);
+
+  today.setHours(0, 0, 0, 0);
+  target.setHours(0, 0, 0, 0);
+
+  const diffMs = Math.abs(today.getTime() - target.getTime());
+
+  return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+};
+
+const Mission = (props: IMissions) => {
+  const diffDayFromStart = getDaysDiff(props.startDate);
+  const diffDayToDeadLine = getDaysDiff(props.endDate);
+
   return (
     <S.MissionBox>
       <S.Mission>
-        <S.StatusBadge>{"NEW"}</S.StatusBadge>
-        <S.MissionTitle>{"Mission Title"}</S.MissionTitle>
-        <S.Deadline><img src={Timer} />{"2025-04-01"}</S.Deadline>
+        {diffDayToDeadLine < 3 ? <S.StatusBadge isEndSoon>D-{diffDayToDeadLine}</S.StatusBadge> : diffDayFromStart < 2 ? <S.StatusBadge isNew>{"NEW"}</S.StatusBadge> : <S.StatusBadge>D-{diffDayToDeadLine}</S.StatusBadge>}
+        <S.MissionTitle>{props.missionName}</S.MissionTitle>
+        <S.Deadline><img src={Timer} />{props.endDate.slice(0, 10)}</S.Deadline>
         <S.Buttons>
           <S.Button>시작하기</S.Button>
         </S.Buttons>
@@ -18,30 +31,30 @@ const Mission = () => {
   )
 }
 
-function MissionList({category}: {category: string;}) {
+interface IMissions {
+  userMissionId: number,
+  missionName: string,
+  missionTheme: "email" | "chat" | "document",
+  startDate: string,
+  endDate: string
+}
 
-  useEffect(() => {
-    axios.get(`fetching${category}`)
-    .then((response) => {
-      console.log(response.data);
-    })
-  }, [category])
+function MissionList({ category, missions }: { category: string; missions: IMissions[]; }) {
+  let isRendered = false;
 
   return (
     <S.Container>
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
-      <Mission />
+      {missions.length !== 0 ? missions.map((elem) => {
+        switch (category) {
+          case "all":
+          case elem.missionTheme:
+            isRendered = true;
+            return (<Mission {...elem} />);
+          default:
+            return null;
+        }
+      }) : <div>미션이 없습니다.</div>}
+      {!isRendered ? <div>미션이 없습니다.</div> : null}
     </S.Container>
   )
 }
