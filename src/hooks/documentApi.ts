@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import axiosInstance from "./axiosInstance";
 
 export interface DocumentMissionResponse {
@@ -10,27 +10,33 @@ export interface DocumentMissionResponse {
     userMissionId: number
 }
 
+// userMission
 export interface UserMissionResponse {
-  userMissionId: number;
-  missionId: number;
-  missionName: string;
-  missionTheme: "email" | "chat" | "document";
-  startDate: string;
-  endDate: string;
-}
-
-export interface MissionResponse {
-  tip: any;
-  requirement: any;
-  missionName: string;
-  missionTheme: "email" | "document" | "chat";
-  body: string;
-  situation: string;
-  description: string;
-  referenceAnswer: string;
-  rubricId: number;
-}
-
+    userMissionId: number;
+    missionId?: number;
+    mission?: {
+      missionId: number;
+      missionName: string;
+    };
+    missionName: string;
+    missionTheme: "email" | "chat" | "document";
+    startDate: string;
+    endDate: string;
+  }
+  
+  // mission
+  export interface MissionResponse {
+    tip: any;
+    requirement: any;
+    missionName: string;
+    missionTheme: "email" | "document" | "chat";
+    body: string;
+    situation: string;
+    description: string;
+    referenceAnswer: string;
+    rubricId: number;
+  }
+  
 // api
 export const getDocumentlMission = async (documentMissionId: number) => {
   const res = await axiosInstance.get(`/document-mission/${documentMissionId}`);
@@ -52,7 +58,7 @@ export const getMission = async (missionId: number) => {
 
 
 // hook
-export const useMission = () => {
+export const useDocumentMission = () => {
   const { documentMissionId } = useParams();
 
   const [documentMission, setDocumentMission] =
@@ -79,6 +85,7 @@ export const useMission = () => {
 
         const mission = await getMission(Number(userMission.mission.missionId));
         setMission(mission);
+
       } finally {
         setLoading(false);
       }

@@ -62,7 +62,7 @@ const router = createBrowserRouter([
         element: <MissionLayout />,
         children: [
           {
-            path: 'document',
+            path: 'document-mission/:documentMissionId',
             element: <Document />,
           },
           {

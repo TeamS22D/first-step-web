@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import axiosInstance from "./axiosInstance";
 
+// 메일
 export interface EmailMissionResponse {
   emailMissionId: number;
   title: string;
@@ -11,15 +12,21 @@ export interface EmailMissionResponse {
   userMissionId: number;
 }
 
+// userMission
 export interface UserMissionResponse {
   userMissionId: number;
-  missionId: number;
+  missionId?: number;
+  mission?: {
+    missionId: number;
+    missionName: string;
+  };
   missionName: string;
   missionTheme: "email" | "chat" | "document";
   startDate: string;
   endDate: string;
 }
 
+// mission
 export interface MissionResponse {
   tip: any;
   requirement: any;
