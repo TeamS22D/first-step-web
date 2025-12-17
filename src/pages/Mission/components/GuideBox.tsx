@@ -2,8 +2,9 @@ import { GlobalStyle } from "@/styles/GlobalStyle";
 import * as S from '../styles/GuideBox';
 import ImageFirm from '@/assets/Mission/GuideBox/HintFirm.png'
 import IconAdvice from '@/assets/Mission/GuideBox/Advice.png'
-import {useState } from "react";
-import { useMission } from "@/hooks/mailApi";
+import {useEffect, useState } from "react";
+import { useMailMission } from "@/hooks/mailApi";
+import { useDocumentMission } from "@/hooks/documentApi";
 
 
 interface IconProps {
@@ -58,14 +59,22 @@ export function CategoryBox({ category, setCategory }: CategoryProps) {
 
 export default function GuideBox() {
     const [category, setCategory] = useState(0);
-  
-    const { mission, loading } = useMission();
-
+    
+    const mail = useMailMission();
+    const document = useDocumentMission();
+    
+    const path = location.pathname;
+    
+    const { mission, loading } =
+      path.includes('/performance/email-mission')
+        ? mail
+        : document;
+    
     if (loading) return <div>로딩중...</div>;
     if (!mission) return null;
-
+    
     const missions = mission;
-  
+    
     const writing =
       category === 0
         ? missions.situation
@@ -73,16 +82,15 @@ export default function GuideBox() {
         ? missions.requirement
         : missions.tip;
     
-    const theme:string = 
-     missions.missionTheme === 'chat'
-      ? '채팅'
-      : missions.missionTheme === 'document'
-      ? '문서'
-      : missions.missionTheme === 'email'
-      ? '메일'
-      :'';
+    const theme: string =
+      missions.missionTheme === 'chat'
+        ? '채팅'
+        : missions.missionTheme === 'document'
+        ? '문서'
+        : missions.missionTheme === 'email'
+        ? '메일'
+        : '';
     
-
     return (
       <>
         <GlobalStyle />

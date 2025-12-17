@@ -60,7 +60,7 @@ export const getMission = async (missionId: number) => {
 
 
 // hook
-export const useMission = () => {
+export const useMailMission = () => {
   const { emailMissionId } = useParams();
 
   const [emailMission, setEmailMission] =

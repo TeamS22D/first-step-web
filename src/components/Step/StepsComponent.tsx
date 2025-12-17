@@ -32,7 +32,7 @@ export default function StepsComponent({ step }: StepsComponentProps) {
     useEffect(() => {
       const path = location.pathname;
   
-      if (path.includes("/performance/document")) {
+      if (path.includes("/performance/document-mission")) {
         setCategory("문서");
       } else if (path.includes("/performance/email-mission")) {
         setCategory("메일");
