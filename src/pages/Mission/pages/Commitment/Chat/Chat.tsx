@@ -4,7 +4,9 @@ import ImageSend from '@/assets/Mission/ChatInput/Send.png'
 import { useContext, useRef, useState} from 'react';
 import { useEffect } from 'react'
 import { MissionFeedbackContext } from '@/components/MissionLayout/MissionLayout';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getChatMission, type ChatMissionResponse } from '@/hooks/chatApi';
+import axiosInstance from '@/hooks/axiosInstance';
 
 
 interface ImageProps {
@@ -81,6 +83,47 @@ function Atr() {
 
 
 function ChatBox() {
+    const { chatMissionId } = useParams<{ chatMissionId: string }>();
+
+    const [mission, setMission] = useState<ChatMissionResponse | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    
+    useEffect(() => {
+        if (!chatMissionId) return console.log('chatMissionId 없음');
+      
+        const fetchOrCreate = async () => {
+          try {
+            const data = await getChatMission(Number(chatMissionId));
+            console.log(chatMissionId)
+            setMission(data);
+          } catch (err: any) {
+  
+        //     // 400 -> 미션을 처음 열었을 때
+        //     if (err.response?.status === 400) {
+        //       const res = await axiosInstance.post(
+        //         `/email-mission/create`,
+        //         {
+        //           title: '',
+        //           receiver: '',
+        //           emailContent: '',
+        //           userMissionId: 2, 
+        //         }
+        //       );
+      
+        //       setMission(res.data);
+        //     } else {
+        //       setError("이메일 미션을 불러올 수 없습니다.");
+        //     }
+        //   } finally {
+        //     setLoading(false);
+          }
+        };
+      
+        fetchOrCreate();
+      }, [chatMissionId]);
+
+      
     const ws = useRef<WebSocket | null>(null);
 
     // 메시지를 객체 형태로 관리
@@ -90,7 +133,7 @@ function ChatBox() {
 
     const [input, setInput] = useState("");
     const stop = useRef(0)
-    const chatUrl = `ws://localhost:8000/chat/mission/:templateId`;
+    const chatUrl = `ws://localhost:8000/chat/mission/${chatMissionId}`;
 
     const navigate = useNavigate();
     const ctx = useContext(MissionFeedbackContext);
@@ -128,7 +171,7 @@ function ChatBox() {
 
     useEffect(() => {
 
-        ctx.setButtonAction(() => async () => {
+        ctx.setButtonSubmitAction(() => async () => {
             stop.current = 1;
             afterExitBuffer.current = [];
         

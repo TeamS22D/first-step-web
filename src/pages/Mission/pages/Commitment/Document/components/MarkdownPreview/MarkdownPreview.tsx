@@ -124,9 +124,9 @@ const MarkdownPreview = ({ markdown }: { markdown: string }) => {
         }}
       >
         {markdown
-          .replace(/\*\*/gi, "@$_%!^")
-          .replace(/@\$_%!\^/gi, "**")
-          .replace(/<\/?u>/gi, "*")}
+          ?.replace(/\*\*/gi, "@$_%!^")
+          ?.replace(/@\$_%!\^/gi, "**")
+          ?.replace(/<\/?u>/gi, "*")}
       </ReactMarkdown>
     </S.Preview>
   );

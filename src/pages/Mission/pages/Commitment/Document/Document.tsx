@@ -1,18 +1,72 @@
 import { useParams } from 'react-router';
-import * as S from './Document.style'
 import Markdown from './components/Markdown/Markdown'
-import { useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useDocumentMission } from '@/hooks/documentApi';
 import axiosInstance from '@/hooks/axiosInstance';
+import { MissionFeedbackContext } from '@/components/MissionLayout/MissionLayout';
+
+// MissionFeedbackContext  
 
 export default function Document() {
+    const [markdown, setMarkdown] = useState<string>('');
+    const markdownRef = useRef(markdown);
+  
+    useEffect(() => {
+      markdownRef.current = markdown;
+    }, [markdown]);
 
     const { documentMissionId } = useParams<{ documentMissionId: string }>();
+
+   
+  const ctx = useContext(MissionFeedbackContext);
+
+    // 제출 
+    const handleSubmit = useCallback(async () => {
+        console.log('제출 누름')
+        const res = await axiosInstance.post(
+          `/document-mission/send/${documentMissionId}`,
+          {
+            documentContent: markdownRef.current,
+          }
+        );
+        console.log(res.data);
+        alert('제출');
+      }, [documentMissionId]);
+    
+      useEffect(() => {
+        if (!ctx) return;
+        ctx.setButtonSubmitAction(() => handleSubmit);
+      }, [ctx, handleSubmit]);
+
+  // 저장
+
+
+  const handleSave = useCallback(async () => {
+    console.log('저장 누름')
+    const res = await axiosInstance.patch(
+      `/document-mission/save/${documentMissionId}`,
+      {
+        documentContent: markdownRef.current,
+      }
+    );
+    console.log(res.data);
+    alert('저장');
+  }, [documentMissionId]);
+
+  useEffect(() => {
+    if (!ctx) return;
+    ctx.setButtonSaveAction(() => handleSave);
+  }, [ctx, handleSave]);
+
+
+
+  // 데이터 전달
     const { documentMission, loading } = useDocumentMission();
     
     const [error, setError] = useState<string | null>(null);
     const [localMission, setLocalMission] = useState(documentMission);
 
+    
     useEffect(() => {
         if (!loading && !documentMission) {
             const createDocument = async () => {
@@ -34,15 +88,29 @@ export default function Document() {
             setLocalMission(documentMission);
         }
     }, [loading, documentMission, documentMissionId]);
-    
+
+
+    useEffect(() => {
+        if (localMission) {
+          setMarkdown(localMission.documentContent);
+        }
+      }, [localMission]);
+      
+
     if (loading && !localMission) return <div>불러오는 중...</div>;
     if (error) return <div>{error}</div>;
     if (!localMission) return null;
 
 
+    
+
+
     return(
         <>
-            <Markdown/>
+            <Markdown
+                markdown={markdown}
+                onChange={setMarkdown}
+            />
         </>
     )
 }

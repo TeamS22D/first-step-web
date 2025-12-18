@@ -3,13 +3,20 @@ import MarkdownPreview from "../MarkdownPreview/MarkdownPreview.tsx";
 import Toolbar from "../Toolbar/Toolbar";
 import * as S from "./Markdown.style";
 
+interface MarkdownProps {
+  markdown: string;
+  onChange: (value: string) => void;
+}
 
-function Markdown() {
-  const [markdown, setMarkdown] = useState<string>("# 입력해주세요!");
+function Markdown({ markdown, onChange }: MarkdownProps) {
+
+  const [markdownArea, setMarkdown] = useState<string>("");
+
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMarkdown(e.target.value);
+    setMarkdown(e.target.value)
+    onChange(e.target.value);
   };
 
   return (
@@ -27,7 +34,7 @@ function Markdown() {
         </S.Wrapper>
 
         <S.Preview>
-          <MarkdownPreview markdown={markdown} />
+          <MarkdownPreview markdown={markdownArea} />
         </S.Preview>
       </S.Container>
     </S.Body>
@@ -35,5 +42,6 @@ function Markdown() {
 }
 
 export default Markdown;
+
 
 

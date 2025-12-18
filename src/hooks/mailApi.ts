@@ -28,8 +28,8 @@ export interface UserMissionResponse {
 
 // mission
 export interface MissionResponse {
-  tip: any;
-  requirement: any;
+  tip: string;
+  requirement: string;
   missionName: string;
   missionTheme: "email" | "document" | "chat";
   body: string;

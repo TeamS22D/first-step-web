@@ -5,6 +5,7 @@ import IconAdvice from '@/assets/Mission/GuideBox/Advice.png'
 import {useEffect, useState } from "react";
 import { useMailMission } from "@/hooks/mailApi";
 import { useDocumentMission } from "@/hooks/documentApi";
+import { useChatMission } from "@/hooks/chatApi";
 
 
 interface IconProps {
@@ -62,13 +63,16 @@ export default function GuideBox() {
     
     const mail = useMailMission();
     const document = useDocumentMission();
+    const chat = useChatMission()
     
     const path = location.pathname;
     
     const { mission, loading } =
-      path.includes('/performance/email-mission')
+    path.includes('/performance/email-mission')
         ? mail
-        : document;
+        : path.includes('/performance/document-mission')
+        ? document
+        : chat;
     
     if (loading) return <div>로딩중...</div>;
     if (!mission) return null;

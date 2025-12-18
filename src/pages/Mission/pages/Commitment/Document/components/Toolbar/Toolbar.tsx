@@ -4,7 +4,7 @@ import * as S from "./Toolbar.style.ts";
 import Dropdown from '../Dropdown/Dropdown.tsx'
 
 type ToolbarProps = {
-  textareaRef: React.RefObject<HTMLTextAreaElement>;
+  textareaRef: React.RefObject<HTMLTextAreaElement | null>;
 };
 
 function Toolbar({ textareaRef }: ToolbarProps) {

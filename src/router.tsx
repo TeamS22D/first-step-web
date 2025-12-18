@@ -15,11 +15,12 @@ import Profile from "./pages/Profile/Profile";
 import Verify from "./pages/Auth/pages/Verify/Verify";
 import SocialLogin from "./pages/Auth/pages/SocialLogin/SocialLogin";
 import MissionLayout from "./components/MissionLayout/MissionLayout.tsx";
-import Document from './pages/Mission/pages/Commitment/Document/Document.tsx'
 import Mail from "./pages/Mission/pages/Commitment/Mail/Mail.tsx";
 import Chat from "./pages/Mission/pages/Commitment/Chat/Chat.tsx";
 import MissionFeedback from './pages/Mission/pages/MissionFeedback/MissionFeedback.tsx'
 import MissionComplete from "./pages/Mission/pages/MissionComplete/MissionComplete.tsx";
+import Markdown from "./pages/Mission/pages/Commitment/Document/components/Markdown/Markdown.tsx";
+import Document from "./pages/Mission/pages/Commitment/Document/Document.tsx";
 
 const router = createBrowserRouter([
   {
@@ -70,7 +71,7 @@ const router = createBrowserRouter([
             element: <Mail/>,
           },
           {
-            path: 'chat',
+            path: 'chat-mission/:chatMissionId',
             element: <Chat/>,
           }
         ]

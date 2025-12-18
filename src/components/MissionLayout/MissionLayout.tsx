@@ -9,20 +9,33 @@ import GuideBox from "@/pages/Mission/components/GuideBox.tsx";
 import Buttons from "./SubmitButton/SubmitButton.tsx";
 import { createContext, useState } from "react";
 
-export type ButtonAction = () => void | Promise<void>;
+export type ButtonSaveAction = () => void | Promise<void>;
+export type ButtonSubmitAction = () => void | Promise<void>;
+
 
 export interface MissionFeedbackContextType {
-  buttonAction: ButtonAction;
-  setButtonAction: React.Dispatch<React.SetStateAction<ButtonAction>>;
+  buttonSaveAction: ButtonSaveAction;
+  setButtonSaveAction: React.Dispatch<React.SetStateAction<ButtonSaveAction>>;
+  buttonSubmitAction: ButtonSaveAction;
+  setButtonSubmitAction: React.Dispatch<React.SetStateAction<ButtonSaveAction>>;
+
 }
 
 export const MissionFeedbackContext = createContext<MissionFeedbackContextType | null>(null);
 
 export default function MissionLayout() {
-    const [buttonAction, setButtonAction] = useState<ButtonAction>(() => () => {});
+    const [buttonSubmitAction, setButtonSubmitAction] = useState<ButtonSaveAction>(() => () => {});
+    const [buttonSaveAction, setButtonSaveAction] = useState<ButtonSaveAction>(() => () => {});
     return (
-        <MissionFeedbackContext.Provider value={{ buttonAction, setButtonAction }}>
-            <ThemeProvider theme={lightTheme}>
+        <MissionFeedbackContext.Provider
+        value={{
+            buttonSubmitAction,
+            setButtonSubmitAction,
+            buttonSaveAction,
+            setButtonSaveAction,
+        }}
+        >   
+         <ThemeProvider theme={lightTheme}>
                 <S.Wrapper>
                     <GlobalStyle/>
                     <S.Container>

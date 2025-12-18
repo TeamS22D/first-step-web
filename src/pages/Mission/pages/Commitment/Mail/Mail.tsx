@@ -2,7 +2,7 @@ import * as S from './Mail.style'
 import type {EmailMissionResponse } from "../../../../../hooks/mailApi";
 import { getEmailMission} from "../../../../../hooks/mailApi";
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { MissionFeedbackContext } from '@/components/MissionLayout/MissionLayout';
 import axiosInstance from '@/hooks/axiosInstance';
 
@@ -78,11 +78,10 @@ export default function Mail() {
     
     useEffect(() => {
       if (!ctx) return;
-      ctx.setButtonAction(() => handleSubmit);
+      ctx.setButtonSubmitAction(() => handleSubmit);
     }, [ctx, handleSubmit]);
         
     // 저장 버튼
-    const save = useContext(MissionFeedbackContext);
 
     const handleSave = useCallback(async () => {
       const res = await axiosInstance.patch(
@@ -100,8 +99,8 @@ export default function Mail() {
 
 
     useEffect(() => {
-      if (!save) return;
-      save.setButtonAction(() => handleSave);
+      if (!ctx) return;
+      ctx.setButtonSaveAction(() => handleSave);
     }, [ctx, handleSave]);
 
 
