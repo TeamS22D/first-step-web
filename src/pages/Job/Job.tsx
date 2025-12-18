@@ -80,20 +80,22 @@ export default function Job() {
 
     let jobCode = selected;
     setLoading(true);
-
     try {
-      const res = await axiosInstance.post(`/user/job`, {
+      const res = await axiosInstance.post<JobResponse>("/user/job", {
         email,
         job: selected,
       });
-
+  
       if (res.status === 200) {
-        const data: JobResponse = await res.data;
+        const data = res.data;
         jobCode = data.selectedJob?.code ?? selected;
       } else {
         console.error("직업 선택 API 실패:", res.status);
         alert("직업 선택에 실패했습니다. 잠시 후 다시 시도해 주세요.");
       }
+  
+      localStorage.setItem("job", jobCode);
+      navigate("/Home");
     } catch (err) {
       console.error("직업 선택 요청 오류:", err);
       alert("서버 통신 중 오류가 발생했습니다.");
