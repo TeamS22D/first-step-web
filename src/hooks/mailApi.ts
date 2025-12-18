@@ -28,6 +28,7 @@ export interface UserMissionResponse {
 
 // mission
 export interface MissionResponse {
+  mission: any;
   tip: string;
   requirement: string;
   missionName: string;

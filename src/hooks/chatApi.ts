@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import axiosInstance from "./axiosInstance";
+import axios from "axios";
 
 
 export interface ChatMissionResponse {
@@ -27,16 +28,30 @@ export interface MissionResponse {
     },
 }
 
-const chatServerUrl: string = 'https://5d9a295258d1.ngrok-free.app/'
+const chatServerUrl: string = 'https://f79028ac5362.ngrok-free.app/'
 
 export const getChatMission = async (chatMissionId: number) => {
-    const res = await axiosInstance.get(`${chatServerUrl}performance/chat-mission/${chatMissionId}`);
+    const res = await axios.get(`${chatServerUrl}performance/chat-mission/${chatMissionId}`,
+        {
+            withCredentials: false,
+            headers: {
+                'ngrok-skip-browser-warning': 'true', 
+            }
+        }
+    );
     console.log("chat", res);
     return res.data;
 }
 
 export const getMission = async (templateId: number) => {
-    const res = await axiosInstance.get(`${chatServerUrl}performance/chat-mission/template/${templateId}`);
+    const res = await axios.get(`${chatServerUrl}performance/chat-mission/template/${templateId}`,
+        {
+            withCredentials: false,
+            headers: {
+                'ngrok-skip-browser-warning': 'true',  
+            }
+        }
+    );
     console.log("mission", res);
     return res.data;
 }

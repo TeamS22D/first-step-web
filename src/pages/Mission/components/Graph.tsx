@@ -10,7 +10,7 @@ import {
   type ChartOptions,
 } from 'chart.js';
 import * as S from '../styles/Graph';
-import type { FeedbackData } from "../pages/MissionFeedback/MissionFeedback";
+import type { FeedbackData } from "../../../hooks/missionFeedbackApi";
 
 interface GraphProps {
     dataProps?: FeedbackData;

@@ -36,7 +36,7 @@ export default function StepsComponent({ step }: StepsComponentProps) {
         setCategory("문서");
       } else if (path.includes("/performance/email-mission")) {
         setCategory("메일");
-      } else if (path.includes("/performance/chat")) {
+      } else if (path.includes("/performance/chat-mission")) {
         setCategory("채팅");
       }
     }, [location.pathname]); 

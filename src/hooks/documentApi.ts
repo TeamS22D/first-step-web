@@ -83,6 +83,7 @@ export const useDocumentMission = () => {
         const userMission = await getUserMission(Number(document.userMissionId));
         setUserMission(userMission);
 
+
         const mission = await getMission(Number(userMission.mission.missionId));
         setMission(mission);
 

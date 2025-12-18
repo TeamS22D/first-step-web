@@ -9,7 +9,8 @@ import { useEffect, useState } from "react";
 import StarOff from '@assets/Mission/Feedback/StarOff.png';
 import StarOn from '@assets/Mission/Feedback/StarOn.png';
 import { useParams } from "react-router-dom";
-import { getFeedbackData, type FeedbackData } from "@/hooks/missionFeedbackApi.ts";
+import { getFeedbackData, userMission, type FeedbackData } from "@/hooks/missionFeedbackApi.ts";
+import { getUserMission, type MissionResponse } from "@/hooks/mailApi.ts";
 
 
 interface ImageProps {
@@ -25,29 +26,35 @@ const Image = ({src, alt}:ImageProps) => {
 }
 
 
-const titleInfo = {
-  mainTitle: "[채팅] 연차 요청을 해 보세요!",
-  period: "9일 전",
-  date: "2024-11-04",
-  target: "실제 실무 상황을 가정한 연차 요청 및 업무 조율 커뮤니케이션 연습"
-};
+// 1. 타입 정의
+type MissionTheme = 'document' | 'chat' | 'mail';
 
-export function TitleBox() {
+export function TitleBox({ data }: { data?: any }) { // 임시로 any, 실제로는 MissionResponse
+  if (!data?.mission) return null;
+
+  // 2. 간단한 매핑 객체 (상태값 대신 변수 사용)
+  const themeMap: Record<MissionTheme, string> = {
+    document: '문서',
+    chat: '채팅',
+    mail: '메일',
+  };
+
+  const themeLabel = themeMap[data.mission.missionTheme as MissionTheme] || '기타';
+
   return (
     <S.TitleBox>
       <S.TitleTopContainer>
-        <S.TitleText>{titleInfo.mainTitle}</S.TitleText>
-        <S.period>{titleInfo.period}</S.period>
+        <S.TitleText>[{themeLabel}] {data.mission.missionName}</S.TitleText>
+        <S.period>{data.mission.description}</S.period>
       </S.TitleTopContainer>
       <S.TitleBottomContainer>
-        <span className="date">{titleInfo.date}</span>
+        <span className="date">{data.mission.missionId}</span>
         <span>|</span>
-        <span>{titleInfo.target}</span>
+        <span>{data.mission.missionName}</span>
       </S.TitleBottomContainer>
     </S.TitleBox>
-  )
+  );
 }
-
 
 
 export function MiddleBox({ data }: { data?: FeedbackData }) {
@@ -180,22 +187,63 @@ export default function MissionFeedback() {
   const { userMissionId } = useParams<{ userMissionId: string }>();
 
       const [mission, setMission] = useState<FeedbackData | null>(null);
+      const [titleData, setTitleData] = useState<MissionResponse | null>(null)
       
+      // useEffect(() => {
+      //     if (!userMissionId) return console.log('userMissionId 없음');
+        
+      //     const fetchOrCreate = async () => {
+      //       try {
+      //         const data = await getFeedbackData(Number(userMissionId));
+      //         console.log(userMissionId)
+      //         setMission(data);
+
+      //         const missionData = await getUserMission(Number(userMissionId))
+      //         console.log('미션 데이터',missionData)
+      //         setTitleData(missionData)
+      //         console.log('확인 필요',titleData)
+      //       } catch (err: any) {
+      //         console.log('err')
+      //       }
+      //     };
+        
+      //     fetchOrCreate();
+      //   }, [userMissionId]);
       useEffect(() => {
-          if (!userMissionId) return console.log('userMissionId 없음');
-        
-          const fetchOrCreate = async () => {
-            try {
-              const data = await getFeedbackData(Number(userMissionId));
-              console.log(userMissionId)
-              setMission(data);
-            } catch (err: any) {
-              console.log('err')
-            }
-          };
-        
-          fetchOrCreate();
-        }, [userMissionId]);
+        if (!userMissionId) {
+          console.warn('userMissionId 없음');
+          return;
+        }
+      
+        const fetchOrCreate = async () => {
+          try {
+            // 1. 병렬 처리를 통해 로딩 속도 최적화
+            const [feedbackData, missionData] = await Promise.all([
+              getFeedbackData(Number(userMissionId)),
+              getUserMission(Number(userMissionId))
+            ]);
+      
+            // 2. 상태 업데이트
+            setMission(feedbackData);
+            setTitleData(missionData);
+      
+            // 3. 로그 확인 (상태 변수가 아닌 직접 가져온 데이터 사용)
+            console.log('가져온 미션 데이터:', missionData);
+            
+          } catch (err: any) {
+            console.error('데이터를 불러오는 중 오류 발생:', err);
+          }
+        };
+      
+        fetchOrCreate();
+      }, [userMissionId]);
+      
+      // 4. titleData가 실제로 바뀌었는지 감시하고 싶을 때 (선택 사항)
+      useEffect(() => {
+        if (titleData) {
+          console.log('titleData 상태 업데이트 완료:', titleData);
+        }
+      }, [titleData]);
   
 
   const pageMove = () => {
@@ -210,6 +258,7 @@ export default function MissionFeedback() {
   }, [feedback]);
 
 
+
   return (
 
     <ThemeProvider theme={lightTheme}>
@@ -219,7 +268,7 @@ export default function MissionFeedback() {
                   <StepsComponent step={1}/>
               </S.TopContainer>
                 <S.Body>
-                  <TitleBox />
+                  <TitleBox data = {titleData}/>
                   <MiddleBox data={feedback} />
                   <BottomBox data={feedback} />
                   <S.buttoncontainer>

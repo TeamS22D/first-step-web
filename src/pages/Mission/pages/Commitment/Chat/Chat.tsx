@@ -6,7 +6,6 @@ import { useEffect } from 'react'
 import { MissionFeedbackContext } from '@/components/MissionLayout/MissionLayout';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getChatMission, type ChatMissionResponse } from '@/hooks/chatApi';
-import axiosInstance from '@/hooks/axiosInstance';
 
 
 interface ImageProps {
@@ -134,7 +133,7 @@ function ChatBox() {
 
     const [input, setInput] = useState("");
     const stop = useRef(0)
-    const chatUrl = `wss://5d9a295258d1.ngrok-free.app/chat/mission/${chatMissionId}`;
+    const chatUrl = `wss://f79028ac5362.ngrok-free.app/chat/mission/${chatMissionId}`;
 
     const navigate = useNavigate();
     const ctx = useContext(MissionFeedbackContext);

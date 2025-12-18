@@ -33,6 +33,7 @@ export const Body = styled.div`
     padding: 15px 75px 0px 70px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 34px;
 `
 

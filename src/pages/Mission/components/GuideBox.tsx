@@ -2,7 +2,7 @@ import { GlobalStyle } from "@/styles/GlobalStyle";
 import * as S from '../styles/GuideBox';
 import ImageFirm from '@/assets/Mission/GuideBox/HintFirm.png'
 import IconAdvice from '@/assets/Mission/GuideBox/Advice.png'
-import {useEffect, useState } from "react";
+import {useState } from "react";
 import { useMailMission } from "@/hooks/mailApi";
 import { useDocumentMission } from "@/hooks/documentApi";
 import { useChatMission } from "@/hooks/chatApi";

@@ -8,5 +8,7 @@ export interface MissionResponse {
 
 export const getMissionById = async (id: number): Promise<MissionResponse> => {
   const response = await axios.get(`/mission/${id}`);
+  
   return response.data;
 };
+
