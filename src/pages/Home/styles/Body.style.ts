@@ -4,7 +4,7 @@ import styled from "styled-components"
 
 export const Body = styled.div`
     width: 100%;
-    height: 50vh;
+    height: 60vh;
     display: flex;
     gap: 30px;
 `
@@ -12,9 +12,10 @@ export const Body = styled.div`
 export const Contents = styled.div`
     width: 100%;
     min-width: 600px;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 48px;
+    gap: 32px;
 `
 
 export const RecommendContainer = styled.div`
@@ -37,7 +38,7 @@ export const Recommend = styled.div`
 
   img {
     position: absolute;
-    width: 38%;
+    width: 35%;
     right: 29px;
     bottom: 27px;
   }
@@ -80,7 +81,7 @@ export const MissionList = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 49vh;
+    height: 38vh;
     overflow-y: scroll;
 `
 

@@ -51,20 +51,47 @@ export const MenuContainer = styled.div`
     gap: 48px;
 `
 
-export const StyledLink = styled(Link)`
-    p {
-        visibility: hidden;
-        opacity: 0;
-        text-align: center;
-        color: #fff;
-        transition: 0.13s;
-        word-break: keep-all;
-        overflow-wrap: break-word;
-    }
-    &:hover {
-        p {
-            visibility: visible;
-            opacity: 1;
+export const StyledLink = styled(Link)<{ $isSelected?: boolean }>`
+    svg {
+        path {
+            /* stroke: ${(props) => (props.$isSelected ? props.theme.sidebar : "#ffffff")};  */
+            stroke: #fff;
+            /* fill: ${(props) => (props.$isSelected ? "#ffffff" : props.theme.sidebar)};  */
+            transition: all 0.2s ease-in-out;
         }
     }
-`
+
+    p {
+         visibility: hidden;
+         opacity: 0;
+         text-align: center;
+         color: #fff;
+         transition: 0.13s;
+         word-break: keep-all;
+         overflow-wrap: break-word;
+     }
+     &:hover {
+         p {
+             visibility: visible;
+             opacity: 1;
+         }
+     }
+`;
+
+// export const StyledLink = styled(Link)`
+//     p {
+//         visibility: hidden;
+//         opacity: 0;
+//         text-align: center;
+//         color: #fff;
+//         transition: 0.13s;
+//         word-break: keep-all;
+//         overflow-wrap: break-word;
+//     }
+//     &:hover {
+//         p {
+//             visibility: visible;
+//             opacity: 1;
+//         }
+//     }
+// `

@@ -21,13 +21,34 @@ function Missions() {
   const [keyword, setKeyword] = useState('');
   const { category } = useParams<{ category: string }>();
   const [missions, setMissions] = useState<IMissions[]>([]);
+  const newCategory = category === "mail" ? "email" : category
 
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
       setKeyword(e.target.value);
   }, [])
 
   useEffect(() => {
-    axiosInstance.get(`${SERVER_URL}/user-mission/missions`)
+
+    if(category === "all") {
+      axiosInstance.get(`${SERVER_URL}/user-mission/missions`)
+      .then((response) => {
+        setMissions(response.data);
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          alert("미션이 없습니다.");
+        } else {
+          alert("미션을 불러오는데 실패했습니다. 잠시 후 다시 시도해주세요.");
+        }
+      })
+      return;
+    }
+
+    axiosInstance.get(`${SERVER_URL}/user-mission/missions`, {
+      params: {
+        missionTheme: newCategory
+      }
+    })
       .then((response) => {
         setMissions(response.data);
       })
@@ -62,7 +83,7 @@ function Missions() {
       <Status />
       <Search onChange={onChange} keyword={keyword} />
       <Category categoryList={CategoryList} />
-      <MissionList category={category || "all"} missions={missions} />
+      <MissionList category={newCategory || "all"} missions={missions} />
     </S.Container>
   )
 }

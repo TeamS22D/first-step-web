@@ -5,7 +5,11 @@ import axios from "axios";
 import Timer from "@assets/Home/Timer.png"
 import Circle from "@assets/Home/Circle.png"
 import Fire from "@assets/Home/FireImg.png"
+import Books from "@assets/Home/Books.png"
+import QA from "@assets/Home/QA.png"
+import Reminder from "@assets/Home/Reminder.png"
 import axiosInstance from "@/hooks/axiosInstance";
+import { useNavigate } from "react-router";
 const SERVER_URL = import.meta.env.VITE_BASE_URL;
 
 function daysFromToday(dateString: string | undefined | null): number {
@@ -28,11 +32,12 @@ function daysFromToday(dateString: string | undefined | null): number {
 }
 
 const Recommend = (props: {title: string; img: string;}) => {
+    const navigate = useNavigate();
     return (
             <S.Recommend>
                 <div dangerouslySetInnerHTML={{ __html: props.title }} />
                 <img src={props.img} alt="이미지" />
-                <S.RedirectBtn>
+                <S.RedirectBtn onClick={() => navigate("/mission/all")}>
                     시작하기
                 </S.RedirectBtn>
             </S.Recommend>
@@ -262,20 +267,17 @@ function Body() {
         .catch((error) => {
             alert(error.response.status)
         })
+
     }, [])
 
     return (
         <S.Body>
             <S.Contents>
-                {recommend.length === 0 ? null : (
-                    <S.RecommendContainer>
-                        {recommend.map((elem) => {
-                            return(
-                                <Recommend key={elem.title} title={elem.title} img={elem.img}/>
-                            )
-                        })}
-                    </S.RecommendContainer>
-                )}    
+                <S.RecommendContainer>
+                    <Recommend title={"실제 실무능력을 <br>ai와 함께 체계적인<br>미션 프로그램"} img={Reminder}/>
+                    <Recommend title={"모르는 실무 용어를<br>쉽고 간편하게<br>용어사전 프로그램"} img={Books}/>
+                    <Recommend title={"내 특별 학습 코칭<br> ai선생님의 전문적인<br>피드백 프로그램"} img={QA}/>
+                </S.RecommendContainer>
                 <MissionList missions={missions}/>
             </S.Contents>
             <Sidebar />

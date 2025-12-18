@@ -1,14 +1,16 @@
 import * as S from "./Sidebar.style"
-import Logo from "/assets/Sidebar/Logo.png"
-import Home from "/assets/Sidebar/icons/Home.png"
-import Mission from "/assets/Sidebar/icons/Mission.png"
-import Dict from "/assets/Sidebar/icons/Dictionary.png"
-import Feedback from "/assets/Sidebar/icons/Feedback.png"
-import Profile from "/assets/Sidebar/icons/Profile.png"
+import Logo from "@/assets/Sidebar/Logo.png"
+import Home from "@/assets/Sidebar/icons/Home.svg?react"
+import Mission from "@/assets/Sidebar/icons/Mission.svg?react"
+import Dict from "@/assets/Sidebar/icons/Dictionary.svg?react"
+import Feedback from "@/assets/Sidebar/icons/Feedback.svg?react"
+import Profile from "@/assets/Sidebar/icons/Profile.svg?react"
 import * as Text from "@components/Text/Text.style"
+import { useLocation } from "react-router"
+import type { FunctionComponent, SVGProps } from "react"
 
 interface IconProps {
-    src: string;
+    src: string | FunctionComponent<SVGProps<SVGSVGElement>>;
     alt: string;
     to: string;
     isLogo?: boolean;
@@ -16,10 +18,20 @@ interface IconProps {
 }
 
 const Icon = ({src, alt, to, isLogo, text}:IconProps) => {
+    const location = useLocation();
+    const selected = location.pathname.includes(to);
+    const SvgIcon = src as FunctionComponent<SVGProps<SVGSVGElement>>;
+
     return (
-        <S.StyledLink to={to}>
-            {isLogo? <S.Logo src={src} alt={alt}/> : <S.Icon src={src} alt={alt} />}
-            {text? <Text.Label>{text}</Text.Label> : null}
+        <S.StyledLink to={to} $isSelected={selected}>
+            {isLogo ? (
+                <S.Logo src={src as string} alt={alt} />
+            ) : (
+                (() => {
+                    return <SvgIcon />;
+                })()
+            )}
+            {text ? <Text.Label>{text}</Text.Label> : null}
         </S.StyledLink>
     )
 }
