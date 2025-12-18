@@ -74,6 +74,8 @@ export default function Mail() {
     
       console.log(res.data);
       alert('제출');
+
+      
     }, [emailMissionId]);
     
     useEffect(() => {
