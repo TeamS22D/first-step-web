@@ -1,21 +1,23 @@
+import { useNavigate } from "react-router";
 import * as S from "../styles/MissionList.style"
 import Timer from "@assets/Home/Timer.png"
 
 const getDaysDiff = (dateStr: string): number => {
   const today = new Date();
   const target = new Date(dateStr);
-
+  
   today.setHours(0, 0, 0, 0);
   target.setHours(0, 0, 0, 0);
-
+  
   const diffMs = Math.abs(today.getTime() - target.getTime());
-
+  
   return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 };
 
 const Mission = (props: IMissions) => {
   const diffDayFromStart = getDaysDiff(props.startDate);
   const diffDayToDeadLine = getDaysDiff(props.endDate);
+  const navigate = useNavigate();
 
   return (
     <S.MissionBox>
@@ -24,7 +26,7 @@ const Mission = (props: IMissions) => {
         <S.MissionTitle>{props.missionName}</S.MissionTitle>
         <S.Deadline><img src={Timer} />{props.endDate.slice(0, 10)}</S.Deadline>
         <S.Buttons>
-          <S.Button>시작하기</S.Button>
+          <S.Button onClick={() => navigate(`/performance/${props.missionTheme}-mission/${props.userMissionId}`)}>시작하기</S.Button>
         </S.Buttons>
       </S.Mission>
     </S.MissionBox>

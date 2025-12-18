@@ -133,7 +133,7 @@ function ChatBox() {
 
     const [input, setInput] = useState("");
     const stop = useRef(0)
-    const chatUrl = `wss://f79028ac5362.ngrok-free.app/chat/mission/${chatMissionId}`;
+    const chatUrl = `wss://${import.meta.env.VITE_WEBSOCKET_URL}/chat/mission/${chatMissionId}`;
 
     const navigate = useNavigate();
     const ctx = useContext(MissionFeedbackContext);
