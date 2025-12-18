@@ -27,84 +27,88 @@ const Send = ({src, alt}:ImageProps) => {
 }
 
 export default function Chat() {
-    return(
+    const { chatMissionId } = useParams<{ chatMissionId: string }>();
+    const [mission, setMission] = useState<ChatMissionResponse | null>(null);
+
+    useEffect(() => {
+        if (!chatMissionId) return;
+        const fetchMission = async () => {
+            try {
+                const data = await getChatMission(Number(chatMissionId));
+                setMission(data);
+                // console.log('데이터 로드 완료', data);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchMission();
+    }, [chatMissionId]);
+
+    return (
         <S.Body>
-            <ChatBox/>
-            <Introduction/>
+            <ChatBox />
+            {/* mission 데이터를 props로 넘겨줌 */}
+            <Introduction mission={mission} />
         </S.Body>
-    )
+    );
 }
 
-function Introduction() {
-    return(
+interface IntroductionProps {
+    mission: ChatMissionResponse | null;
+}
+
+function Introduction({ mission }: IntroductionProps) {
+    // 데이터가 없을 때를 대비한 방어 코드
+    if (!mission) return null; 
+
+    return (
         <S.Introduction>
             <S.TopWrapper>
-                <S.Title>
-                    상대 정보
-                </S.Title>
+                <S.Title>상대 정보</S.Title>
                 <S.FirmInpormation>
                     <S.InpormationWrapper>
                         <Image src={ImageFirm} alt=''/>
                     </S.InpormationWrapper>
                     <S.InpormationWrapper>
-                        <S.name>민팀장</S.name>
+                        {/* ai_persona 내부 데이터 연결 */}
+                        <S.name>{mission.ai_persona?.name || "정보 없음"}</S.name>
                         <S.slash>|</S.slash>
-                        <S.age>52세</S.age>
+                        <S.age>{mission.ai_persona?.role || "직함 없음"}</S.age>
                     </S.InpormationWrapper>
                 </S.FirmInpormation>
             </S.TopWrapper>
+            
             <S.BottomWrapper>
-                <Atr/>
-                <S.atr>
-                    <S.bar/>
-                    <S.FontWrapper>
-                        <S.atrTitle>특징</S.atrTitle>
-                        <S.atrSub>일정 관리와 책임 있는 대안을 중시함</S.atrSub>
-                    </S.FontWrapper>
-                </S.atr>
+                {/* Atr 컴포넌트에 데이터를 넘겨줌 */}
+                <Atr 
+                    title="성격" 
+                    sub={mission.ai_persona?.character || "정보가 없습니다."} 
+                />
+                {/* <Atr 
+                    title="특징" 
+                    sub={mission.description || "정보가 없습니다."} 
+                /> */}
             </S.BottomWrapper>
         </S.Introduction>
     )
 }
 
-// map 함수로 서버에서 전달한 데이터 만큼
-function Atr() {
-    return(
-    <S.atr>
-        <S.bar/>
-        <S.FontWrapper>
-            <S.atrTitle>성격</S.atrTitle>
-            <S.atrSub>배려심 있음, 합리적이고 침착함</S.atrSub>
-        </S.FontWrapper>
-    </S.atr>
+// Props를 받도록 수정하여 재사용 가능하게 함
+function Atr({ title, sub }: { title: string; sub: string }) {
+    return (
+        <S.atr>
+            <S.bar/>
+            <S.FontWrapper>
+                <S.atrTitle>{title}</S.atrTitle>
+                <S.atrSub>{sub}</S.atrSub>
+            </S.FontWrapper>
+        </S.atr>
     )
 }
 
 
-function ChatBox() {
-    const { chatMissionId } = useParams<{ chatMissionId: string }>();
-    console.log(chatMissionId)
-
-    const [mission, setMission] = useState<ChatMissionResponse | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    
-    useEffect(() => {
-        if (!chatMissionId) return console.log('chatMissionId 없음');
-      
-        const fetchOrCreate = async () => {
-          try {
-            const data = await getChatMission(Number(chatMissionId));
-            console.log(chatMissionId)
-            setMission(data);
-          } catch (err: any) {
-}
-        };
-      
-        fetchOrCreate();
-      }, [chatMissionId]);
-
-      
+function ChatBox() {      
+    const userPreams = useParams()
     const ws = useRef<WebSocket | null>(null);
 
     // 메시지를 객체 형태로 관리
@@ -114,7 +118,7 @@ function ChatBox() {
 
     const [input, setInput] = useState("");
     const stop = useRef(0)
-    const chatUrl = `wss://fc17e088ee63.ngrok-free.app/chat/mission/1`;
+    const chatUrl = `wss://9bdc56c925a9.ngrok-free.app/chat/mission/1`;
 
     const navigate = useNavigate();
     const ctx = useContext(MissionFeedbackContext);
