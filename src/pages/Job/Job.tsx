@@ -70,12 +70,6 @@ export default function Job() {
 
   const handleSubmit = async () => {
     if (!selected || loading) return;
-<<<<<<< HEAD
-  
-    const email = localStorage.getItem("email") ?? "test@example.com";
-    let jobCode = selected;
-  
-=======
 
     const accessToken = getCookie("accessToken");
     if (!accessToken) {
@@ -85,7 +79,6 @@ export default function Job() {
     }
 
     let jobCode = selected;
->>>>>>> 7e29e71159fc387599322c25902a87a925946fbe
     setLoading(true);
     try {
       const res = await axiosInstance.post<JobResponse>("/user/job", {
@@ -105,12 +98,6 @@ export default function Job() {
       navigate("/Home");
     } catch (err) {
       console.error("직업 선택 요청 오류:", err);
-<<<<<<< HEAD
-    } finally {
-      setLoading(false);
-    }
-  };  
-=======
       alert("서버 통신 중 오류가 발생했습니다.");
     } finally {
       localStorage.setItem("job", jobCode);
@@ -123,7 +110,6 @@ export default function Job() {
     
     setLoading(false);
   };
->>>>>>> 7e29e71159fc387599322c25902a87a925946fbe
 
   return (
     <S.Container>

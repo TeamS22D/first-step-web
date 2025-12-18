@@ -2,11 +2,7 @@ import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./Occupation.style";
 
-<<<<<<< HEAD
-import axiosInstance from "../../hooks/axiosInstance";
-=======
 import { getCookie } from "../../hooks/cookies";
->>>>>>> 7e29e71159fc387599322c25902a87a925946fbe
 
 import itPng from "../../assets/Dictionary/it.png";
 import videoPng from "../../assets/Dictionary/video.png";
@@ -59,19 +55,6 @@ export default function Occupation() {
 
     let occupationCode = selected;
     setLoading(true);
-<<<<<<< HEAD
-    try {
-      const res = await axiosInstance.post<OccupationResponse>("/user/occupation", {
-        email,
-        occupation: selected,
-      });
-
-      if (res.status === 200) {
-        const data = res.data;
-        occupationCode = data.selectedOccupation?.code ?? selected;
-      } else {
-        console.error("분야 선택 API 실패:", res.status);
-=======
 
     try {
       const res = await fetch(`${serverUrl}/user/occupation`, {
@@ -91,18 +74,13 @@ export default function Occupation() {
       } else {
         console.error("분야 선택 API 실패", res.status);
         alert("분야 선택에 실패했습니다. 잠시 후 다시 시도해주세요.");
->>>>>>> 7e29e71159fc387599322c25902a87a925946fbe
       }
 
       localStorage.setItem("occupation", occupationCode);
       navigate("/job");
     } catch (err) {
-<<<<<<< HEAD
-      console.error("분야 선택 요청 오류:", err);
-=======
       console.error("분야 선택 요청 오류", err);
       alert("서버 통신 중 오류가 발생했습니다.");
->>>>>>> 7e29e71159fc387599322c25902a87a925946fbe
     } finally {
       setLoading(false);
     }
