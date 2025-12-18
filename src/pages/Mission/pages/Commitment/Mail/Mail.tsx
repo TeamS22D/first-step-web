@@ -116,6 +116,7 @@ export default function Mail() {
 
           // 400 -> 미션을 처음 열었을 때
           if (err.response?.status === 400) {
+            console.log('create 해보겟슴다')
             const res = await axiosInstance.post(
               `/email-mission/create`,
               {
@@ -125,7 +126,8 @@ export default function Mail() {
                 userMissionId: 2, 
               }
             );
-    
+            
+            console.log('create 됏다')
             setMission(res.data);
           } else {
             setError("이메일 미션을 불러올 수 없습니다.");

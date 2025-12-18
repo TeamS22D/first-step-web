@@ -8,6 +8,8 @@ import { useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import StarOff from '@assets/Mission/Feedback/StarOff.png';
 import StarOn from '@assets/Mission/Feedback/StarOn.png';
+import { useParams } from "react-router-dom";
+import { getFeedbackData, type FeedbackData } from "@/hooks/missionFeedbackApi.ts";
 
 
 interface ImageProps {
@@ -22,25 +24,6 @@ const Image = ({src, alt}:ImageProps) => {
     )
 }
 
-export interface EvaluationDetail {
-    good_points: string;
-    improvement_points: string;
-    suggested_fix: string;
-}
-
-export interface EvaluationItem {
-    item: string;
-    score: number;
-    feedback: EvaluationDetail;
-
-}
-
-export interface FeedbackData {
-    evaluations: EvaluationItem[];
-    total_score: number;
-    grade: string;
-    general_feedback: string;
-}
 
 const titleInfo = {
   mainTitle: "[채팅] 연차 요청을 해 보세요!",
@@ -146,7 +129,6 @@ function BottomRightAreaItem({ title, sub, color }: BottomRightAreaItemProps) {
 export function BottomBox({ data }: { data?: FeedbackData }) {
   return (
     <S.BottomContainer>
-
       <S.BottomLeftContainer>
         <BottomHelp
           title='잘한 점'
@@ -195,13 +177,33 @@ export function BottomBox({ data }: { data?: FeedbackData }) {
 export default function MissionFeedback() {
 
   const navigate = useNavigate()
+  const { userMissionId } = useParams<{ userMissionId: string }>();
+
+      const [mission, setMission] = useState<FeedbackData | null>(null);
+      
+      useEffect(() => {
+          if (!userMissionId) return console.log('userMissionId 없음');
+        
+          const fetchOrCreate = async () => {
+            try {
+              const data = await getFeedbackData(Number(userMissionId));
+              console.log(userMissionId)
+              setMission(data);
+            } catch (err: any) {
+              console.log('err')
+            }
+          };
+        
+          fetchOrCreate();
+        }, [userMissionId]);
+  
 
   const pageMove = () => {
     navigate('/missioncomplete')
   }
 
-  const location = useLocation();
-  const feedback = location.state?.feedback as FeedbackData | undefined;
+ 
+  const feedback = mission
 
   useEffect(() => {
       console.log("feedback:", feedback);

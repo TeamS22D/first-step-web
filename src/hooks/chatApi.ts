@@ -27,14 +27,16 @@ export interface MissionResponse {
     },
 }
 
+const chatServerUrl: string = 'https://5d9a295258d1.ngrok-free.app/'
+
 export const getChatMission = async (chatMissionId: number) => {
-    const res = await axiosInstance.get(`chat-mission/${chatMissionId}`);
+    const res = await axiosInstance.get(`${chatServerUrl}performance/chat-mission/${chatMissionId}`);
     console.log("chat", res);
     return res.data;
 }
 
 export const getMission = async (templateId: number) => {
-    const res = await axiosInstance.get(`chat-mission/template/${templateId}`);
+    const res = await axiosInstance.get(`${chatServerUrl}performance/chat-mission/template/${templateId}`);
     console.log("mission", res);
     return res.data;
 }

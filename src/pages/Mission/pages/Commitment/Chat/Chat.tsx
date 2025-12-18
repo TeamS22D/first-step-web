@@ -84,6 +84,7 @@ function Atr() {
 
 function ChatBox() {
     const { chatMissionId } = useParams<{ chatMissionId: string }>();
+    console.log(chatMissionId)
 
     const [mission, setMission] = useState<ChatMissionResponse | null>(null);
     const [loading, setLoading] = useState(true);
@@ -133,7 +134,7 @@ function ChatBox() {
 
     const [input, setInput] = useState("");
     const stop = useRef(0)
-    const chatUrl = `ws://localhost:8000/chat/mission/${chatMissionId}`;
+    const chatUrl = `wss://5d9a295258d1.ngrok-free.app/chat/mission/${chatMissionId}`;
 
     const navigate = useNavigate();
     const ctx = useContext(MissionFeedbackContext);
