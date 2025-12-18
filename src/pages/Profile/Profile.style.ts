@@ -1,13 +1,16 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  display: flex;
-  width: 100%;
-`;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 4vh 6vw 0vh 6vw;
+    gap: 40px;
+`
 
 export const Content = styled.div`
   width: 100%;
-  padding: 20px 30px 0 30px;
   display: flex;
   flex-direction: column;
   gap: 22px;

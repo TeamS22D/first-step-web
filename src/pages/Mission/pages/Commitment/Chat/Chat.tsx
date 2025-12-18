@@ -1,0 +1,348 @@
+import * as S from './Chat.style'
+import ImageFirm from '@/assets/Mission/Firm/woman1.png'
+import ImageSend from '@/assets/Mission/ChatInput/Send.png'
+import { useContext, useRef, useState} from 'react';
+import { useEffect } from 'react'
+import { MissionFeedbackContext } from '@/components/MissionLayout/MissionLayout';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getChatMission, type ChatMissionResponse } from '@/hooks/chatApi';
+
+
+interface ImageProps {
+    src: string;
+    alt: string;
+}
+
+
+const Image = ({src, alt}:ImageProps) => {
+    return (
+        <S.Image src={src} alt={alt} />
+    )
+}
+
+const Send = ({src, alt}:ImageProps) => {
+    return (
+        <S.Send src={src} alt={alt} />
+    )
+}
+
+export default function Chat() {
+    return(
+        <S.Body>
+            <ChatBox/>
+            <Introduction/>
+        </S.Body>
+    )
+}
+
+function Introduction() {
+    return(
+        <S.Introduction>
+            <S.TopWrapper>
+                <S.Title>
+                    상대 정보
+                </S.Title>
+                <S.FirmInpormation>
+                    <S.InpormationWrapper>
+                        <Image src={ImageFirm} alt=''/>
+                    </S.InpormationWrapper>
+                    <S.InpormationWrapper>
+                        <S.name>민팀장</S.name>
+                        <S.slash>|</S.slash>
+                        <S.age>52세</S.age>
+                    </S.InpormationWrapper>
+                </S.FirmInpormation>
+            </S.TopWrapper>
+            <S.BottomWrapper>
+                <Atr/>
+                <S.atr>
+                    <S.bar/>
+                    <S.FontWrapper>
+                        <S.atrTitle>특징</S.atrTitle>
+                        <S.atrSub>일정 관리와 책임 있는 대안을 중시함</S.atrSub>
+                    </S.FontWrapper>
+                </S.atr>
+            </S.BottomWrapper>
+        </S.Introduction>
+    )
+}
+
+// map 함수로 서버에서 전달한 데이터 만큼
+function Atr() {
+    return(
+    <S.atr>
+        <S.bar/>
+        <S.FontWrapper>
+            <S.atrTitle>성격</S.atrTitle>
+            <S.atrSub>배려심 있음, 합리적이고 침착함</S.atrSub>
+        </S.FontWrapper>
+    </S.atr>
+    )
+}
+
+
+function ChatBox() {
+    const { chatMissionId } = useParams<{ chatMissionId: string }>();
+    console.log(chatMissionId)
+
+    const [mission, setMission] = useState<ChatMissionResponse | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    
+    useEffect(() => {
+        if (!chatMissionId) return console.log('chatMissionId 없음');
+      
+        const fetchOrCreate = async () => {
+          try {
+            const data = await getChatMission(Number(chatMissionId));
+            console.log(chatMissionId)
+            setMission(data);
+          } catch (err: any) {
+  
+        //     // 400 -> 미션을 처음 열었을 때
+        //     if (err.response?.status === 400) {
+        //       const res = await axiosInstance.post(
+        //         `/email-mission/create`,
+        //         {
+        //           title: '',
+        //           receiver: '',
+        //           emailContent: '',
+        //           userMissionId: 2, 
+        //         }
+        //       );
+      
+        //       setMission(res.data);
+        //     } else {
+        //       setError("이메일 미션을 불러올 수 없습니다.");
+        //     }
+        //   } finally {
+        //     setLoading(false);
+          }
+        };
+      
+        fetchOrCreate();
+      }, [chatMissionId]);
+
+      
+    const ws = useRef<WebSocket | null>(null);
+
+    // 메시지를 객체 형태로 관리
+    const [messages, setMessages] = useState<
+        { id: number; sender: "user" | "ai"; text: string }[]
+    >([]);
+
+    const [input, setInput] = useState("");
+    const stop = useRef(0)
+    const chatUrl = `wss://f79028ac5362.ngrok-free.app/chat/mission/${chatMissionId}`;
+
+    const navigate = useNavigate();
+    const ctx = useContext(MissionFeedbackContext);
+    const afterExitBuffer = useRef<string[]>([]);
+
+    const [isLoadingAI, setIsLoadingAI] = useState(false);
+    const messagesEndRef = useRef<HTMLDivElement | null>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
+    // 메시지 업데이트 시 자동 스크롤
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    // input focus 중 enter 키 누를 시 sendMessge 실행
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.nativeEvent.isComposing) return;
+
+        if (e.key === "Enter") {
+          sendMessage();
+        }
+      };
+
+    if (!ctx) throw new Error("MissionStep1 must be used inside MissionFeedbackLayout");
+  
+    useEffect(() => {
+        if (!isLoadingAI) {
+            inputRef.current?.focus();
+        }
+    }, [isLoadingAI]);  // isLoadingAI가 false로 바뀔 때 포커스
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);  // messages가 업데이트될 때마다 실행
+
+    useEffect(() => {
+
+        ctx.setButtonSubmitAction(() => async () => {
+            stop.current = 1;
+            afterExitBuffer.current = [];
+        
+            if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+                ws.current.send("[COMPLETE]");
+            }
+        });
+           
+
+        ws.current = new WebSocket(chatUrl);
+
+        ws.current.onopen = () => {
+            console.log("Chat WebSocket OPEN");
+        };
+
+        ws.current.onmessage = (event) => {
+            const chunk = event.data;
+        
+            // 평가
+            if (stop.current === 1) {
+        
+                // 버퍼 초기화
+                if (chunk === "[EVAL_START]") {
+                    afterExitBuffer.current = [];
+                    return;
+                }
+        
+                //  "[EVAL_END]"이면 JSON 파싱 및 페이지 이동
+                if (chunk === "[EVAL_END]") {
+                    try {
+                        const jsonText = afterExitBuffer.current.join("");
+                        const feedbackData = JSON.parse(jsonText);
+        
+                        console.log("Collected feedback:", feedbackData);
+        
+                        navigate("/missionfeedback", {
+                            state: { feedback: feedbackData }
+                        });
+                    } catch (err) {
+                        console.error("JSON parse error:", err);
+                    }
+        
+                    afterExitBuffer.current = [];
+                    return; 
+                }
+        
+                // JSON chunk만 push
+                try {
+                    JSON.parse(chunk);
+                    afterExitBuffer.current.push(chunk);
+                } catch {
+                    // JSON 아니면 무시
+                    return;
+                }
+        
+                return; 
+            }
+        
+            
+        
+            if (chunk === "[END_OF_STREAM]") {
+                setIsLoadingAI(false);
+                return;
+            }
+
+            // 일반 채팅 
+            setMessages((prev) => {
+                const last = prev[prev.length - 1];
+            
+                if (last && last.sender === "ai") {
+                    // 로딩 메시지면 chunk로 교체
+                    // 아니면 추가
+                    const newText = last.text === "답장 중..." ? chunk : last.text + chunk;
+                    
+                    return [
+                        ...prev.slice(0, -1),
+                        { ...last, text: newText }
+                    ];
+                }
+            
+                return [
+                    ...prev,
+                    { id: Date.now(), sender: "ai", text: chunk }
+                ];
+            });
+        };
+                
+        
+
+        ws.current.onerror = () => {
+            console.log("Chat WebSocket ERROR");
+            alert('WebSocket Error')
+        };
+
+        ws.current.onclose = () => {
+            console.log("Chat WebSocket CLOSED");
+        };
+
+        return () => {
+            ws.current?.readyState === 1 && ws.current.close();
+        };
+
+    }, []);
+
+    // 메시지 전송
+    const sendMessage = () => {
+        if (!input.trim() || isLoadingAI) return;
+        if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+            ws.current.send(input);
+
+            setMessages((prev) => [
+                ...prev,
+                { id: Date.now(), sender: "user", text: input },
+                {
+                    id: Date.now() + 1,
+                    sender: "ai",
+                    text: "답장 중..." 
+                }
+            ]);
+
+            setIsLoadingAI(true);
+            setInput("");
+        } else {
+            console.log("WebSocket not open");
+        }
+    };
+
+
+    return (
+        <S.Container>
+            <S.Contant>
+                {messages.map((msg) => {
+
+                    if (msg.sender === "user") {
+                        return (
+                            <S.messageWrapper key={msg.id}>
+                                <S.message>
+                                    <p>{msg.text}</p>
+                                </S.message>
+                            </S.messageWrapper>
+                        );
+                    }
+
+                    return (
+                        <S.messageWrapper me key={msg.id}>
+                            <S.message me >
+                                <span>{msg.text}</span>
+                            </S.message>
+                        </S.messageWrapper>
+                    );
+                })}
+                <div ref={messagesEndRef} />
+            </S.Contant>
+
+            <S.InputBox>
+                <S.Input
+                    placeholder="내용을 입력해주세요."
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={handleKeyPress}
+                    disabled={isLoadingAI}
+                    ref={inputRef}
+                />
+                <S.SendButton 
+                    onClick={sendMessage}
+                    disabled={isLoadingAI}
+                >
+                    <Send src={ImageSend} alt="" />
+                </S.SendButton>
+            </S.InputBox>
+        </S.Container>
+    );
+}
+

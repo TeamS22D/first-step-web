@@ -1,24 +1,26 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import App from "./App";
-
 import Login from "./pages/Auth/pages/Login/Login";
 import Register from "./pages/Auth/pages/Register/Register";
 import AuthLayout from "./components/AuthLayout/AuthLayout";
-
 import NotFound from "./pages/NotFound/NotFound";
-
 import Home from "./pages/Home/Home";
 import Dictionary from "./pages/Dictionary/Dictionary";
 import Missions from "./pages/Missions/Missions";
-import MissionList from "./components/Missions/components/MissionList";
 import Feedback from "./pages/Feedback/Feedback";
-
 import Occupation from "./pages/Occupation/Occupation";
 import Job from "./pages/Job/Job";
 import Profile from "./pages/Profile/Profile";
 import Verify from "./pages/Auth/pages/Verify/Verify";
 import SocialLogin from "./pages/Auth/pages/SocialLogin/SocialLogin";
+import MissionLayout from "./components/MissionLayout/MissionLayout.tsx";
+import Mail from "./pages/Mission/pages/Commitment/Mail/Mail.tsx";
+import Chat from "./pages/Mission/pages/Commitment/Chat/Chat.tsx";
+import MissionFeedback from './pages/Mission/pages/MissionFeedback/MissionFeedback.tsx'
+import MissionComplete from "./pages/Mission/pages/MissionComplete/MissionComplete.tsx";
+import Markdown from "./pages/Mission/pages/Commitment/Document/components/Markdown/Markdown.tsx";
+import Document from "./pages/Mission/pages/Commitment/Document/Document.tsx";
 
 const router = createBrowserRouter([
   {
@@ -41,58 +43,47 @@ const router = createBrowserRouter([
 
       {
         path: "mission",
+        element: <Navigate to="all" replace />,
+      },
+      {
+        path: "mission/:category",
         element: <Missions />,
-        children: [
-          {
-            index: true,
-            element: <Navigate to="all" replace />,
-          },
-          {
-            path: "all",
-            element: <MissionList category="all" />,
-          },
-          {
-            path: "document",
-            element: <MissionList category="document" />,
-          },
-          {
-            path: "chat",
-            element: <MissionList category="chat" />,
-          },
-          {
-            path: "mail",
-            element: <MissionList category="mail" />,
-          },
-        ],
       },
 
       {
         path: "feedback",
         element: <Feedback />,
+      },
+      {
+        path: "feedback/:category",
+        element: <Feedback />,
+      },
+      {
+        path: 'performance',
+        element: <MissionLayout />,
         children: [
           {
-            index: true,
-            element: <Navigate to="all" replace />,
+            path: 'document-mission/:documentMissionId',
+            element: <Document />,
           },
           {
-            path: "all",
-            element: <MissionList category="all" />,
+            path: 'email-mission/:emailMissionId',
+            element: <Mail/>,
           },
           {
-            path: "document",
-            element: <MissionList category="document" />,
-          },
-          {
-            path: "chat",
-            element: <MissionList category="chat" />,
-          },
-          {
-            path: "mail",
-            element: <MissionList category="mail" />,
-          },
-        ],
+            path: 'chat-mission/:chatMissionId',
+            element: <Chat/>,
+          }
+        ]
       },
-
+      {
+        path: "user-mission/feedback/:userMissionId",
+        element: <MissionFeedback />,
+      },
+      {
+        path: "missioncomplete",
+        element: <MissionComplete />,
+      },
       {
         path: "profile",
         element: <Profile />,

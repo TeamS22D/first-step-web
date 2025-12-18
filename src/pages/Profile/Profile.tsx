@@ -15,6 +15,7 @@ import axiosInstance from "../../hooks/axiosInstance";
 
 import attendanceImg from "/assets/Profile/attendance.png";
 import percentImg from "/assets/Profile/percent.png";
+import ProfileTab from "@/components/Profile/ProfileTab";
 
 type HistoryPoint = {
   day: string;
@@ -182,17 +183,7 @@ export default function Profile() {
   return (
     <S.Container>
       <S.Content>
-        <S.TopProfileCard>
-          <S.ProfileLeft>
-            <S.Avatar />
-            <div>
-              <S.Name>김우주 님</S.Name>
-              <S.SubInfo>IT직군 · 사원 · 17세</S.SubInfo>
-            </div>
-          </S.ProfileLeft>
-          <S.LogoutBtn>로그아웃</S.LogoutBtn>
-        </S.TopProfileCard>
-
+        <ProfileTab />
         <S.TopSection>
           <S.LeftControls>
             <S.FilterRow>

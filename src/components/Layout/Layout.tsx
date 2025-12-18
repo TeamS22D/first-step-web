@@ -5,28 +5,28 @@ import { useEffect, useState } from "react";
 import { checkLogin } from "@/hooks/authApi";
 
 function Layout() {
-    const navigate = useNavigate();
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    // const navigate = useNavigate();
+    // const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    useEffect(() => {
-        const verify = async () => {
-            const isLoggedIn = await checkLogin();
+    // useEffect(() => {
+    //     const verify = async () => {
+    //         const isLoggedIn = await checkLogin();
 
-            setIsAuthenticated(isLoggedIn);
+    //         setIsAuthenticated(isLoggedIn);
 
-            if (!isLoggedIn) {
-                navigate("/auth/login");
-            }
-        }
+    //         if (!isLoggedIn) {
+    //             navigate("/auth/login");
+    //         }
+    //     }
 
-        verify();
-    }, [navigate])
+    //     verify();
+    // }, [navigate])
 
-    if(!isAuthenticated) {
-        return (
-            <></>
-        )
-    }
+    // if(!isAuthenticated) {
+    //     return (
+    //         <></>
+    //     )
+    // }
 
     return (
         <S.Container>

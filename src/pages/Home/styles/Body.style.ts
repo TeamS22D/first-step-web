@@ -4,6 +4,7 @@ import styled from "styled-components"
 
 export const Body = styled.div`
     width: 100%;
+    height: 50vh;
     display: flex;
     gap: 30px;
 `
@@ -79,7 +80,7 @@ export const MissionList = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 38vh;
+    height: 49vh;
     overflow-y: scroll;
 `
 
@@ -119,6 +120,7 @@ export const TileTitle = styled.h3`
 
 export const Sidebar = styled.div`
     width: 40%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: 44px;
@@ -201,8 +203,10 @@ export const CrossLine = styled(Line)`
 
 export const TodoList = styled.div`
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
     gap: 10px;
 `
 

@@ -2,7 +2,11 @@ import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./Occupation.style";
 
+<<<<<<< HEAD
 import axiosInstance from "../../hooks/axiosInstance";
+=======
+import { getCookie } from "../../hooks/cookies";
+>>>>>>> 7e29e71159fc387599322c25902a87a925946fbe
 
 import itPng from "../../assets/Dictionary/it.png";
 import videoPng from "../../assets/Dictionary/video.png";
@@ -31,21 +35,31 @@ export default function Occupation() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const userName = localStorage.getItem("userName") ?? "사용자";
+
   const fields: Field[] = [
     { id: "it",      label: "IT",          node: <img src={itPng} alt="it" /> },
     { id: "video",   label: "영상 콘텐츠", node: <img src={videoPng} alt="영상 콘텐츠" /> },
-    { id: "manage",  label: "경영",       node: <img src={managePng} alt="경영" /> },
-    { id: "finance", label: "금융",       node: <img src={financePng} alt="금융" /> },
-    { id: "factory", label: "제조",       node: <img src={factoryPng} alt="제조" /> },
+    { id: "manage",  label: "경영",        node: <img src={managePng} alt="경영" /> },
+    { id: "finance", label: "금융",        node: <img src={financePng} alt="금융" /> },
+    { id: "factory", label: "제조",        node: <img src={factoryPng} alt="제조" /> },
   ];
+
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
 
   const handleSubmit = async () => {
     if (!selected || loading) return;
 
-    const email = localStorage.getItem("email") ?? "test@example.com";
-    let occupationCode = selected;
+    const accessToken = getCookie("accessToken");
+    if (!accessToken) {
+      console.error("accessToken이 없습니다. 다시 로그인 해 주세요.");
+      alert("로그인 정보가 없습니다. 다시 로그인 해 주세요.");
+      return;
+    }
 
+    let occupationCode = selected;
     setLoading(true);
+<<<<<<< HEAD
     try {
       const res = await axiosInstance.post<OccupationResponse>("/user/occupation", {
         email,
@@ -57,12 +71,38 @@ export default function Occupation() {
         occupationCode = data.selectedOccupation?.code ?? selected;
       } else {
         console.error("분야 선택 API 실패:", res.status);
+=======
+
+    try {
+      const res = await fetch(`${serverUrl}/user/occupation`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          occupation: selected,
+        }),
+      });
+
+      if (res.ok) {
+        const data: OccupationResponse = await res.json();
+        occupationCode = data.selectedOccupation?.code ?? selected;
+      } else {
+        console.error("분야 선택 API 실패", res.status);
+        alert("분야 선택에 실패했습니다. 잠시 후 다시 시도해주세요.");
+>>>>>>> 7e29e71159fc387599322c25902a87a925946fbe
       }
 
       localStorage.setItem("occupation", occupationCode);
       navigate("/job");
     } catch (err) {
+<<<<<<< HEAD
       console.error("분야 선택 요청 오류:", err);
+=======
+      console.error("분야 선택 요청 오류", err);
+      alert("서버 통신 중 오류가 발생했습니다.");
+>>>>>>> 7e29e71159fc387599322c25902a87a925946fbe
     } finally {
       setLoading(false);
     }
@@ -73,7 +113,7 @@ export default function Occupation() {
       <S.Title>분야를 선택해주세요!</S.Title>
 
       <S.Description>
-        <p>안녕하세요. 민선영님.</p>
+        <p>안녕하세요. {userName}님.</p>
         <p>
           첫걸음 서비스 이용을 위해 분야를 선택해주세요. 선택 직군에 맞는
           미션으로 더 나은 서비스를
@@ -84,7 +124,6 @@ export default function Occupation() {
       <S.TopRow>
         {fields.slice(0, 3).map((field) => {
           const isSelected = selected === field.id;
-
           return (
             <S.Card
               key={field.id}
@@ -105,7 +144,6 @@ export default function Occupation() {
       <S.BottomRow>
         {fields.slice(3).map((field) => {
           const isSelected = selected === field.id;
-
           return (
             <S.Card
               key={field.id}
