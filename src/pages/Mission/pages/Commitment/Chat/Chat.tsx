@@ -98,26 +98,7 @@ function ChatBox() {
             console.log(chatMissionId)
             setMission(data);
           } catch (err: any) {
-  
-        //     // 400 -> 미션을 처음 열었을 때
-        //     if (err.response?.status === 400) {
-        //       const res = await axiosInstance.post(
-        //         `/email-mission/create`,
-        //         {
-        //           title: '',
-        //           receiver: '',
-        //           emailContent: '',
-        //           userMissionId: 2, 
-        //         }
-        //       );
-      
-        //       setMission(res.data);
-        //     } else {
-        //       setError("이메일 미션을 불러올 수 없습니다.");
-        //     }
-        //   } finally {
-        //     setLoading(false);
-          }
+}
         };
       
         fetchOrCreate();
@@ -133,7 +114,7 @@ function ChatBox() {
 
     const [input, setInput] = useState("");
     const stop = useRef(0)
-    const chatUrl = `wss://f79028ac5362.ngrok-free.app/chat/mission/${chatMissionId}`;
+    const chatUrl = `wss://fc17e088ee63.ngrok-free.app/chat/mission/1`;
 
     const navigate = useNavigate();
     const ctx = useContext(MissionFeedbackContext);

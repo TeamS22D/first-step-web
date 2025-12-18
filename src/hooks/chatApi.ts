@@ -28,30 +28,15 @@ export interface MissionResponse {
     },
 }
 
-const chatServerUrl: string = 'https://f79028ac5362.ngrok-free.app/'
 
 export const getChatMission = async (chatMissionId: number) => {
-    const res = await axios.get(`${chatServerUrl}performance/chat-mission/${chatMissionId}`,
-        {
-            withCredentials: false,
-            headers: {
-                'ngrok-skip-browser-warning': 'true', 
-            }
-        }
-    );
-    console.log("chat", res);
+    const res = await axiosInstance.get(`/user-mission/mission/${chatMissionId}`);
+    console.log("user", res);
     return res.data;
 }
 
 export const getMission = async (templateId: number) => {
-    const res = await axios.get(`${chatServerUrl}performance/chat-mission/template/${templateId}`,
-        {
-            withCredentials: false,
-            headers: {
-                'ngrok-skip-browser-warning': 'true',  
-            }
-        }
-    );
+    const res = await axiosInstance.get(`/user-mission/mission/${templateId}`);
     console.log("mission", res);
     return res.data;
 }
@@ -92,7 +77,7 @@ export const useChatMission = () => {
     }, [chatMissionId]);
 
     return{
-        chatMission,
+        chatMission, // `/chat-mission/${chatMissionId}
         mission,
         loading,
     }
