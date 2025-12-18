@@ -11,6 +11,7 @@ import { Link, useNavigate } from "react-router";
 import { publicInstance } from "@/hooks/axiosInstance";
 import { setAccessToken, setEmail, setRefreshToken, setUserId } from "@/hooks/cookies";
 import { loggedInUserRedirect } from "@/hooks/authApi";
+const SERVER_URL = import.meta.env.VITE_BASE_URL;
 
 type LoginInputs = {
   email: string,
@@ -33,7 +34,7 @@ const LoginForm = () => {
   const [error, setError] = useState("");
 
   const onSubmit:SubmitHandler<LoginInputs> = (data) => {
-    publicInstance.post(`/auth/signin`, {
+    publicInstance.post(`${SERVER_URL}/auth/signin`, {
       email: data.email,
       password: data.password
     })

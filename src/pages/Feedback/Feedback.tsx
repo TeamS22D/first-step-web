@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import MissionList from "@/components/Missions/components/MissionList";
 import { useParams } from "react-router-dom";
 import axiosInstance from "@/hooks/axiosInstance";
+import FeedbackCategory from "@constants/FeedbackCategory.constants"
 const SERVER_URL = import.meta.env.VITE_BASE_URL;
 
 interface IMissions {
@@ -25,12 +26,18 @@ function Feedback() {
   }, [])
 
   useEffect(() => {
-    axiosInstance.get(`${SERVER_URL}/user-mission/missions`)
+    axiosInstance.get(`${SERVER_URL}/user-mission/missions/feedback`, 
+      {
+        params: {
+          missionTheme: category
+        }
+      }
+    )
       .then((response) => {
         setMissions(response.data);
       })
       .catch((error) => {
-        if (error.response.status === 400) {
+        if (error.response && error.response.status === 400) {
           alert("미션이 없습니다.");
         } else {
           alert("미션을 불러오는데 실패했습니다. 잠시 후 다시 시도해주세요.");
@@ -58,7 +65,7 @@ function Feedback() {
   return (
     <S.Container>
       <Search onChange={onChange} keyword={keyword} />
-      <Category />
+      <Category categoryList={FeedbackCategory} />
       <MissionList category={category || "all"} missions={missions} />
     </S.Container>
   )

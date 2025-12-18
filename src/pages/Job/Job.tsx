@@ -1,7 +1,9 @@
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./Job.style";
 import axiosInstance from "../../hooks/axiosInstance";
+
+import { getCookie } from "../../hooks/cookies";
 
 import selectPng from "../../assets/Dictionary/select.png";
 import LongButton from "../../components/Buttons/LongButton";
@@ -23,6 +25,7 @@ type JobResponse = {
 export default function Job() {
   const [selected, setSelected] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [userName, setUserName] = useState<string>("사용자"); 
   const navigate = useNavigate();
 
   const fields: Field[] = [
@@ -39,16 +42,43 @@ export default function Job() {
     {
       id: "dataAnaly",
       label: "데이터 분석가",
-      node: <img src="/assets/Dictionary/dataAnalyst.png" alt="데이터 분석가" />,
+      node: (
+        <img src="/assets/Dictionary/dataAnalyst.png" alt="데이터 분석가" />
+      ),
     },
   ];
+
+  useEffect(() => {
+    const rawUser = localStorage.getItem("user");
+    if (rawUser) {
+      try {
+        const parsed = JSON.parse(rawUser);
+        if (parsed?.name && typeof parsed.name === "string") {
+          setUserName(parsed.name);
+          return;
+        }
+      } catch (e) {
+        console.warn("localStorage user 파싱 실패:", e);
+      }
+    }
+
+    const storedName = localStorage.getItem("name");
+    if (storedName) {
+      setUserName(storedName);
+    }
+  }, []);
 
   const handleSubmit = async () => {
     if (!selected || loading) return;
 
-    const email = localStorage.getItem("email") ?? "test@example.com";
-    let jobCode = selected;
+    const accessToken = getCookie("accessToken");
+    if (!accessToken) {
+      console.error("accessToken이 없습니다. 다시 로그인 해 주세요.");
+      alert("로그인 정보가 없습니다. 다시 로그인 해 주세요.");
+      return;
+    }
 
+    let jobCode = selected;
     setLoading(true);
 
     try {
@@ -62,11 +92,16 @@ export default function Job() {
         jobCode = data.selectedJob?.code ?? selected;
       } else {
         console.error("직업 선택 API 실패:", res.status);
+        alert("직업 선택에 실패했습니다. 잠시 후 다시 시도해 주세요.");
       }
     } catch (err) {
       console.error("직업 선택 요청 오류:", err);
+      alert("서버 통신 중 오류가 발생했습니다.");
+    } finally {
+      localStorage.setItem("job", jobCode);
+      navigate("/Home");
+      setLoading(false);
     }
-
     localStorage.setItem("job", jobCode);
 
     navigate("/Home");
@@ -79,9 +114,9 @@ export default function Job() {
       <S.Title>직업을 선택해주세요!</S.Title>
 
       <S.Description>
-        <p>안녕하세요. 민선영님.</p>
+        <p>안녕하세요. {userName}님.</p>
         <p>
-          첫걸음 서비스 이용을 위해 분야를 선택해주세요. 선택 직군에 맞는
+          첫걸음 서비스 이용을 위해 직업을 선택해주세요. 선택 직군에 맞는
           미션으로 더 나은 서비스를
         </p>
         <p>지원하겠습니다. 저희는 당신의 첫걸음을 응원하고 지지하겠습니다.</p>

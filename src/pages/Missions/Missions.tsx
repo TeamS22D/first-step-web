@@ -7,6 +7,7 @@ import MissionList from "@/components/Missions/components/MissionList";
 import { useParams } from "react-router";
 import axiosInstance from "@/hooks/axiosInstance";
 const SERVER_URL = import.meta.env.VITE_BASE_URL
+import { CategoryList } from "@/constants/MissionFilter.constants";
 
 interface IMissions {
   userMissionId: number,
@@ -60,7 +61,7 @@ function Missions() {
     <S.Container>
       <Status />
       <Search onChange={onChange} keyword={keyword} />
-      <Category />
+      <Category categoryList={CategoryList} />
       <MissionList category={category || "all"} missions={missions} />
     </S.Container>
   )
