@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import  { useRef } from "react";
 import MarkdownPreview from "../MarkdownPreview/MarkdownPreview.tsx";
 import Toolbar from "../Toolbar/Toolbar";
 import * as S from "./Markdown.style";

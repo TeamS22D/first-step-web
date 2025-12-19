@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import axiosInstance from "./axiosInstance";
-import axios from "axios";
 
 
 export interface ChatMissionResponse {

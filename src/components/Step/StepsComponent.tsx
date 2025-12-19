@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { GlobalStyle } from "../../styles/GlobalStyle";
 import * as S from "./StepsComponent.style";
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 interface StepsComponentProps {
     step: number;  

@@ -1,6 +1,5 @@
 import { deleteCookie, getCookie, setAccessToken } from "./cookies";
 import { publicInstance } from "./axiosInstance";
-import { useNavigate } from "react-router";
 
 export const tokenRefresh = async (token: string, userId: string) => { //refreshToken으로 accessToken 재발급
   try {

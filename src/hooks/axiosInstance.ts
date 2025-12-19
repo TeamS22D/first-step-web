@@ -1,5 +1,5 @@
 import axios from "axios";
-import { deleteCookie, getCookie } from "./cookies";
+import {  getCookie } from "./cookies";
 import { logout, tokenRefresh } from "./authApi";
 
 

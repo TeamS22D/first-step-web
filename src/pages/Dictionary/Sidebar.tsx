@@ -4,7 +4,6 @@ import Star from "@assets/Dictionary/Star.svg?react"
 import { useEffect, useState } from "react"
 import Words from "./TestJSON/favoriteWord.json"
 import WrongWords from "./TestJSON/wrongWord.json"
-import questions from "./TestJSON/quiz.json"
 import * as I from "./types/Sidebar.type"
 import axiosInstance from "@/hooks/axiosInstance"
 

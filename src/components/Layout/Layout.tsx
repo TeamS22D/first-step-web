@@ -1,8 +1,6 @@
-import { Outlet, useNavigate } from "react-router";
+import { Outlet } from "react-router";
 import * as S from "./Layout.style";
 import Sidebar from "../Sidebar/Sidebar";
-import { useEffect, useState } from "react";
-import { checkLogin } from "@/hooks/authApi";
 
 function Layout() {
     // const navigate = useNavigate();

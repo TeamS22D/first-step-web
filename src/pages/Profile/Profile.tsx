@@ -79,7 +79,7 @@ const dummyMap = {
 export default function Profile() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("최근 한 달간");
-  const [activeTab, setActiveTab] = useState("전체");
+
 
   const [clickedData, setClickedData] = useState<HistoryPoint | null>(null);
   const [chartData, setChartData] = useState<HistoryPoint[]>([]);
