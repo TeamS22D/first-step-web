@@ -17,7 +17,7 @@ const CategoryList = [
   {
     id: 4,
     value: "메일",
-    to: "/feedback/mail",
+    to: "/feedback/email",
   },
 ]
 
