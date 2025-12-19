@@ -1,10 +1,11 @@
-import * as S from './Mail.style'
-import type {EmailMissionResponse } from "../../../../../hooks/mailApi";
-import { getEmailMission} from "../../../../../hooks/mailApi";
+import * as S from './Mail.style';
+import type { EmailMissionResponse } from "../../../../../hooks/mailApi";
+import { getEmailMission } from "../../../../../hooks/mailApi";
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MissionFeedbackContext } from '@/components/MissionLayout/MissionLayout';
 import axiosInstance from '@/hooks/axiosInstance';
+import { getFeedbackData } from '@/hooks/missionFeedbackApi';
 
 interface TopTextareaProps {
     name: string;
@@ -13,33 +14,34 @@ interface TopTextareaProps {
     value?: string;
     onChange?: (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      ) => void;    
-  }
+    ) => void;
+}
+
 export function TopTextarea({
     title,
     placeholder,
     value,
     name,
     onChange,
-}: TopTextareaProps) 
-{
+}: TopTextareaProps) {
     return (
-      <S.TopTextarea>
-        <S.Title>{title}</S.Title>
-        <S.TopContent>
-          <S.Content
-            name={name}
-            placeholder={placeholder}
-            value={value}
-            onChange={onChange}
-          />
-        </S.TopContent>
-      </S.TopTextarea>
+        <S.TopTextarea>
+            <S.Title>{title}</S.Title>
+            <S.TopContent>
+                <S.Content
+                    name={name}
+                    placeholder={placeholder}
+                    value={value}
+                    onChange={onChange}
+                />
+            </S.TopContent>
+        </S.TopTextarea>
     );
-  }
+}
 
 export default function Mail() {
-
+    // 1. useNavigate는 컴포넌트 최상단에서 호출해야 합니다.
+    const navigate = useNavigate();
     const { emailMissionId } = useParams<{ emailMissionId: string }>();
 
     const [mission, setMission] = useState<EmailMissionResponse | null>(null);
@@ -48,125 +50,139 @@ export default function Mail() {
 
     // input & textarea useState 관리
     const [text, setText] = useState({
-      receiver: '',
-      title: '',
-      emailContent: ''
-    })
+        receiver: '',
+        title: '',
+        emailContent: ''
+    });
 
     const textRef = useRef(text);
 
     useEffect(() => {
-      textRef.current = text;
+        textRef.current = text;
     }, [text]);
 
-    // 제출 버튼
+    // Context
     const ctx = useContext(MissionFeedbackContext);
 
+    // 2. 제출 버튼 핸들러 수정
     const handleSubmit = useCallback(async () => {
-      const res = await axiosInstance.post(
-        `/email-mission/send/${emailMissionId}`,
-        {
-          receiver: textRef.current.receiver,
-          title: textRef.current.title,
-          emailContent: textRef.current.emailContent,
-        }
-      );
-    
-      console.log(res.data);
-      alert('제출');
+        // mission 정보가 없으면 진행 불가
+        if (!mission) return;
 
-      
-    }, [emailMissionId]);
-    
+        try {
+            const res = await axiosInstance.post(
+                `/email-mission/send/${emailMissionId}`,
+                {
+                    receiver: textRef.current.receiver,
+                    title: textRef.current.title,
+                    emailContent: textRef.current.emailContent,
+                }
+            );
+
+            console.log(res.data);
+            alert('제출');
+
+            // 3. mission 상태의 userMissionId를 사용하여 이동
+            await getFeedbackData(Number(mission.userMissionId));
+            navigate(`/user-mission/feedback/${mission.userMissionId}`);
+            
+        } catch (err) {
+            console.error(err);
+            alert('제출 중 오류가 발생했습니다.');
+        }
+
+    }, [emailMissionId, mission, navigate]);
+
     useEffect(() => {
-      if (!ctx) return;
-      ctx.setButtonSubmitAction(() => handleSubmit);
+        if (!ctx) return;
+        ctx.setButtonSubmitAction(() => handleSubmit);
     }, [ctx, handleSubmit]);
-        
-    // 저장 버튼
 
+    // 저장 버튼
     const handleSave = useCallback(async () => {
-      const res = await axiosInstance.patch(
-        `/email-mission/save/${emailMissionId}`,
-        {
-          receiver: textRef.current.receiver,
-          title: textRef.current.title,
-          emailContent: textRef.current.emailContent,
+        try {
+            const res = await axiosInstance.patch(
+                `/email-mission/save/${emailMissionId}`,
+                {
+                    receiver: textRef.current.receiver,
+                    title: textRef.current.title,
+                    emailContent: textRef.current.emailContent,
+                }
+            );
+            console.log(res.data);
+            alert('저장');
+        } catch (err) {
+            console.error(err);
+            alert('저장 실패');
         }
-      );
-    
-      console.log(res.data);
-      alert('저장');
     }, [emailMissionId]);
 
-
     useEffect(() => {
-      if (!ctx) return;
-      ctx.setButtonSaveAction(() => handleSave);
+        if (!ctx) return;
+        ctx.setButtonSaveAction(() => handleSave);
     }, [ctx, handleSave]);
 
 
     // emailMissionId data 받기
     useEffect(() => {
-      if (!emailMissionId) return;
-    
-      const fetchOrCreate = async () => {
-        try {
-          const data = await getEmailMission(Number(emailMissionId));
-          setMission(data);
-        } catch (err: any) {
+        if (!emailMissionId) return;
 
-          // 400 -> 미션을 처음 열었을 때
-          if (err.response?.status === 400) {
-            console.log('create 해보겟슴다')
-            const res = await axiosInstance.post(
-              `/email-mission/create`,
-              {
-                title: '',
-                receiver: '',
-                emailContent: '',
-                userMissionId: 2, 
-              }
-            );
-            
-            console.log('create 됏다')
-            setMission(res.data);
-          } else {
-            setError("이메일 미션을 불러올 수 없습니다.");
-          }
-        } finally {
-          setLoading(false);
-        }
-      };
-    
-      fetchOrCreate();
+        const fetchOrCreate = async () => {
+            try {
+                const data = await getEmailMission(Number(emailMissionId));
+                setMission(data);
+            } catch (err: any) {
+                // 400 -> 미션을 처음 열었을 때
+                if (err.response?.status === 400) {
+                    console.log('create 해보겟슴다');
+                    try {
+                        const res = await axiosInstance.post(
+                            `/email-mission/create`,
+                            {
+                                title: '',
+                                receiver: '',
+                                emailContent: '',
+                                userMissionId: 2, // 필요시 동적 값으로 변경 고려
+                            }
+                        );
+                        console.log('create 됏다');
+                        setMission(res.data);
+                    } catch (createErr) {
+                        setError("이메일 미션 생성 실패");
+                    }
+                } else {
+                    setError("이메일 미션을 불러올 수 없습니다.");
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchOrCreate();
     }, [emailMissionId]);
 
     useEffect(() => {
-      if (!mission) return;
-    
-      setText({
-        receiver: mission.receiver ?? '',
-        title: mission.title ?? '',
-        emailContent: mission.emailContent ?? '',
-      });
+        if (!mission) return;
+
+        setText({
+            receiver: mission.receiver ?? '',
+            title: mission.title ?? '',
+            emailContent: mission.emailContent ?? '',
+        });
     }, [mission]);
-    
-    // input 
+
+    // input 핸들러
     const handleInputChange = (
-      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-      const { name, value } = e.target;
-      setText(prev => ({ ...prev, [name]: value }));
+        const { name, value } = e.target;
+        setText(prev => ({ ...prev, [name]: value }));
     };
-    
-  
-    // 에러 또는 로딩
+
+    // 렌더링
     if (loading) return <div>불러오는 중...</div>;
     if (error) return <div>{error}</div>;
     if (!mission) return null;
-
-
 
     return (
         <S.Body>
@@ -176,30 +192,31 @@ export default function Mail() {
                         새 메일
                     </S.Topbar>
                     <form>
-                        <TopTextarea title = '받는 사람' placeholder = '받는 이를 입력하세요.'
-                        name = 'receiver'
-                        value={text.receiver}
-                        onChange={handleInputChange}
+                        <TopTextarea 
+                            title='받는 사람' 
+                            placeholder='받는 이를 입력하세요.'
+                            name='receiver'
+                            value={text.receiver}
+                            onChange={handleInputChange}
                         />
-                        <TopTextarea title = '제목' placeholder = '제목을 입력하세요.'
+                        <TopTextarea 
+                            title='제목' 
+                            placeholder='제목을 입력하세요.'
                             value={text.title}
                             onChange={handleInputChange}
-                            name = 'title'
+                            name='title'
                         />
                         <S.BottomTextarea>
                             <S.ContentBig
                                 placeholder="내용을 입력하세요."
                                 value={text.emailContent}
                                 onChange={handleInputChange}
-                                name = 'emailContent'
+                                name='emailContent'
                             />
                         </S.BottomTextarea>
                     </form>
                 </S.Wrapper>
             </S.Container>
         </S.Body>
-    )
+    );
 }
-
-
-
