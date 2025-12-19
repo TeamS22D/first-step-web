@@ -1,4 +1,4 @@
-import { Bold, Italic, List, ListOrdered, Table, SquareMinus } from "lucide-react";
+import { Bold, Strikethrough, List, ListOrdered, Table, SquareMinus } from "lucide-react";
 import { useState } from "react";
 import * as S from "./Toolbar.style.ts";
 import Dropdown from '../Dropdown/Dropdown.tsx'
@@ -61,7 +61,7 @@ function Toolbar({ textareaRef, onChange }: ToolbarProps) {
       <S.IconButton
         onClick={() => handleInsert("~~", '2')}
       >
-        <Italic />
+        <Strikethrough />
       </S.IconButton>
 
       <S.IconButton
