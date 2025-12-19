@@ -24,8 +24,10 @@ import { getUserMission, type MissionResponse as ImportedMissionResponse } from 
 // ----------------------------------------------------------------------
 
 // API 응답 데이터 구조 (사용 코드를 기반으로 정의)
+// 27번째 줄 근처 수정
 interface EvaluationItem {
   item: string;
+  score: number; // [추가] 이 부분이 빠져서 오류가 발생했습니다.
   feedback: {
     good_points: string;
     suggested_fix: string;

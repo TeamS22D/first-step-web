@@ -2,7 +2,6 @@ import Search from "@/components/Missions/components/Searchbar";
 import * as S from "./Feedback.style"
 import Category from "@/components/Missions/components/Category";
 import { useCallback, useEffect, useState } from "react";
-import MissionList from "@/components/Missions/components/MissionList";
 import { useParams } from "react-router-dom";
 import axiosInstance from "@/hooks/axiosInstance";
 import FeedbackCategory from "@constants/FeedbackCategory.constants"

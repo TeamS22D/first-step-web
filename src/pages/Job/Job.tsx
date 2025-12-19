@@ -1,153 +1,153 @@
-import { useState, useEffect, type ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
-import * as S from "./Job.style";
-import axiosInstance from "../../hooks/axiosInstance";
+// import { useState, useEffect, type ReactNode } from "react";
+// import { useNavigate } from "react-router-dom";
+// import * as S from "./Job.style";
+// import axiosInstance from "../../hooks/axiosInstance";
 
-import { getCookie } from "../../hooks/cookies";
+// import { getCookie } from "../../hooks/cookies";
 
-import selectPng from "../../assets/Dictionary/select.png";
-import LongButton from "../../components/Buttons/LongButton";
+// import selectPng from "../../assets/Dictionary/select.png";
+// import LongButton from "../../components/Buttons/LongButton";
 
-type Field = {
-  id: string;
-  label: string;
-  node: ReactNode;
-};
+// type Field = {
+//   id: string;
+//   label: string;
+//   node: ReactNode;
+// };
 
-type JobResponse = {
-  message: string;
-  selectedJob?: {
-    code: string;
-    label: string;
-  };
-};
+// type JobResponse = {
+//   message: string;
+//   selectedJob?: {
+//     code: string;
+//     label: string;
+//   };
+// };
 
-export default function Job() {
-  const [selected, setSelected] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [userName, setUserName] = useState<string>("사용자"); 
-  const navigate = useNavigate();
+// export default function Job() {
+//   const [selected, setSelected] = useState<string | null>(null);
+//   const [loading, setLoading] = useState(false);
+//   const [userName, setUserName] = useState<string>("사용자"); 
+//   const navigate = useNavigate();
 
-  const fields: Field[] = [
-    {
-      id: "developer",
-      label: "개발자",
-      node: <img src="/assets/Dictionary/developer.png" alt="개발자" />,
-    },
-    {
-      id: "designer",
-      label: "UI/UX 디자이너",
-      node: <img src="/assets/Dictionary/designer.png" alt="UI/UX 디자이너" />,
-    },
-    {
-      id: "dataAnaly",
-      label: "데이터 분석가",
-      node: (
-        <img src="/assets/Dictionary/dataAnalyst.png" alt="데이터 분석가" />
-      ),
-    },
-  ];
+//   const fields: Field[] = [
+//     {
+//       id: "developer",
+//       label: "개발자",
+//       node: <img src="/assets/Dictionary/developer.png" alt="개발자" />,
+//     },
+//     {
+//       id: "designer",
+//       label: "UI/UX 디자이너",
+//       node: <img src="/assets/Dictionary/designer.png" alt="UI/UX 디자이너" />,
+//     },
+//     {
+//       id: "dataAnaly",
+//       label: "데이터 분석가",
+//       node: (
+//         <img src="/assets/Dictionary/dataAnalyst.png" alt="데이터 분석가" />
+//       ),
+//     },
+//   ];
 
-  useEffect(() => {
-    const rawUser = localStorage.getItem("user");
-    if (rawUser) {
-      try {
-        const parsed = JSON.parse(rawUser);
-        if (parsed?.name && typeof parsed.name === "string") {
-          setUserName(parsed.name);
-          return;
-        }
-      } catch (e) {
-        console.warn("localStorage user 파싱 실패:", e);
-      }
-    }
+//   useEffect(() => {
+//     const rawUser = localStorage.getItem("user");
+//     if (rawUser) {
+//       try {
+//         const parsed = JSON.parse(rawUser);
+//         if (parsed?.name && typeof parsed.name === "string") {
+//           setUserName(parsed.name);
+//           return;
+//         }
+//       } catch (e) {
+//         console.warn("localStorage user 파싱 실패:", e);
+//       }
+//     }
 
-    const storedName = localStorage.getItem("name");
-    if (storedName) {
-      setUserName(storedName);
-    }
-  }, []);
+//     const storedName = localStorage.getItem("name");
+//     if (storedName) {
+//       setUserName(storedName);
+//     }
+//   }, []);
 
-  const handleSubmit = async () => {
-    if (!selected || loading) return;
+//   const handleSubmit = async () => {
+//     if (!selected || loading) return;
 
-    const accessToken = getCookie("accessToken");
-    if (!accessToken) {
-      console.error("accessToken이 없습니다. 다시 로그인 해 주세요.");
-      alert("로그인 정보가 없습니다. 다시 로그인 해 주세요.");
-      return;
-    }
+//     const accessToken = getCookie("accessToken");
+//     if (!accessToken) {
+//       console.error("accessToken이 없습니다. 다시 로그인 해 주세요.");
+//       alert("로그인 정보가 없습니다. 다시 로그인 해 주세요.");
+//       return;
+//     }
 
-    let jobCode = selected;
-    setLoading(true);
-    try {
-      const res = await axiosInstance.post<JobResponse>("/user/job", {
-        email,
-        job: selected,
-      });
+//     let jobCode = selected;
+//     setLoading(true);
+//     try {
+//       const res = await axiosInstance.post<JobResponse>("/user/job", {
+//         email: email,
+//         job: selected,
+//       });
   
-      if (res.status === 200) {
-        const data = res.data;
-        jobCode = data.selectedJob?.code ?? selected;
-      } else {
-        console.error("직업 선택 API 실패:", res.status);
-        alert("직업 선택에 실패했습니다. 잠시 후 다시 시도해 주세요.");
-      }
+//       if (res.status === 200) {
+//         const data = res.data;
+//         jobCode = data.selectedJob?.code ?? selected;
+//       } else {
+//         console.error("직업 선택 API 실패:", res.status);
+//         alert("직업 선택에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+//       }
   
-      localStorage.setItem("job", jobCode);
-      navigate("/Home");
-    } catch (err) {
-      console.error("직업 선택 요청 오류:", err);
-      alert("서버 통신 중 오류가 발생했습니다.");
-    } finally {
-      localStorage.setItem("job", jobCode);
-      navigate("/Home");
-      setLoading(false);
-    }
-    localStorage.setItem("job", jobCode);
+//       localStorage.setItem("job", jobCode);
+//       navigate("/Home");
+//     } catch (err) {
+//       console.error("직업 선택 요청 오류:", err);
+//       alert("서버 통신 중 오류가 발생했습니다.");
+//     } finally {
+//       localStorage.setItem("job", jobCode);
+//       navigate("/Home");
+//       setLoading(false);
+//     }
+//     localStorage.setItem("job", jobCode);
 
-    navigate("/Home");
+//     navigate("/Home");
     
-    setLoading(false);
-  };
+//     setLoading(false);
+//   };
 
-  return (
-    <S.Container>
-      <S.Title>직업을 선택해주세요!</S.Title>
+//   return (
+//     <S.Container>
+//       <S.Title>직업을 선택해주세요!</S.Title>
 
-      <S.Description>
-        <p>안녕하세요. {userName}님.</p>
-        <p>
-          첫걸음 서비스 이용을 위해 직업을 선택해주세요. 선택 직군에 맞는
-          미션으로 더 나은 서비스를
-        </p>
-        <p>지원하겠습니다. 저희는 당신의 첫걸음을 응원하고 지지하겠습니다.</p>
-      </S.Description>
+//       <S.Description>
+//         <p>안녕하세요. {userName}님.</p>
+//         <p>
+//           첫걸음 서비스 이용을 위해 직업을 선택해주세요. 선택 직군에 맞는
+//           미션으로 더 나은 서비스를
+//         </p>
+//         <p>지원하겠습니다. 저희는 당신의 첫걸음을 응원하고 지지하겠습니다.</p>
+//       </S.Description>
 
-      <S.TopRow>
-        {fields.map((field) => {
-          const isSelected = selected === field.id;
+//       <S.TopRow>
+//         {fields.map((field) => {
+//           const isSelected = selected === field.id;
 
-          return (
-            <S.Card
-              key={field.id}
-              $selected={isSelected}
-              onClick={() => setSelected(field.id)}
-            >
-              {field.node}
-              <p>{field.label}</p>
+//           return (
+//             <S.Card
+//               key={field.id}
+//               $selected={isSelected}
+//               onClick={() => setSelected(field.id)}
+//             >
+//               {field.node}
+//               <p>{field.label}</p>
 
-              <S.CheckCircle $selected={isSelected}>
-                {isSelected && <img src={selectPng} alt="selected" />}
-              </S.CheckCircle>
-            </S.Card>
-          );
-        })}
-      </S.TopRow>
+//               <S.CheckCircle $selected={isSelected}>
+//                 {isSelected && <img src={selectPng} alt="selected" />}
+//               </S.CheckCircle>
+//             </S.Card>
+//           );
+//         })}
+//       </S.TopRow>
 
-      <LongButton onClick={handleSubmit} disabled={!selected || loading}>
-        {loading ? "저장 중..." : "선택 완료"}
-      </LongButton>
-    </S.Container>
-  );
-}
+//       <LongButton onClick={handleSubmit} disabled={!selected || loading}>
+//         {loading ? "저장 중..." : "선택 완료"}
+//       </LongButton>
+//     </S.Container>
+//   );
+// }

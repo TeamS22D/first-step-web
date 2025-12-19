@@ -11,7 +11,7 @@ import Dictionary from "./pages/Dictionary/Dictionary";
 import Missions from "./pages/Missions/Missions";
 import Feedback from "./pages/Feedback/Feedback";
 import Occupation from "./pages/Occupation/Occupation";
-import Job from "./pages/Job/Job";
+// import Job from "./pages/Job/Job";
 import Profile from "./pages/Profile/Profile";
 import Verify from "./pages/Auth/pages/Verify/Verify";
 import SocialLogin from "./pages/Auth/pages/SocialLogin/SocialLogin";
@@ -109,7 +109,7 @@ const router = createBrowserRouter([
   { path: "/login-success", element: <SocialLogin /> },
 
   { path: "/occupation", element: <Occupation /> },
-  { path: "/job", element: <Job /> },
+  // { path: "/job", element: <Job /> },
 
   { path: "*", element: <NotFound /> },
 ]);

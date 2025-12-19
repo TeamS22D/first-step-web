@@ -3,7 +3,7 @@ import ImageFirm from '@/assets/Mission/Firm/woman1.png'
 import ImageSend from '@/assets/Mission/ChatInput/Send.png';
 import { useChatMission, type ChatMissionResponse } from '@/hooks/chatApi';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { MissionFeedbackContext } from '@/components/MissionLayout/MissionLayout';
 import axiosInstance from '@/hooks/axiosInstance';
 
@@ -97,7 +97,6 @@ function Atr({ title, sub }: { title: string; sub: string }) {
 
 
 function ChatBox({ mission }: IntroductionProps) {      
-    const userPreams = useParams()
     const ws = useRef<WebSocket | null>(null);
 
     // 메시지를 객체 형태로 관리
