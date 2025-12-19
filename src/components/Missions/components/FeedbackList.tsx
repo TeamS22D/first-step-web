@@ -26,7 +26,7 @@ const Mission = (props: IMissions) => {
         <S.MissionTitle>{props.missionName}</S.MissionTitle>
         <S.Deadline><img src={Timer} />{props.endDate.slice(0, 10)}</S.Deadline>
         <S.Buttons>
-          <S.Button onClick={() => navigate(`/performance/${props.missionTheme}-mission/${props.userMissionId}`)}>시작하기</S.Button>
+          <S.Button onClick={() => navigate(`/feedback/${props.userMissionId}`)}>시작하기</S.Button>
         </S.Buttons>
       </S.Mission>
     </S.MissionBox>
@@ -41,7 +41,7 @@ interface IMissions {
   endDate: string
 }
 
-function MissionList({ category, missions }: { category: string; missions: IMissions[]; }) {
+function FeedbackList({ category, missions }: { category: string; missions: IMissions[]; }) {
   let isRendered = false;
 
   return (
@@ -61,4 +61,4 @@ function MissionList({ category, missions }: { category: string; missions: IMiss
   )
 }
 
-export default MissionList;
+export default FeedbackList;

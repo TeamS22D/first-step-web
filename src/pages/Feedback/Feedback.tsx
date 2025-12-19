@@ -6,6 +6,7 @@ import MissionList from "@/components/Missions/components/MissionList";
 import { useParams } from "react-router-dom";
 import axiosInstance from "@/hooks/axiosInstance";
 import FeedbackCategory from "@constants/FeedbackCategory.constants"
+import FeedbackList from "@/components/Missions/components/FeedbackList";
 const SERVER_URL = import.meta.env.VITE_BASE_URL;
 
 interface IMissions {
@@ -66,7 +67,7 @@ function Feedback() {
     <S.Container>
       <Search onChange={onChange} keyword={keyword} />
       <Category categoryList={FeedbackCategory} />
-      <MissionList category={category || "all"} missions={missions} />
+      <FeedbackList category={category || "all"} missions={missions} />
     </S.Container>
   )
 }
