@@ -9,7 +9,7 @@ export const deleteCookie = (name: string) => {
 };
 
 export const setAccessToken = (token: string) => {
-  Cookie.set("accessToken", token, {expires: 15 / (24 * 60), secure: true, sameSite: 'strict'}) // 15분 뒤 만료
+  Cookie.set("accessToken", token, {expires: 9999999999999, secure: true, sameSite: 'strict'}) // 15분 뒤 만료
 }
 
 export const setRefreshToken = (token: string) => {
