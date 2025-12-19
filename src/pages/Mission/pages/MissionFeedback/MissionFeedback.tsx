@@ -182,6 +182,7 @@ export function BottomBox({ data }: { data?: FeedbackData }) {
 
 
 export default function MissionFeedback() {
+  const location = useLocation();
 
   const navigate = useNavigate()
   const { userMissionId } = useParams<{ userMissionId: string }>();
@@ -247,7 +248,11 @@ export default function MissionFeedback() {
   
 
   const pageMove = () => {
-    navigate('/missioncomplete')
+    if (location.pathname.includes("user-mission/feedback")) {
+      navigate('/feedback')
+    } else {
+      navigate('/missioncomplete')
+    }
   }
 
  
@@ -264,9 +269,9 @@ export default function MissionFeedback() {
     <ThemeProvider theme={lightTheme}>
       <GlobalStyle />
         <S.Container>
-              <S.TopContainer>
+              {!location.pathname.includes("user-mission/feedback") ? <S.TopContainer>
                   <StepsComponent step={1}/>
-              </S.TopContainer>
+              </S.TopContainer> : null}
                 <S.Body>
                   <TitleBox data = {titleData}/>
                   <MiddleBox data={feedback} />
