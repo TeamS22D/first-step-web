@@ -28,6 +28,6 @@ export const CategoryList = [
   {
     id: 4,
     value: "메일",
-    to: "/mission/mail",
+    to: "/mission/email",
   },
 ]
