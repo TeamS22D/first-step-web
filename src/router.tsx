@@ -78,11 +78,11 @@ const router = createBrowserRouter([
         ]
       },
       {
-        path: "user-mission/feedback/:userMissionId",
+        path: "mission/feedback/:userMissionId",
         element: <MissionFeedback />,
       },
       {
-        path: "feedback/:userMissionId",
+        path: "usermission/feedback/:userMissionId",
         element: <MissionFeedback />,
       },
       {
