@@ -1,11 +1,11 @@
 import * as S from './Chat.style'
 import ImageFirm from '@/assets/Mission/Firm/woman1.png'
-import ImageSend from '@/assets/Mission/ChatInput/Send.png'
-import { useContext, useRef, useState} from 'react';
-import { useEffect } from 'react'
-import { MissionFeedbackContext } from '@/components/MissionLayout/MissionLayout';
+import ImageSend from '@/assets/Mission/ChatInput/Send.png';
+import { useChatMission, type ChatMissionResponse } from '@/hooks/chatApi';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getChatMission, type ChatMissionResponse } from '@/hooks/chatApi';
+import { MissionFeedbackContext } from '@/components/MissionLayout/MissionLayout';
+import axiosInstance from '@/hooks/axiosInstance';
 
 
 interface ImageProps {
@@ -27,103 +27,77 @@ const Send = ({src, alt}:ImageProps) => {
 }
 
 export default function Chat() {
-    return(
+    const { chatMission, loading } = useChatMission();
+
+    if (loading) {
+        return <div>로딩중...</div>;
+    }
+
+    return (
         <S.Body>
-            <ChatBox/>
-            <Introduction/>
+            <ChatBox mission={chatMission}/>
+            {/* mission 데이터를 props로 넘겨줌 */}
+            <Introduction mission={chatMission} />
         </S.Body>
-    )
+    );
 }
 
-function Introduction() {
-    return(
+interface IntroductionProps {
+    mission: ChatMissionResponse | null;
+}
+
+function Introduction({ mission }: IntroductionProps) {
+    // 데이터가 없을 때를 대비한 방어 코드
+    if (!mission) return null; 
+
+    return (
         <S.Introduction>
             <S.TopWrapper>
-                <S.Title>
-                    상대 정보
-                </S.Title>
+                <S.Title>상대 정보</S.Title>
                 <S.FirmInpormation>
                     <S.InpormationWrapper>
                         <Image src={ImageFirm} alt=''/>
                     </S.InpormationWrapper>
                     <S.InpormationWrapper>
-                        <S.name>민팀장</S.name>
+                        {/* ai_persona 내부 데이터 연결 */}
+                        <S.name>{mission.ai_persona?.name || "정보 없음"}</S.name>
                         <S.slash>|</S.slash>
-                        <S.age>52세</S.age>
+                        <S.age>{mission.ai_persona?.role || "직함 없음"}</S.age>
                     </S.InpormationWrapper>
                 </S.FirmInpormation>
             </S.TopWrapper>
+            
             <S.BottomWrapper>
-                <Atr/>
-                <S.atr>
-                    <S.bar/>
-                    <S.FontWrapper>
-                        <S.atrTitle>특징</S.atrTitle>
-                        <S.atrSub>일정 관리와 책임 있는 대안을 중시함</S.atrSub>
-                    </S.FontWrapper>
-                </S.atr>
+                {/* Atr 컴포넌트에 데이터를 넘겨줌 */}
+                <Atr 
+                    title="성격" 
+                    sub={mission.ai_persona?.character || "정보가 없습니다."} 
+                />
+                {/* <Atr 
+                    title="특징" 
+                    sub={mission.description || "정보가 없습니다."} 
+                /> */}
             </S.BottomWrapper>
         </S.Introduction>
     )
 }
 
-// map 함수로 서버에서 전달한 데이터 만큼
-function Atr() {
-    return(
-    <S.atr>
-        <S.bar/>
-        <S.FontWrapper>
-            <S.atrTitle>성격</S.atrTitle>
-            <S.atrSub>배려심 있음, 합리적이고 침착함</S.atrSub>
-        </S.FontWrapper>
-    </S.atr>
+// Props를 받도록 수정하여 재사용 가능하게 함
+function Atr({ title, sub }: { title: string; sub: string }) {
+    return (
+        <S.atr>
+            <S.bar/>
+            <S.FontWrapper>
+                <S.atrTitle>{title}</S.atrTitle>
+                <S.atrSub>{sub}</S.atrSub>
+            </S.FontWrapper>
+        </S.atr>
     )
 }
 
 
-function ChatBox() {
-    const { chatMissionId } = useParams<{ chatMissionId: string }>();
-    console.log(chatMissionId)
-
-    const [mission, setMission] = useState<ChatMissionResponse | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    
-    useEffect(() => {
-        if (!chatMissionId) return console.log('chatMissionId 없음');
-      
-        const fetchOrCreate = async () => {
-          try {
-            const data = await getChatMission(Number(chatMissionId));
-            console.log(chatMissionId)
-            setMission(data);
-          } catch (err: any) {
-  
-        //     // 400 -> 미션을 처음 열었을 때
-        //     if (err.response?.status === 400) {
-        //       const res = await axiosInstance.post(
-        //         `/email-mission/create`,
-        //         {
-        //           title: '',
-        //           receiver: '',
-        //           emailContent: '',
-        //           userMissionId: 2, 
-        //         }
-        //       );
-      
-        //       setMission(res.data);
-        //     } else {
-        //       setError("이메일 미션을 불러올 수 없습니다.");
-        //     }
-        //   } finally {
-        //     setLoading(false);
-          }
-        };
-      
-        fetchOrCreate();
-      }, [chatMissionId]);
-
-      
+function ChatBox({ mission }: IntroductionProps) {      
+    const userPreams = useParams()
     const ws = useRef<WebSocket | null>(null);
 
     // 메시지를 객체 형태로 관리
@@ -177,6 +151,7 @@ function ChatBox() {
         
             if (ws.current && ws.current.readyState === WebSocket.OPEN) {
                 ws.current.send("[COMPLETE]");
+                alert('제출')
             }
         });
            
@@ -187,7 +162,7 @@ function ChatBox() {
             console.log("Chat WebSocket OPEN");
         };
 
-        ws.current.onmessage = (event) => {
+        ws.current.onmessage = async (event) => {
             const chunk = event.data;
         
             // 평가
@@ -200,22 +175,44 @@ function ChatBox() {
                 }
         
                 //  "[EVAL_END]"이면 JSON 파싱 및 페이지 이동
+                // [EVAL_END] 부분의 로직입니다.
                 if (chunk === "[EVAL_END]") {
                     try {
                         const jsonText = afterExitBuffer.current.join("");
                         const feedbackData = JSON.parse(jsonText);
-        
+
                         console.log("Collected feedback:", feedbackData);
-        
-                        navigate("/missionfeedback", {
-                            state: { feedback: feedbackData }
+
+                        // API 전송 로직
+                        console.log('missionId', mission?.userMissionId)
+                        await axiosInstance.post(`/user-mission/feedback/${mission?.userMissionId}`, {
+                            userMissionId: mission?.userMissionId,
+                            rawResult: {
+                                // feedbackData.evaluations 배열을 서버 형식에 맞게 변환
+                                evaluations: feedbackData.evaluations.map((ev: any) => ({
+                                    item: ev.item,
+                                    score: ev.score,
+                                    feedback: {
+                                        good_points: ev.feedback.good_points,
+                                        improvement_points: ev.feedback.improvement_points,
+                                        suggested_fix: ev.feedback.suggested_fix
+                                    }
+                                })),
+                                total_score: feedbackData.total_score,
+                                grade: feedbackData.grade,
+                                general_feedback: feedbackData.general_feedback
+                            }
                         });
+
+                        // 전송 성공 후 페이지 이동
+                        navigate(`/user-mission/feedback/${mission?.userMissionId}`)
+
                     } catch (err) {
-                        console.error("JSON parse error:", err);
+                        console.error("JSON 파싱 또는 전송 에러:", err);
                     }
-        
+
                     afterExitBuffer.current = [];
-                    return; 
+                    return;
                 }
         
                 // JSON chunk만 push

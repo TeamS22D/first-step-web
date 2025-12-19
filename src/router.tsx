@@ -81,6 +81,10 @@ const router = createBrowserRouter([
         element: <MissionFeedback />,
       },
       {
+        path: "feedback/:userMissionId",
+        element: <MissionFeedback />,
+      },
+      {
         path: "missioncomplete",
         element: <MissionComplete />,
       },

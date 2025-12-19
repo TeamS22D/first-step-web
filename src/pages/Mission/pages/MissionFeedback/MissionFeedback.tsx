@@ -249,9 +249,9 @@ export default function MissionFeedback() {
 
   const pageMove = () => {
     if (location.pathname.includes("user-mission/feedback")) {
-      navigate('/feedback')
-    } else {
       navigate('/missioncomplete')
+    } else {
+      navigate('/feedback')
     }
   }
 
@@ -269,7 +269,7 @@ export default function MissionFeedback() {
     <ThemeProvider theme={lightTheme}>
       <GlobalStyle />
         <S.Container>
-              {!location.pathname.includes("user-mission/feedback") ? <S.TopContainer>
+              {location.pathname.includes("user-mission/feedback") ? <S.TopContainer>
                   <StepsComponent step={1}/>
               </S.TopContainer> : null}
                 <S.Body>

@@ -26,7 +26,7 @@ const Mission = (props: IMissions) => {
         <S.MissionTitle>{props.missionName}</S.MissionTitle>
         <S.Deadline><img src={Timer} />{props.endDate.slice(0, 10)}</S.Deadline>
         <S.Buttons>
-          <S.Button onClick={() => navigate(`/user-mission/feedback/${props.userMissionId}`)}>시작하기</S.Button>
+          <S.Button onClick={() => navigate(`/feedback/${props.userMissionId}`)}>시작하기</S.Button>
         </S.Buttons>
       </S.Mission>
     </S.MissionBox>
