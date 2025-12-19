@@ -38,7 +38,7 @@ export interface UserMissionResponse {
   }
   
 // api
-export const getDocumentlMission = async (documentMissionId: number) => {
+export const getDocumentMission = async (documentMissionId: number) => {
   const res = await axiosInstance.get(`/document-mission/${documentMissionId}`);
   console.log("document", res);
   return res.data;
@@ -66,7 +66,7 @@ export const useDocumentMission = () => {
   const [userMission, setUserMission] =
     useState<UserMissionResponse | null>(null);
   const [mission, setMission] =
-    useState<MissionResponse | null>(null);
+    useState<any | null>(null);
 
   const [loading, setLoading] = useState(true);
 
@@ -77,15 +77,16 @@ export const useDocumentMission = () => {
       try {
         setLoading(true);
 
-        const document = await getDocumentlMission(Number(documentMissionId));
+        const document = await getDocumentMission(Number(documentMissionId));
         setDocumentMission(document);
 
-        const userMission = await getUserMission(Number(document.userMissionId));
-        setUserMission(userMission);
+        const userMissionData = await getUserMission(Number(document.userMissionId));
+        setUserMission(userMissionData);
 
-
-        const mission = await getMission(Number(userMission.mission.missionId));
-        setMission(mission);
+        if (userMissionData && userMissionData.missionId) {
+          const missionData = await getMission(Number(userMissionData.missionId));
+          setMission(missionData);
+        }
 
       } finally {
         setLoading(false);

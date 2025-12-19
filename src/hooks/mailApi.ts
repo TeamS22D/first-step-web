@@ -69,7 +69,7 @@ export const useMailMission = () => {
   const [userMission, setUserMission] =
     useState<UserMissionResponse | null>(null);
   const [mission, setMission] =
-    useState<MissionResponse | null>(null);
+    useState<any | null>(null);
 
   const [loading, setLoading] = useState(true);
 
@@ -83,11 +83,13 @@ export const useMailMission = () => {
         const email = await getEmailMission(Number(emailMissionId));
         setEmailMission(email);
 
-        const userMission = await getUserMission(Number(email.userMissionId));
-        setUserMission(userMission);
+        const userMissionData = await getUserMission(Number(email.userMissionId));
+        setUserMission(userMissionData);
 
-        const mission = await getMission(Number(userMission.mission.missionId));
-        setMission(mission);
+        if (userMissionData && userMissionData.missionId) {
+          const missionData = await getMission(Number(userMissionData.missionId));
+          setMission(missionData);
+        }
       } finally {
         setLoading(false);
       }
