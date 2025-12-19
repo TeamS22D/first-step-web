@@ -107,7 +107,7 @@ function ChatBox({ mission }: IntroductionProps) {
 
     const [input, setInput] = useState("");
     const stop = useRef(0)
-    const chatUrl = `wss://${import.meta.env.VITE_WEBSOCKET_URL}/chat/mission/${chatMissionId}`;
+    const chatUrl = `wss://${import.meta.env.VITE_WEBSOCKET_URL}/chat/mission/${mission?.userMissionId}`;
 
     const navigate = useNavigate();
     const ctx = useContext(MissionFeedbackContext);
