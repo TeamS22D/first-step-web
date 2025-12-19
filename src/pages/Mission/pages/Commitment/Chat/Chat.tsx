@@ -1,11 +1,11 @@
 import * as S from './Chat.style'
 import ImageFirm from '@/assets/Mission/Firm/woman1.png'
-import ImageSend from '@/assets/Mission/ChatInput/Send.png'
-import { useContext, useRef, useState} from 'react';
-import { useEffect } from 'react'
-import { MissionFeedbackContext } from '@/components/MissionLayout/MissionLayout';
+import ImageSend from '@/assets/Mission/ChatInput/Send.png';
+import { useChatMission, type ChatMissionResponse } from '@/hooks/chatApi';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getChatMission, type ChatMissionResponse } from '@/hooks/chatApi';
+import { MissionFeedbackContext } from '@/components/MissionLayout/MissionLayout';
+import axiosInstance from '@/hooks/axiosInstance';
 
 
 interface ImageProps {
@@ -27,28 +27,17 @@ const Send = ({src, alt}:ImageProps) => {
 }
 
 export default function Chat() {
-    const { chatMissionId } = useParams<{ chatMissionId: string }>();
-    const [mission, setMission] = useState<ChatMissionResponse | null>(null);
+    const { chatMission, loading } = useChatMission();
 
-    useEffect(() => {
-        if (!chatMissionId) return;
-        const fetchMission = async () => {
-            try {
-                const data = await getChatMission(Number(chatMissionId));
-                setMission(data);
-                // console.log('데이터 로드 완료', data);
-            } catch (err) {
-                console.error(err);
-            }
-        };
-        fetchMission();
-    }, [chatMissionId]);
+    if (loading) {
+        return <div>로딩중...</div>;
+    }
 
     return (
         <S.Body>
-            <ChatBox />
+            <ChatBox mission={chatMission}/>
             {/* mission 데이터를 props로 넘겨줌 */}
-            <Introduction mission={mission} />
+            <Introduction mission={chatMission} />
         </S.Body>
     );
 }
@@ -107,7 +96,7 @@ function Atr({ title, sub }: { title: string; sub: string }) {
 }
 
 
-function ChatBox() {      
+function ChatBox({ mission }: IntroductionProps) {      
     const userPreams = useParams()
     const ws = useRef<WebSocket | null>(null);
 
@@ -118,7 +107,7 @@ function ChatBox() {
 
     const [input, setInput] = useState("");
     const stop = useRef(0)
-    const chatUrl = `wss://9bdc56c925a9.ngrok-free.app/chat/mission/1`;
+    const chatUrl = `wss://c9af9488f7e0.ngrok-free.app/chat/mission/${mission?.index}`;
 
     const navigate = useNavigate();
     const ctx = useContext(MissionFeedbackContext);
@@ -162,6 +151,7 @@ function ChatBox() {
         
             if (ws.current && ws.current.readyState === WebSocket.OPEN) {
                 ws.current.send("[COMPLETE]");
+                alert('제출')
             }
         });
            
@@ -172,7 +162,7 @@ function ChatBox() {
             console.log("Chat WebSocket OPEN");
         };
 
-        ws.current.onmessage = (event) => {
+        ws.current.onmessage = async (event) => {
             const chunk = event.data;
         
             // 평가
@@ -185,22 +175,44 @@ function ChatBox() {
                 }
         
                 //  "[EVAL_END]"이면 JSON 파싱 및 페이지 이동
+                // [EVAL_END] 부분의 로직입니다.
                 if (chunk === "[EVAL_END]") {
                     try {
                         const jsonText = afterExitBuffer.current.join("");
                         const feedbackData = JSON.parse(jsonText);
-        
+
                         console.log("Collected feedback:", feedbackData);
-        
-                        navigate("/missionfeedback", {
-                            state: { feedback: feedbackData }
+
+                        // API 전송 로직
+                        console.log('missionId', mission?.userMissionId)
+                        await axiosInstance.post(`/user-mission/feedback/${mission?.userMissionId}`, {
+                            userMissionId: mission?.userMissionId,
+                            rawResult: {
+                                // feedbackData.evaluations 배열을 서버 형식에 맞게 변환
+                                evaluations: feedbackData.evaluations.map((ev: any) => ({
+                                    item: ev.item,
+                                    score: ev.score,
+                                    feedback: {
+                                        good_points: ev.feedback.good_points,
+                                        improvement_points: ev.feedback.improvement_points,
+                                        suggested_fix: ev.feedback.suggested_fix
+                                    }
+                                })),
+                                total_score: feedbackData.total_score,
+                                grade: feedbackData.grade,
+                                general_feedback: feedbackData.general_feedback
+                            }
                         });
+
+                        // 전송 성공 후 페이지 이동
+                        navigate(`/user-mission/feedback/${mission?.userMissionId}`)
+
                     } catch (err) {
-                        console.error("JSON parse error:", err);
+                        console.error("JSON 파싱 또는 전송 에러:", err);
                     }
-        
+
                     afterExitBuffer.current = [];
-                    return; 
+                    return;
                 }
         
                 // JSON chunk만 push

@@ -12,6 +12,7 @@ export interface ChatMissionResponse {
     sendAt: string | null;
     isSend: boolean;
     userMissionId: number;
+    index: number;
   }
   
 
@@ -33,12 +34,6 @@ export interface MissionResponse {
 
 export const getChatMission = async (chatMissionId: number) => {
     const res = await axiosInstance.get(`/user-mission/mission/${chatMissionId}`);
-    console.log("user", res);
-    return res.data;
-}
-
-export const getMission = async (templateId: number) => {
-    const res = await axiosInstance.get(`/user-mission/mission/${templateId}`);
     console.log("mission", res);
     return res.data;
 }
@@ -64,13 +59,10 @@ export const useChatMission = () => {
                 setLoading(true);
                 
                 // 실제 변수에 담긴 값을 직접 확인하세요
-                const chatData = await getChatMission(Number(chatMissionId));
-                console.log("1. API에서 받은 원본 채팅 데이터:", chatData);
-                setChatMission(chatData);
-    
-                const missionData = await getMission(Number(chatMissionId));
-                console.log("2. API에서 받은 원본 미션 데이터:", missionData);
-                setMission(missionData);
+                const data = await getChatMission(Number(chatMissionId));
+                console.log("1. API에서 받은 원본 채팅 데이터:", data);
+                setChatMission(data);
+                setMission(data);
                 
             } catch (error) {
                 console.error("3. API 요청 실패:", error);
