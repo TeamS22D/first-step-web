@@ -6,6 +6,7 @@ import Register from "./pages/Auth/pages/Register/Register";
 import AuthLayout from "./components/AuthLayout/AuthLayout";
 import NotFound from "./pages/NotFound/NotFound";
 import Home from "./pages/Home/Home";
+
 import Dictionary from "./pages/Dictionary/Dictionary";
 import Missions from "./pages/Missions/Missions";
 import Feedback from "./pages/Feedback/Feedback";

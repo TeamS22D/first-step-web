@@ -1,13 +1,14 @@
-import { Bold, Italic, List, ListOrdered, Table, SquareMinus } from "lucide-react";
+import { Bold, Strikethrough, List, ListOrdered, Table, SquareMinus } from "lucide-react";
 import { useState } from "react";
 import * as S from "./Toolbar.style.ts";
 import Dropdown from '../Dropdown/Dropdown.tsx'
 
 type ToolbarProps = {
   textareaRef: React.RefObject<HTMLTextAreaElement | null>;
+  onChange: (value: string) => void;
 };
 
-function Toolbar({ textareaRef }: ToolbarProps) {
+function Toolbar({ textareaRef, onChange }: ToolbarProps) {
   const [headerLevel, setHeaderLevel] = useState("#");
 
   const handleInsert = (insertText: string, judgment: string) => {
@@ -21,15 +22,15 @@ function Toolbar({ textareaRef }: ToolbarProps) {
 
     if (judgment === '1'){
       const newValue = before + insertText + selected + after;
-      textarea.value = newValue;
+      onChange(newValue);
       textarea.focus();
     } else if (judgment === '2'){
       const newValue = before + insertText + selected + insertText + after;
-      textarea.value = newValue;
+      onChange(newValue);
       textarea.focus();
     } else if (judgment === '3'){
       const newValue = before + selected + insertText + after;
-      textarea.value = newValue;
+      onChange(newValue);
       textarea.focus();
     }
   };
@@ -60,7 +61,7 @@ function Toolbar({ textareaRef }: ToolbarProps) {
       <S.IconButton
         onClick={() => handleInsert("~~", '2')}
       >
-        <Italic />
+        <Strikethrough />
       </S.IconButton>
 
       <S.IconButton

@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router';
 import Markdown from './components/Markdown/Markdown'
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useDocumentMission } from '@/hooks/documentApi';
 import axiosInstance from '@/hooks/axiosInstance';
 import { MissionFeedbackContext } from '@/components/MissionLayout/MissionLayout';
@@ -10,12 +10,7 @@ import { getFeedbackData } from '@/hooks/missionFeedbackApi';
 
 export default function Document() {
     const [markdown, setMarkdown] = useState<string>('');
-    const markdownRef = useRef(markdown);
     const navigate = useNavigate()
-  
-    useEffect(() => {
-      markdownRef.current = markdown;
-    }, [markdown]);
 
     const { documentMissionId } = useParams<{ documentMissionId: string }>();
 
@@ -66,18 +61,18 @@ export default function Document() {
         const res = await axiosInstance.post(
           `/document-mission/send/${documentMissionId}`,
           {
-            documentContent: markdownRef.current,
+            documentContent: markdown,
           }
         );
         console.log(res.data);
         alert('제출');
 
         console.log('확인',localMission.userMissionId)
-        getFeedbackData(Number(localMission.userMissionId))
+        await getFeedbackData(Number(localMission.userMissionId))
         navigate(`/user-mission/feedback/${localMission.userMissionId}`)
         
 
-      }, [documentMissionId, localMission]);
+      }, [documentMissionId, localMission, markdown, navigate]);
     
       useEffect(() => {
         if (!ctx) return;
@@ -92,12 +87,12 @@ export default function Document() {
         const res = await axiosInstance.patch(
         `/document-mission/save/${documentMissionId}`,
         {
-            documentContent: markdownRef.current,
+            documentContent: markdown,
         }
         );
         console.log(res.data);
         alert('저장');
-    }, [documentMissionId]);
+    }, [documentMissionId, markdown]);
 
     useEffect(() => {
         if (!ctx) return;
