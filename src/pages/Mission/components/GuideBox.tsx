@@ -64,6 +64,7 @@ export default function GuideBox() {
     const mail = useMailMission();
     const document = useDocumentMission();
     const chat = useChatMission()
+    console.log('chatMission', chat)
     
     const path = location.pathname;
     
@@ -72,10 +73,12 @@ export default function GuideBox() {
         ? mail
         : path.includes('/performance/document-mission')
         ? document
-        : chat;
+        : path.includes('/performance/chat-mission')
+        ? chat
+        : { mission: null, loading: false };
     
     if (loading) return <div>로딩중...</div>;
-    if (!mission) return null;
+    if (!mission) return console.log('missionss', mission);
     
     const missions = mission;
     

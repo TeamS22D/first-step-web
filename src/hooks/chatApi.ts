@@ -5,11 +5,14 @@ import axios from "axios";
 
 
 export interface ChatMissionResponse {
+    description: string;
+    ai_persona: any;
     chatMissionId: number,
     chatContent: string | null;
     sendAt: string | null;
     isSend: boolean;
     userMissionId: number;
+    index: number;
   }
   
 
@@ -28,30 +31,9 @@ export interface MissionResponse {
     },
 }
 
-const chatServerUrl: string = 'https://f79028ac5362.ngrok-free.app/'
 
 export const getChatMission = async (chatMissionId: number) => {
-    const res = await axios.get(`${chatServerUrl}performance/chat-mission/${chatMissionId}`,
-        {
-            withCredentials: false,
-            headers: {
-                'ngrok-skip-browser-warning': 'true', 
-            }
-        }
-    );
-    console.log("chat", res);
-    return res.data;
-}
-
-export const getMission = async (templateId: number) => {
-    const res = await axios.get(`${chatServerUrl}performance/chat-mission/template/${templateId}`,
-        {
-            withCredentials: false,
-            headers: {
-                'ngrok-skip-browser-warning': 'true',  
-            }
-        }
-    );
+    const res = await axiosInstance.get(`/user-mission/mission/${chatMissionId}`);
     console.log("mission", res);
     return res.data;
 }
@@ -70,29 +52,28 @@ export const useChatMission = () => {
 
     useEffect(() => {
         const fetchAll = async () => {
-        if (!chatMissionId) return;
-
-        try {
-            setLoading(true)
-
-            const chat = await getChatMission(Number(chatMissionId));
-            setChatMission(chat)
-
-            const mission = await getMission(Number(chatMissionId));
-            setMission(mission)
-            
-        } finally {
-            setLoading(false)
-        }
-
+            console.log("현재 URL 파라미터:", chatMissionId); // 이게 undefined면 라우터 설정 문제
+            if (!chatMissionId) return;
+    
+            try {
+                setLoading(true);
+                
+                // 실제 변수에 담긴 값을 직접 확인하세요
+                const data = await getChatMission(Number(chatMissionId));
+                console.log("1. API에서 받은 원본 채팅 데이터:", data);
+                setChatMission(data);
+                setMission(data);
+                
+            } catch (error) {
+                console.error("3. API 요청 실패:", error);
+            } finally {
+                setLoading(false);
+            }
         };
-
         fetchAll();
-
-    }, [chatMissionId]);
-
+    }, [chatMissionId]);    
     return{
-        chatMission,
+        chatMission, // `/chat-mission/${chatMissionId}
         mission,
         loading,
     }
