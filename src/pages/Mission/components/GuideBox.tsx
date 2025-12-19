@@ -58,27 +58,32 @@ export function CategoryBox({ category, setCategory }: CategoryProps) {
   );
 }
 
-export default function GuideBox() {
+export default  function GuideBox() {
     const [category, setCategory] = useState(0);
     
-    const mail = useMailMission();
-    const document = useDocumentMission();
-    const chat = useChatMission()
+    const mail =  useMailMission();
+    console.log('mailMission', mail)
+    const document =  useDocumentMission();
+    console.log('documentMission', document)
+    const chat =  useChatMission()
     console.log('chatMission', chat)
     
     const path = location.pathname;
+    console.log('path',path)
     
     const { mission, loading } =
-    path.includes('/performance/email-mission')
+    path.includes('email')
         ? mail
-        : path.includes('/performance/document-mission')
+        : path.includes('document')
         ? document
-        : path.includes('/performance/chat-mission')
+        : path.includes('chat')
         ? chat
         : { mission: null, loading: false };
+
+    console.log('확인',mission)
     
     if (loading) return <div>로딩중...</div>;
-    if (!mission) return console.log('missionss', mission);
+    if (!mission) return null;
     
     const missions = mission;
     

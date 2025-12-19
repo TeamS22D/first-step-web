@@ -53,7 +53,10 @@ export const useChatMission = () => {
     useEffect(() => {
         const fetchAll = async () => {
             console.log("현재 URL 파라미터:", chatMissionId); // 이게 undefined면 라우터 설정 문제
-            if (!chatMissionId) return;
+            if (!chatMissionId) {
+                setLoading(false);
+                return;
+            }
     
             try {
                 setLoading(true);
